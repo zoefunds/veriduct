@@ -40,3 +40,13 @@ def test_router_accepts_cli_decoded_address_values():
     text = source("mandate_router.py")
     assert 'hasattr(value, "as_hex")' in text
     assert "target_hex = _address_hex(target)" in text
+
+def test_demo_evidence_urls_are_canonical_contract_safe_paths():
+    form = (ROOT / "components" / "TransactionForm.tsx").read_text()
+    assert "api/evidence/${preset.evidence}/${observedAt}" in form
+    assert "api/evidence/${preset.evidence}?at=" not in form
+    sample = "https://veri-duct.vercel.app/api/evidence/provider/1791354622"
+    assert sample.startswith("https://")
+    assert not any(token in sample for token in ("@", "\\", "%", "?", "#"))
+    assert (ROOT / "app" / "api" / "evidence" / "provider" / "[at]" / "route.ts").is_file()
+    assert (ROOT / "app" / "api" / "evidence" / "monitor" / "[at]" / "route.ts").is_file()

@@ -30,7 +30,7 @@ export function TransactionForm({ address, method, fields, submitLabel, presets 
       let next = { ...values, ...(preset.values || {}) };
       if (preset.evidence) {
         const observedAt = Math.floor(Date.now()/1000);
-        const url = `https://veri-duct.vercel.app/api/evidence/${preset.evidence}?at=${observedAt}`;
+        const url = `https://veri-duct.vercel.app/api/evidence/${preset.evidence}/${observedAt}`;
         const response = await fetch(url, { cache: "no-store" });
         if (!response.ok) throw new Error("The production evidence endpoint is not available yet.");
         const bytes = new Uint8Array(await response.arrayBuffer());
