@@ -11,5 +11,6 @@ export const ADDRESSES = {
   mandateRouter: (process.env.NEXT_PUBLIC_MANDATE_ROUTER_ADDRESS || saved.mandateRouter || "") as Address,
   serviceControl: (process.env.NEXT_PUBLIC_SERVICE_CONTROL_ADDRESS || saved.serviceControl || "") as Address,
 };
+export const SERVICE_GOVERNANCE = manifest.deployer as `0x${string}`;
 export const configured = Object.values(ADDRESSES).every(Boolean);
 export const explorerTx = (hash: string) => `${NETWORK.explorer}/tx/${hash}`;

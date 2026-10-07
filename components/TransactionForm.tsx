@@ -5,14 +5,17 @@ import { connectWallet, waitFinalized, writeContract } from "@/lib/genlayer";
 import { ADDRESSES, explorerTx } from "@/lib/config";
 
 export type Field = { name: string; label: string; placeholder?: string; kind?: "text" | "number" | "textarea"; initial?: string };
-type Preset = { label: string; values?: Record<string,string>; evidence?: "provider" | "monitor"; workflow?: "case" | "mandate" };
-export function TransactionForm({ address, method, fields, submitLabel, presets = [] }: { address: string; method: string; fields: Field[]; submitLabel: string; presets?: Preset[] }) {
+type Preset = { label: string; values?: Record<string,string>; evidence?: "provider" | "monitor"; workflow?: "case" | "adjudicate" | "mandate" };
+export function TransactionForm({ address, method, fields, submitLabel, presets = [], requiredAccount }: { address: string; method: string; fields: Field[]; submitLabel: string; presets?: Preset[]; requiredAccount?: string }) {
   const [values, setValues] = useState<Record<string,string>>(() => Object.fromEntries(fields.map(f => [f.name, f.initial || ""])));
   const [state, setState] = useState<{ busy?: boolean; hash?: string; error?: string }>({});
   async function submit(e: React.FormEvent) {
     e.preventDefault(); setState({ busy: true });
     try {
       const account = await connectWallet();
+      if (requiredAccount && account.toLowerCase() !== requiredAccount.toLowerCase()) {
+        throw new Error(`This operation must be signed by service governance ${requiredAccount}. Switch wallets before submitting.`);
+      }
       const args = fields.map(f => f.kind === "number" ? Number(values[f.name]) : values[f.name]);
       const hash = await writeContract(account, address, method, args);
       if (method === "anchor_snapshot") {
@@ -42,7 +45,12 @@ export function TransactionForm({ address, method, fields, submitLabel, presets 
       if (preset.workflow === "case") {
         const snapshots = JSON.parse(localStorage.getItem("veriduct-demo-snapshots") || "[]") as string[];
         if (snapshots.length < 2) throw new Error("Anchor both demo observations first; their live keys will be inserted here automatically.");
-        next = { ...next, case_key:"demo-outage-case-1", covenant_key:"demo-payments-availability-v1", action_id:"ENTER_READ_ONLY", intensity:"60", payload_json:JSON.stringify({reason:"Sustained multi-region availability breach",until:Math.floor(Date.now()/1000)+3600}), claim:"Two authenticated publishers report sustained availability near 91 percent and elevated errors across multiple regions, satisfying the active covenant threshold. A one-hour read-only period is requested to prevent unsafe writes while service integrity is restored.", snapshot_keys_json:JSON.stringify(snapshots) };
+        next = { ...next, case_key:`demo-outage-${Math.floor(Date.now()/1000)}`, covenant_key:"veriduct-demo-availability-v1", action_id:"ENTER_READ_ONLY", intensity:"60", payload_json:JSON.stringify({reason:"Sustained multi-region availability breach",until:Math.floor(Date.now()/1000)+3600}), claim:"Two authenticated publishers report sustained availability near 91 percent and elevated errors across multiple regions, satisfying the active covenant threshold. A one-hour read-only period is requested to prevent unsafe writes while service integrity is restored.", snapshot_keys_json:JSON.stringify(snapshots) };
+      }
+      if (preset.workflow === "adjudicate") {
+        const caseValues = JSON.parse(localStorage.getItem("veriduct-demo-case") || "{}") as Record<string,string>;
+        if (!caseValues.case_key) throw new Error("Open the demo case first; its live key will be inserted here automatically.");
+        next = { ...next, case_key: caseValues.case_key };
       }
       if (preset.workflow === "mandate") {
         const caseValues = JSON.parse(localStorage.getItem("veriduct-demo-case") || "{}") as Record<string,string>;

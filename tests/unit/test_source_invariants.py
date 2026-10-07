@@ -50,3 +50,17 @@ def test_demo_evidence_urls_are_canonical_contract_safe_paths():
     assert not any(token in sample for token in ("@", "\\", "%", "?", "#"))
     assert (ROOT / "app" / "api" / "evidence" / "provider" / "[at]" / "route.ts").is_file()
     assert (ROOT / "app" / "api" / "evidence" / "monitor" / "[at]" / "route.ts").is_file()
+
+def test_governed_demo_cannot_autofill_an_attacker_owned_covenant():
+    config = (ROOT / "lib" / "config.ts").read_text()
+    form = (ROOT / "components" / "TransactionForm.tsx").read_text()
+    covenants = (ROOT / "app" / "covenants" / "page.tsx").read_text()
+    cases = (ROOT / "app" / "cases" / "page.tsx").read_text()
+    assert "SERVICE_GOVERNANCE = manifest.deployer" in config
+    assert "account.toLowerCase() !== requiredAccount.toLowerCase()" in form
+    assert 'covenant_key:"veriduct-demo-availability-v1"' in covenants
+    assert 'service_key:"veriduct-demo-payments-api"' in covenants
+    assert 'requiredAccount={SERVICE_GOVERNANCE}' in covenants
+    assert 'requiredAccount={SERVICE_GOVERNANCE}' in cases
+    assert 'covenant_key:"veriduct-demo-availability-v1"' in form
+    assert 'case_key:`demo-outage-${Math.floor(Date.now()/1000)}`' in form
