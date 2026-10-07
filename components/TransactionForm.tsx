@@ -1,11 +1,11 @@
 "use client";
 import { useState } from "react";
 import { ArrowRight, LoaderCircle, Wallet } from "lucide-react";
-import { connectWallet, waitFinalized, writeContract } from "@/lib/genlayer";
+import { connectWallet, readContract, waitFinalized, writeContract } from "@/lib/genlayer";
 import { ADDRESSES, explorerTx } from "@/lib/config";
 
 export type Field = { name: string; label: string; placeholder?: string; kind?: "text" | "number" | "textarea"; initial?: string };
-type Preset = { label: string; values?: Record<string,string>; evidence?: "provider" | "monitor"; workflow?: "case" | "adjudicate" | "mandate" };
+type Preset = { label: string; values?: Record<string,string>; evidence?: "provider" | "monitor"; workflow?: "covenant" | "activation" | "case" | "adjudicate" | "mandate" };
 export function TransactionForm({ address, method, fields, submitLabel, presets = [], requiredAccount }: { address: string; method: string; fields: Field[]; submitLabel: string; presets?: Preset[]; requiredAccount?: string }) {
   const [values, setValues] = useState<Record<string,string>>(() => Object.fromEntries(fields.map(f => [f.name, f.initial || ""])));
   const [state, setState] = useState<{ busy?: boolean; hash?: string; error?: string }>({});
@@ -25,12 +25,21 @@ export function TransactionForm({ address, method, fields, submitLabel, presets 
       if (method === "open_case") localStorage.setItem("veriduct-demo-case", JSON.stringify(values));
       setState({ busy: true, hash });
       await waitFinalized(hash);
+      if (method === "publish_covenant") localStorage.setItem("veriduct-demo-covenant", values.covenant_key);
       setState({ hash });
     } catch (error) { setState({ error: error instanceof Error ? error.message : String(error) }); }
   }
   async function applyPreset(preset: Preset) {
     try {
       let next = { ...values, ...(preset.values || {}) };
+      if (preset.workflow === "covenant") {
+        next = { ...next, covenant_key: `veriduct-demo-availability-${Math.floor(Date.now()/1000)}` };
+      }
+      if (preset.workflow === "activation") {
+        const covenantKey = localStorage.getItem("veriduct-demo-covenant");
+        if (!covenantKey) throw new Error("Publish a demo covenant first; its finalized key will be inserted here automatically.");
+        next = { ...next, covenant_key: covenantKey };
+      }
       if (preset.evidence) {
         const observedAt = Math.floor(Date.now()/1000);
         const url = `https://veri-duct.vercel.app/api/evidence/${preset.evidence}/${observedAt}`;
@@ -45,7 +54,9 @@ export function TransactionForm({ address, method, fields, submitLabel, presets 
       if (preset.workflow === "case") {
         const snapshots = JSON.parse(localStorage.getItem("veriduct-demo-snapshots") || "[]") as string[];
         if (snapshots.length < 2) throw new Error("Anchor both demo observations first; their live keys will be inserted here automatically.");
-        next = { ...next, case_key:`demo-outage-${Math.floor(Date.now()/1000)}`, covenant_key:"veriduct-demo-availability-v1", action_id:"ENTER_READ_ONLY", intensity:"60", payload_json:JSON.stringify({reason:"Sustained multi-region availability breach",until:Math.floor(Date.now()/1000)+3600}), claim:"Two authenticated publishers report sustained availability near 91 percent and elevated errors across multiple regions, satisfying the active covenant threshold. A one-hour read-only period is requested to prevent unsafe writes while service integrity is restored.", snapshot_keys_json:JSON.stringify(snapshots) };
+        const covenantKey = await readContract<string>(ADDRESSES.covenantBook, "get_active_covenant_key", ["veriduct-demo-payments-api"]);
+        if (!covenantKey) throw new Error("The governed demo covenant is not active yet.");
+        next = { ...next, case_key:`demo-outage-${Math.floor(Date.now()/1000)}`, covenant_key:covenantKey, action_id:"ENTER_READ_ONLY", intensity:"60", payload_json:JSON.stringify({reason:"Sustained multi-region availability breach",until:Math.floor(Date.now()/1000)+3600}), claim:"Two authenticated publishers report sustained availability near 91 percent and elevated errors across multiple regions, satisfying the active covenant threshold. A one-hour read-only period is requested to prevent unsafe writes while service integrity is restored.", snapshot_keys_json:JSON.stringify(snapshots) };
       }
       if (preset.workflow === "adjudicate") {
         const caseValues = JSON.parse(localStorage.getItem("veriduct-demo-case") || "{}") as Record<string,string>;

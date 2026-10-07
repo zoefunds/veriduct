@@ -58,9 +58,11 @@ def test_governed_demo_cannot_autofill_an_attacker_owned_covenant():
     cases = (ROOT / "app" / "cases" / "page.tsx").read_text()
     assert "SERVICE_GOVERNANCE = manifest.deployer" in config
     assert "account.toLowerCase() !== requiredAccount.toLowerCase()" in form
-    assert 'covenant_key:"veriduct-demo-availability-v1"' in covenants
+    assert 'workflow:"covenant"' in covenants
     assert 'service_key:"veriduct-demo-payments-api"' in covenants
     assert 'requiredAccount={SERVICE_GOVERNANCE}' in covenants
     assert 'requiredAccount={SERVICE_GOVERNANCE}' in cases
-    assert 'covenant_key:"veriduct-demo-availability-v1"' in form
+    assert 'get_active_covenant_key' in form
+    assert 'veriduct-demo-availability-${Math.floor(Date.now()/1000)}' in form
+    assert 'localStorage.setItem("veriduct-demo-covenant"' in form
     assert 'case_key:`demo-outage-${Math.floor(Date.now()/1000)}`' in form

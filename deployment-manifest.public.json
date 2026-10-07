@@ -21,6 +21,10 @@
     "ENTER_READ_ONLY": "0x8c4d88eabf89b64016c9465902081ed8c0cfc6a0801306b179e313685b0d0578",
     "RAISE_REVIEW_THRESHOLD": "0x1076b39d5b22c034f1ab9be7a3d68732aed6289f9ccaef525398329225156a13"
   },
+  "demoBootstrapTransactions": {
+    "publishCovenant": "0xe2447ef25299abae3411054cfd3fadb7e0843d8a3ecc8c85af8d6ad712e4e782",
+    "activateCovenant": "0x0c03e8f27b5ba88885616054756091581d2940af797e68284e8dadbcfac9022b"
+  },
   "deployer": "0x8d4e752ae688c21ec7c7d4d8a232b5e0700dbf0f",
   "generatedAt": "2026-10-06T01:50:42.617Z"
 }
