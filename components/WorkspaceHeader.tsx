@@ -1,0 +1,1 @@
+export function WorkspaceHeader({ kicker, title, copy }: { kicker: string; title: string; copy: string }) { return <header className="workspaceHead"><p className="eyebrow">{kicker}</p><h1>{title}</h1><p>{copy}</p></header>; }

@@ -1,0 +1,26 @@
+{
+  "project": "VERIDUCT",
+  "network": "studionet",
+  "chainId": 61999,
+  "contracts": {
+    "publisherLedger": "0xAEDf509D72E94fEfb9cd1e02485472267c117aE1",
+    "covenantBook": "0xCE134DCeADAA02f852e0E3103FDDbfF4EA56A038",
+    "adjudicator": "0x961Ee233B32fd333B69FBF80081b80F954A3B76D",
+    "mandateRouter": "0x14d3AD0b62da131E0883bd1f2c193549890418Ee",
+    "serviceControl": "0x0de5F4B74e4F7aB3C67A26FdC4A1334Ee04e5C85"
+  },
+  "deploymentTransactions": {
+    "publisherLedger": "0xfc6eab49fa61fbf3461b38805af54c0c47045baa62089ce73a04fa4cff164968",
+    "covenantBook": "0xc8588f35c836563bd4338c55c7de8fb60fdc05a2956d4f01b05312792fbbd652",
+    "mandateRouter": "0xa84ca70f1f5b049a2cd3929a0cad777f1f4c32d07d0393d1f818576cfd5debeb",
+    "adjudicator": "0x1dfdfd29e968d1590eb8d35622d7fd164afcc93cdcc245ded74cbc0cf9d4adb2",
+    "serviceControl": "0x09a950935401b41b419720396037ef1266c7d3b47decc85bb13367350d7e1d8f"
+  },
+  "bindAdjudicatorTransaction": "0xf14d4ef7b8a249eb5b7da4a216f7c473462111a9039ca68387b5bb27d21e65ac",
+  "adapterRegistrationTransactions": {
+    "ENTER_READ_ONLY": "0x8c4d88eabf89b64016c9465902081ed8c0cfc6a0801306b179e313685b0d0578",
+    "RAISE_REVIEW_THRESHOLD": "0x1076b39d5b22c034f1ab9be7a3d68732aed6289f9ccaef525398329225156a13"
+  },
+  "deployer": "0x8d4e752ae688c21ec7c7d4d8a232b5e0700dbf0f",
+  "generatedAt": "2026-10-06T01:50:42.617Z"
+}

@@ -1,0 +1,3 @@
+pytest==8.3.4
+genlayer-py==0.18.0
+genlayer-testing-suite==0.29.0
