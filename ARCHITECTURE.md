@@ -1,58 +1,125 @@
 # VERIDUCT architecture
 
-## Trust model
+## Deployed topology
 
-VERIDUCT separates five powers: publishing an observation, defining a policy, interpreting evidence, issuing authority, and applying a consequence. No contract can exercise the complete chain by itself.
+VERIDUCT separates five powers so no contract can create and exercise emergency authority alone.
 
 ```text
-Publisher A ─┐
-             ├─ immutable byte anchors ─┐
-Publisher B ─┘                          │
-                                        v
-Owner ─ covenant + bounded remedy ─> Adjudicator
-                                        │ FINALIZED
-                                        v
-                                  Mandate Router
-                                        │ FINALIZED
-                                        v
-                                  Service Adapter
+provider-operations (0x82dc…15d1) ─┐
+                                     ├─ exact-byte snapshots ─┐
+independent-observer (0x1add…84a0) ──┘                         │
+                                                               v
+Service governance ── immutable covenant ─────────────> Adjudicator
+0x8d4e…bf0f                                           0xA508…430b
+                                                               │ FINALIZED issue
+                                                               v
+                                                        MandateRouter
+                                                        0x8f18…77F0
+                                                               │ FINALIZED apply
+                                                               v
+                                                        ServiceControl
+                                                        0x333B…Be3f
 ```
 
-## Authenticity boundary
+| Component | Finalized production address |
+|---|---|
+| PublisherLedger | `0x5834e07BEd3Efa9038C66cb6dEBd1BAA5A702d43` |
+| CovenantBook | `0x380a776a5895647b4D82103a47ba1d4E3e9d0338` |
+| Adjudicator | `0xA50886124A3Ed027dc56dd37c0f658677320430b` |
+| MandateRouter | `0x8f18685a77ED80BE9B8A18c484f8380a206A77F0` |
+| ServiceControl | `0x333B99f2cd961C1B6C34EcEA88996D64f325Be3f` |
 
-Publisher registration binds an onchain wallet to one canonical hostname. A snapshot is an immutable claim by that wallet over a canonical HTTPS URL, exact SHA-256 digest, observation time, expiry, and monotonic publisher sequence. During adjudication, each validator fetches the URL itself. Code—not the language model—derives the response status and content digest. Content enters the semantic prompt only on an exact match.
+The router is permanently bound to the listed Adjudicator. `ENTER_READ_ONLY` and `RAISE_REVIEW_THRESHOLD` both route to the listed ServiceControl through schema-specific generic adapters.
 
-This does not claim that a publisher is universally truthful. It proves which registered publisher made the observation, that the requested URL belongs to its declared origin, and that validators interpreted the same bytes it anchored. Covenants reduce publisher risk by pre-committing multiple independent identities and a distinct-publisher threshold.
+## Publisher and snapshot model
+
+A publisher record freezes:
+
+```text
+publisher_key, owner, display_name, origin_host, registered_at, sequence
+```
+
+The active production identities are:
+
+| Key | Onchain owner | Canonical host | Sequence |
+|---|---|---|---:|
+| `provider-operations` | `0x82dcDC5B028A13f3475DDeC31B5300acfe9815d1` | `veri-duct.vercel.app` | 2 |
+| `independent-observer` | `0x1ADd10608F0c52EECa68Ba4e5795817828f184a0` | `veri-duct.vercel.app` | 2 |
+
+A snapshot freezes `snapshot_key`, publisher key and owner, publisher sequence, exact HTTPS URL, observation time, validity limit, content SHA-256, anchor time, and a digest of the complete record. The Ledger validates canonical HTTPS construction and the registered hostname before storage.
+
+During adjudication every validator retrieves the frozen URL. Deterministic contract code checks successful HTTP status, response size, and SHA-256 equality before any content reaches a model. The semantic prompt receives the frozen publisher owner, sequence, observation and expiry times, URL, snapshot digest, and authenticated content. This proves who anchored which bytes and that every validator interpreted those same bytes; it does not claim that a publisher is universally truthful.
+
+## Covenant model
+
+`CovenantBook` stores immutable versions under one service key. Only the original service owner can publish a higher version. Activation is delayed and monotonic. A policy freezes its approved publisher keys, minimum distinct-owner threshold, maximum observation age, evidence instructions, remedy policy, mandate TTL, action targets, action schemas, and intensity ceilings.
+
+The active production covenant is version 4, key `payments-api-availability-v4`, digest `13ac39b7fc9c8d426d388dd780203158f2c428fbb936c2730e77ebf8bb3c5a05`. It requires two approved, separately owned publishers and limits observations to 60 minutes old. Read-only authority is capped at intensity 80; review-threshold authority is capped at 70; issued mandates expire after 30 minutes.
+
+## Case and semantic decision
+
+Opening a case is deterministic. The Adjudicator verifies the caller is the covenant owner, loads the active immutable policy, checks the live adapter target and schema, confirms target governance, validates the intensity and JSON payload, rejects duplicate snapshot keys, enforces publisher-key and owner independence, and freezes the full source records into a case digest.
+
+Adjudication then separates deterministic provenance from semantic judgment:
+
+1. Each validator fetches every frozen URL independently.
+2. Code recomputes exact-byte SHA-256 and marks unavailable data without model discretion.
+3. The model must return one of `BREACH_PROVEN`, `NO_BREACH`, `INSUFFICIENT_CORROBORATION`, `CONFLICTING_OBSERVATIONS`, or `REMEDY_DISPROPORTIONATE`.
+4. It must also return exactly one state for every frozen snapshot: `SUPPORTS_BREACH`, `CONTRADICTS_BREACH`, `NEUTRAL`, or `UNAVAILABLE`.
+5. Validators independently repeat the evaluation, require the same decision and per-snapshot states, and separately compare clauses, findings, proportionality, and contradictions for material equivalence.
+6. Contract code downgrades `BREACH_PROVEN` if authenticated supporting sources do not meet the covenant threshold.
+
+The verified production case froze two exact-byte sources, received `SUPPORTS_BREACH` for both, and finalized `BREACH_PROVEN` with verdict digest `188f24a7436da44489d7efdc690f18826aa31a230b454ac543a0a35732432dec`.
 
 ## Generic action adapters
 
-The router knows no service-specific methods. Target governance registers an action ID, target, and payload-schema digest. Registration succeeds only when the target reports the same governance address and attests support for that exact pair. All targets implement one interface:
+The router contains no service-specific method name and no hard-coded action class. Governance registers an action ID, target, and payload-schema digest. Registration succeeds only when the target returns the same governance address and attests support for the exact action/schema pair. Every compatible target implements:
 
 ```text
 apply_mandate(action_id, intensity, payload_json, mandate_key, action_digest, holder)
 ```
 
-Service-specific validation remains inside the adapter, where it belongs. A new adapter or action requires no router redeployment.
+`ServiceControl` interprets two schemas:
+
+- `ENTER_READ_ONLY` uses canonical JSON `{"reason":"string","until":"unix"}` and schema digest `22b8255d4abed99e0afc2c27881e3a8999f02e192440aefda5f70d736d26b950`.
+- `RAISE_REVIEW_THRESHOLD` uses canonical JSON `{"queue":"string","reason":"string"}` and schema digest `63a29967edc6ce09e0e136a79b2af5842e8398699aefaac1fb132931bfa4a22d`.
+
+Service-specific validation stays inside the adapter. A new target or action can be registered without changing MandateRouter.
+
+## Authority envelope
+
+The mandate records the case, holder, target, action, intensity, canonical payload, schema digest, covenant digest, verdict digest, issue time, expiry, status, dispatch count, and the exact action digest. That digest covers case, covenant, target, action, intensity, canonical payload, and schema. Execution rebuilds it using caller-supplied target, action, intensity, and payload plus the frozen case, covenant, and schema; holder, expiry, status, and live adapter route are checked separately. Any material mutation rejects before dispatch.
 
 ## Finality state machine
 
 ```text
-OPEN_CASE
-  → CLOSED_NO_MANDATE
-  → MANDATE_PENDING_FINALITY
-       → ISSUED
-            → DISPATCHED
-                 → APPLIED
+Case:     OPEN ── adjudicate ──> CLOSED_NO_MANDATE
+                         └──────> MANDATE_PENDING_FINALITY
+
+Mandate:                         ISSUED
+                                   │ exact dispatch
+                                   v
+                                DISPATCHED
+                                   │ target digest observed
+                                   v
+                                 APPLIED
 ```
 
-`ACCEPTED` is not represented as authority. A proven verdict emits issuance only on finality. A dispatch emits target application only on finality. Reconciliation reads the target’s applied digest before recording `APPLIED`.
+`ACCEPTED` never grants authority. A proven parent emits issuance with `on="finalized"`; an exact dispatch emits target application with `on="finalized"`. Reconciliation reads `get_applied_mandate_digest` from the target and marks `APPLIED` only when it equals the frozen action digest.
+
+## Production application boundary
+
+The Next.js application contains static interface routes plus dynamic evidence Route Handlers. It has no signing key, database, or private indexer. Wallets sign writes directly; `genlayer-js` reads finalized state directly from Studionet. The browser uses local storage only to carry submitted workflow keys and exact payload values between forms. That browser state never grants authority: every later step must load and validate the corresponding finalized onchain record.
 
 ## Failure behavior
 
-- Fetch failure or digest mismatch: source becomes unavailable.
-- Authentic sources below threshold: insufficient corroboration.
-- Material publisher disagreement: conflicting observations.
-- Remedy exceeds covenant or adapter bounds: rejected deterministically.
-- Adapter route changes: case opening or execution rejects.
-- Failed child application: mandate stays dispatched and can be reconciled or exactly retried; bindings cannot change.
-- Duplicate delivery: target returns idempotently only for the identical digest and rejects conflicting reuse.
+- Fetch failure, non-2xx response, oversized body, or digest mismatch: snapshot becomes unavailable.
+- Fewer authenticated, distinct-owner supporting sources than required: insufficient corroboration.
+- Material source disagreement: conflicting observations.
+- Non-owner policy or case action: deterministic rejection.
+- Remedy beyond policy or adapter bounds: deterministic rejection.
+- Live adapter target or schema differs from the frozen covenant: case opening or execution rejects.
+- Parent transaction not finalized: no child authority or consequence exists.
+- Child application failure: mandate stays `DISPATCHED`; exact retry or reconciliation remains possible without changing its bindings.
+- Duplicate identical delivery: target returns idempotently.
+- Reuse of a mandate key with another digest: target rejects conflicting replay.

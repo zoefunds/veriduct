@@ -2,40 +2,76 @@
 
 **Authenticated observations. Independent adjudication. Bounded operations.**
 
-VERIDUCT is a GenLayer-native service-reliability covenant network. An operator commits a precise reliability policy, independent telemetry publishers anchor immutable observations, and validators determine whether a requested operational remedy is justified. Authority exists only after finality and can execute only the exact target, action, intensity, payload, schema, covenant, and case that validators assessed.
+VERIDUCT is a production-deployed GenLayer service-reliability covenant network. A service owner publishes an immutable reliability policy, separately owned telemetry publishers anchor the SHA-256 digest of exact HTTPS response bytes, and GenLayer validators independently retrieve and interpret those bytes. A proven breach can create only the remedy envelope the covenant authorized, and that envelope affects the service adapter only after two finality-gated child transactions.
 
-Production: **[veri-duct.vercel.app](https://veri-duct.vercel.app)**
+- Production application and evidence backend: [https://veri-duct.vercel.app](https://veri-duct.vercel.app)
+- Network: GenLayer Studionet, chain ID `61999`
+- RPC: `https://studio.genlayer.com/api`
+- Explorer: [https://explorer-studio.genlayer.com](https://explorer-studio.genlayer.com)
+- Verified E2E evidence: [E2E_RESULTS.md](./E2E_RESULTS.md)
+- Security model: [SECURITY.md](./SECURITY.md)
+- Contract and state-machine design: [ARCHITECTURE.md](./ARCHITECTURE.md)
 
-The interface reads finalized Studionet state directly. It has no backend account, database, indexer, or offchain authority service.
+## Production architecture
+
+| Contract | Address | Responsibility |
+|---|---|---|
+| `PublisherLedger` | `0x5834e07BEd3Efa9038C66cb6dEBd1BAA5A702d43` | Registers publisher wallet/hostname identities and anchors exact URL, observation time, validity, sequence, and SHA-256 content digest. |
+| `CovenantBook` | `0x380a776a5895647b4D82103a47ba1d4E3e9d0338` | Stores immutable, delayed, monotonically versioned policies with approved publishers and bounded actions. |
+| `Adjudicator` | `0xA50886124A3Ed027dc56dd37c0f658677320430b` | Freezes source records, re-fetches exact bytes, verifies provenance, compares validator interpretations, and emits issuance only on finality. |
+| `MandateRouter` | `0x8f18685a77ED80BE9B8A18c484f8380a206A77F0` | Maintains generic action adapters and verifies the complete execution envelope and digest before finality-gated dispatch. |
+| `ServiceControl` | `0x333B99f2cd961C1B6C34EcEA88996D64f325Be3f` | Applies read-only or review-threshold consequences after rechecking router authority, governance, schema, payload bounds, and replay state. |
+
+The service-governance and deployment address is `0x8d4e752ae688c21ec7c7d4d8a232b5e0700dbf0f`. Contract creation, router binding, adapter registration, production bootstrap, and E2E transaction hashes are recorded without abbreviation in [deployment-manifest.public.json](./deployment-manifest.public.json).
 
 ## Why GenLayer
 
-A normal smart contract can compare latency numbers, but it cannot reliably decide whether heterogeneous status reports, maintenance notices, and independent monitor results collectively satisfy a natural-language service covenant. VERIDUCT makes that semantic decision the only nondeterministic step. Everything around it—publisher identity, byte authenticity, quorum, policy version, bounds, expiry, routing, replay protection, and target authorization—is deterministic.
+Ordinary deterministic contracts can compare a number with a threshold, but the production decision here requires validators to determine whether heterogeneous provider and monitor reports describe the same service window, satisfy the natural-language covenant clauses, materially corroborate one another, and justify the requested operational response. VERIDUCT confines nondeterminism to that semantic comparison. Publisher ownership, hostname binding, HTTPS status, exact-byte digest matching, freshness, distinct-owner quorum, covenant version, adapter compatibility, remedy limits, expiry, action digest, finality, and replay protection remain deterministic.
 
-## System
+## Active production policy
 
-| Contract | Responsibility |
-|---|---|
-| `PublisherLedger` | Registers publisher identities and anchors URL, origin, timestamp, sequence, and SHA-256 content digest. |
-| `CovenantBook` | Stores immutable, delayed, monotonic covenant versions with publisher quorum and remedy bounds. |
-| `Adjudicator` | Fetches exact anchored bytes, verifies authenticity, performs independent semantic evaluation, and issues only on finality. |
-| `MandateRouter` | Registers target-owned adapters and dispatches exact digest-bound mandates through one generic interface. |
-| `ServiceControl` | Demonstrates two operational remedies and independently checks router, governance, schema bounds, and replay. |
+The finalized active covenant is `payments-api-availability-v4` for service key `veriduct-production-payments-api`.
+
+- Covenant digest: `13ac39b7fc9c8d426d388dd780203158f2c428fbb936c2730e77ebf8bb3c5a05`
+- Owner: `0x8d4e752ae688c21ec7c7d4d8a232b5e0700dbf0f`
+- Approved publishers: `provider-operations` and `independent-observer`, owned by different wallets
+- Breach condition: both approved publishers report availability below 95% for the same 30-minute window
+- Maximum evidence age: 60 minutes
+- Activation delay: one minute
+- Mandate TTL: 30 minutes
+- `ENTER_READ_ONLY`: maximum intensity 80, schema digest `22b8255d4abed99e0afc2c27881e3a8999f02e192440aefda5f70d736d26b950`
+- `RAISE_REVIEW_THRESHOLD`: maximum intensity 70, schema digest `63a29967edc6ce09e0e136a79b2af5842e8398699aefaac1fb132931bfa4a22d`
+
+The verified production case `production-outage-bounded-1791733886` used two independently owned, exact-byte-authenticated observations. Validators finalized `BREACH_PROVEN`; the resulting mandate was dispatched once, reconciled to `APPLIED`, and placed the service in read-only mode for the authorized 20-minute window. That window has now expired, so the current finalized service posture is open, with one applied mandate and zero submitted operations.
 
 ## Security properties
 
-- A source contributes authority only when its registered identity, exact origin, freshness window, HTTPS response, and fetched SHA-256 digest all match its immutable anchor.
-- Corroboration requires distinct publisher identities. Reusing one publisher cannot satisfy quorum.
-- Covenant versions are immutable, owner-locked, delayed, and monotonic.
-- A new service key cannot control an existing target: the covenant owner must equal target governance, and the target checks the mandate holder again.
-- The router contains no action-specific target calls. Governance registers `(action_id, target, payload_schema_digest)` against a target that attests support for the schema.
-- Assessment→issuance and dispatch→application are separate `FINALIZED` child transactions.
-- Mandates are holder-bound, target-bound, action-bound, intensity-bound, schema-bound, payload-bound, covenant-bound, case-bound, expiring, and single-use.
-- Unavailable, stale, oversized, mismatched, conflicting, or insufficient evidence fails closed.
+- A source counts only when its registered wallet, exact canonical hostname, URL, observation time, validity window, HTTP success status, and fetched SHA-256 digest match its immutable anchor.
+- Publisher keys and their onchain owners must both be distinct to satisfy quorum.
+- Covenant versions are immutable, owner-locked, delayed, and monotonic; every case freezes the active covenant digest.
+- A covenant owner must equal target governance, preventing a new attacker-owned service key from taking control of an existing target.
+- The router has no hard-coded target method or action class. Governance registers `(action_id, target, payload_schema_digest)` only after the target attests the same governance and schema support.
+- Case, covenant, verdict, holder, issue time, expiry, and TTL are frozen in the mandate record. Target, action, intensity, canonical payload bytes, payload schema, case, and covenant form the recomputed execution digest; holder and expiry are enforced separately.
+- Adjudication-to-issuance and dispatch-to-application are separate `FINALIZED` child transactions; `ACCEPTED` parent state grants no authority.
+- The target independently verifies the router and governance, stores the applied digest, treats identical delivery idempotently, and rejects conflicting replay.
+- Fetch failure, stale data, oversized responses, digest mismatch, origin substitution, duplicate publishers, semantic conflict, or insufficient corroboration fails closed.
+
+## Application and backend
+
+The Next.js 16 application deploys the interface and evidence Route Handlers together on Vercel. There is no privileged backend signer, database, indexer, or offchain authority service. The two production backend families are:
+
+- `GET /api/evidence/provider/[at]` — provider reliability report for an explicit Unix observation time
+- `GET /api/evidence/monitor/[at]` — independent monitor report for the same explicit observation time
+
+Both routes return deterministic JSON for a valid timestamp and HTTP 400 for invalid input. The browser hashes the received bytes before filling an anchor transaction. Onchain reads use `LATEST_FINAL`; wallet-signed writes wait for `FINALIZED` before the interface reports success.
+
+## One-click production test autofill
+
+Every write surface includes a **Demo autofill** control containing complete production-grade test data rather than empty examples. Evidence autofill requests a fresh provider or independent-monitor response, computes the real SHA-256 digest in the browser, and fills the exact publisher key, URL, observation time, validity, and digest. Submitted snapshot keys are retained locally for the next form, while case creation still loads and validates their finalized onchain records. Case autofill reads the currently active covenant and constructs a 20-minute, intensity-60 read-only request inside the policy's 30-minute TTL. Adjudication, mandate dispatch, and reconciliation reuse the exact submitted case and payload values; each contract independently requires the corresponding finalized onchain record and exact action digest. Every write still requires the user's wallet approval and the correct owning account.
 
 ## Local verification
 
-Requirements: Node 20+, Python 3.12+.
+Requirements: Node.js 20 or newer and Python 3.12 or newer.
 
 ```bash
 npm install
@@ -45,16 +81,11 @@ npm run test:contracts
 npm run build
 ```
 
-The tests include a complete registry-to-target model and explicit regressions for target seizure, forged publisher identity, origin substitution, fake quorum, every envelope-field mutation, non-proven verdict issuance, and replay after application.
+The current verification baseline is 26 passing Python tests, five parsed and validated Intelligent Contract sources, a passing TypeScript check, and a successful production build. The model suite covers the full registry-to-target path and explicit regressions for target seizure, forged publisher ownership, origin substitution, fake quorum, every material envelope-field mutation, non-proven issuance, and replay after application.
 
 ## Deployment
 
-VERIDUCT targets stable GenLayer Studionet only:
-
-- Chain ID: `61999`
-- RPC: `https://studio.genlayer.com/api`
-- Explorer: `https://explorer-studio.genlayer.com`
-- Repository-local CLI: `genlayer@0.39.1`
+The repository pins `genlayer@0.39.1` and deploys only to stable Studionet:
 
 ```bash
 npm install
@@ -63,47 +94,13 @@ cp .env.generated .env.local
 npm run build
 ```
 
-Deployment order is Ledger → Book → Router → Adjudicator → one-time Router binding → Service adapter. Register each adapter only after all deployments finalize.
+Deployment order is PublisherLedger → CovenantBook → MandateRouter → Adjudicator → one-time adjudicator binding → ServiceControl → adapter registrations. Every write must finalize before the dependent step begins. `deploy/deployScript.ts` writes local generated configuration; the reviewed production source of truth is [deployment-manifest.public.json](./deployment-manifest.public.json).
 
-### Verified Studionet deployment
+## Interface map
 
-| Contract | Address |
-|---|---|
-| PublisherLedger | `0x5834e07BEd3Efa9038C66cb6dEBd1BAA5A702d43` |
-| CovenantBook | `0x380a776a5895647b4D82103a47ba1d4E3e9d0338` |
-| Adjudicator | `0xA50886124A3Ed027dc56dd37c0f658677320430b` |
-| MandateRouter | `0x8f18685a77ED80BE9B8A18c484f8380a206A77F0` |
-| ServiceControl | `0x333B99f2cd961C1B6C34EcEA88996D64f325Be3f` |
-
-The full finalized deployment, adapter-registration, production bootstrap, and verified execution record is committed in `deployment-manifest.public.json`. The sequential production checks and their exact inputs are documented in `E2E_RESULTS.md`.
-
-## One-click demo data
-
-Every write surface includes a **Demo autofill** control. The evidence controls request fresh, deterministic observations from the production evidence routes, calculate their SHA-256 digests in the browser, and fill the exact URL, publisher, observation time, validity, and digest. Finalized snapshot keys are remembered locally and carried into the case form; the exact case envelope is then carried into mandate execution. Users still approve every onchain transaction in their own wallet.
-
-## Review path
-
-1. Register two publisher identities from different wallets and origins.
-2. Anchor two fresh snapshots containing the exact fetched-byte digests.
-3. Register both service actions with the router from the target-governance wallet.
-4. Publish a covenant requiring both publishers and activate it after the delay.
-5. Prove that stale data, a forged origin, duplicate publishers, or a mismatched digest cannot reach semantic adjudication.
-6. Open a case with a bounded action and canonical payload.
-7. Adjudicate, then show that an accepted parent has no mandate until the issuance child is finalized.
-8. Execute the mandate, then show that the target changes only when the application child finalizes.
-9. Reconcile the mandate and prove replay rejection.
-10. Mutate target, action, intensity, payload, schema, covenant, or case and prove digest rejection.
-11. Create a fresh service key from another wallet and prove the existing target rejects the entire authority chain.
-
-## Product interface
-
-The frontend is organized as an operations topology rather than a form wizard:
-
-- **Network** — authority graph and deployment posture
-- **Publishers** — identity and immutable observation anchoring
-- **Covenants** — versioned policy composer
-- **Decision lab** — frozen case construction and verdict vocabulary
-- **Mandates** — exact authority dispatch
-- **Service** — finalized consequence state
-
-No browser state is authoritative. Reads use `LATEST_FINAL`, writes wait for `FINALIZED`, and production configuration fails visibly when addresses are missing.
+- **Network** — finalized deployment and authority topology
+- **Publishers** — publisher identity registration and exact-byte snapshot anchoring
+- **Covenants** — immutable policy version publication and delayed activation
+- **Decision lab** — frozen case creation and semantic adjudication
+- **Mandates** — exact-envelope dispatch and target reconciliation
+- **Service** — finalized consequence state and generic adapter enrollment

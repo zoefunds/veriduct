@@ -1,9 +1,11 @@
 # Production E2E verification
 
-Verification date: 2026-10-11  
-Network: GenLayer Studionet (`61999`)  
-Application: [https://veri-duct.vercel.app](https://veri-duct.vercel.app)  
-RPC: `https://studio.genlayer.com/api`
+- Verification completed: 11 October 2026, 17:20 WAT
+- Network: GenLayer Studionet (`61999`)
+- Application: [https://veri-duct.vercel.app](https://veri-duct.vercel.app)
+- RPC: `https://studio.genlayer.com/api`
+- Production deployment: `dpl_HVmS4uu4Ap2ZK2EpBjmHoHK2ht2k`
+- Source commit: `20f15c38cedbbc4ea6121cd2eed4fbff0ca68a84`
 
 These checks were executed sequentially against the finalized production deployment. Expected rejections are passing security tests only when the transaction itself reached `FINALIZED` and the validators agreed on the exact contract error.
 
@@ -12,6 +14,7 @@ These checks were executed sequentially against the finalized production deploym
 ### Test 1 — provider observation returns canonical production data
 
 - Request: `GET /api/evidence/provider/1791733886`
+- Observation time: 11 October 2026, 16:51:26 WAT (`1791733886`).
 - Service: `VERIDUCT Production Payments API`
 - Observation: 91.4% availability, 4,820 ms p95 latency, 8.6% errors, Lagos and Accra affected, no scheduled maintenance.
 - Exact response-body SHA-256: `5d2c5617bfc623cf8ff04590d5a0224f1bd1b2d2f7ba44af3b02c8abbad69fef`
@@ -20,6 +23,7 @@ These checks were executed sequentially against the finalized production deploym
 ### Test 2 — independent monitor returns a distinct corroborating observation
 
 - Request: `GET /api/evidence/monitor/1791733886`
+- Observation time: 11 October 2026, 16:51:26 WAT (`1791733886`).
 - Publisher: `independent-observer`
 - Observation: 274 successful checks of 300, 91.33% availability, 3,910 ms median latency, two regions degraded.
 - Exact response-body SHA-256: `a13467a2cdebdd3ee90784091f0bef3695ce15d587ee0e64b0f2d9b9aa0672ec`
@@ -36,23 +40,25 @@ These checks were executed sequentially against the finalized production deploym
 
 - Key: `provider-operations`
 - Owner: `0x82dcdc5b028a13f3475ddec31b5300acfe9815d1`
-- Identity: VERIDUCT Provider Operations, Lagos and Accra production platform team.
-- Canonical origin: `https://veri-duct.vercel.app`
-- Result: finalized registration in [`0x9fb8…6025`](https://explorer-studio.genlayer.com/tx/0x9fb8c86b9add00fa78c75a2e612e52eb93e98ce0803d4b0cba1f48b50c616025).
+- Identity: `VERIDUCT Provider Operations — Lagos and Accra Production Reliability`.
+- Canonical hostname: `veri-duct.vercel.app`.
+- Registered: 11 October 2026, 16:16:12 WAT (`1791731772`).
+- Result: finalized registration transaction [`0x9fb8c86b9add00fa78c75a2e612e52eb93e98ce0803d4b0cba1f48b50c616025`](https://explorer-studio.genlayer.com/tx/0x9fb8c86b9add00fa78c75a2e612e52eb93e98ce0803d4b0cba1f48b50c616025).
 
 ### Test 2 — independent monitor identity registration
 
 - Key: `independent-observer`
 - Owner: `0x1add10608f0c52eeca68ba4e5795817828f184a0`
-- Identity: West Africa Independent Availability Observatory.
-- Canonical origin: `https://veri-duct.vercel.app`
-- Result: finalized registration in [`0x0cdb…27f8`](https://explorer-studio.genlayer.com/tx/0x0cdb82844b59e15b2db7a24d332889b6cfcc02ba54f16b63a282fe01b95927f8), proving a distinct onchain owner.
+- Identity: `West Africa Independent Availability Observatory — Multi-Region Probe Network`.
+- Canonical hostname: `veri-duct.vercel.app`.
+- Registered: 11 October 2026, 16:17:20 WAT (`1791731840`).
+- Result: finalized registration transaction [`0x0cdb82844b59e15b2db7a24d332889b6cfcc02ba54f16b63a282fe01b95927f8`](https://explorer-studio.genlayer.com/tx/0x0cdb82844b59e15b2db7a24d332889b6cfcc02ba54f16b63a282fe01b95927f8), proving a distinct onchain owner.
 
 ### Test 3 — exact-byte snapshots from distinct owners
 
-- Provider snapshot: `provider-production-1791733886`, sequence 2, valid until `1791741086`, digest `5d2c…9fef`.
-- Monitor snapshot: `monitor-production-1791733886`, sequence 2, valid until `1791741086`, digest `a134…d87a`.
-- Result: both finalized independently in [`0x6823…e99`](https://explorer-studio.genlayer.com/tx/0x6823eaae175d14d14120569acf452ae67ffa385c556ad5d968a115186d8d7e99) and [`0x0d8e…87a8`](https://explorer-studio.genlayer.com/tx/0x0d8e6729d37e1f3fae97f229d3c401da89c25a6319ca7a336c442874125d87a8). Frozen snapshot digests are `c77c744e…a3236` and `82d4f1cd…7da2c`.
+- Provider snapshot: `provider-production-1791733886`, sequence 2, anchored 11 October 2026 at 16:52:07 WAT, valid until 18:51:26 WAT, content digest `5d2c5617bfc623cf8ff04590d5a0224f1bd1b2d2f7ba44af3b02c8abbad69fef`, record digest `c77c744ec991a14642d736671038198fee723e509d15af05cc3d27becc5a3236`.
+- Monitor snapshot: `monitor-production-1791733886`, sequence 2, anchored 11 October 2026 at 16:53:05 WAT, valid until 18:51:26 WAT, content digest `a13467a2cdebdd3ee90784091f0bef3695ce15d587ee0e64b0f2d9b9aa0672ec`, record digest `82d4f1cddcceda64a817a02f2c4f5a6acaa2ac2ae845adec7f3d431c4867da2c`.
+- Result: finalized independently in [`0x6823eaae175d14d14120569acf452ae67ffa385c556ad5d968a115186d8d7e99`](https://explorer-studio.genlayer.com/tx/0x6823eaae175d14d14120569acf452ae67ffa385c556ad5d968a115186d8d7e99) and [`0x0d8e6729d37e1f3fae97f229d3c401da89c25a6319ca7a336c442874125d87a8`](https://explorer-studio.genlayer.com/tx/0x0d8e6729d37e1f3fae97f229d3c401da89c25a6319ca7a336c442874125d87a8).
 
 ## 3. Covenants
 
@@ -61,18 +67,18 @@ These checks were executed sequentially against the finalized production deploym
 - Covenant: `payments-api-availability-v4`, version 4 for `veriduct-production-payments-api`.
 - Threshold: two distinct approved publishers reporting availability below 95% in the same 30-minute window.
 - Bounds: observation age 60 minutes; mandate TTL 30 minutes; read-only intensity at most 80; review-threshold intensity at most 70.
-- Result: finalized publication in [`0x0f50…8ef5`](https://explorer-studio.genlayer.com/tx/0x0f50b6fd8e2839152957bc05a17aa610c1ac03231600e4698b8e429882fb8ef5), covenant digest `13ac39b7fc9c8d426d388dd780203158f2c428fbb936c2730e77ebf8bb3c5a05`.
+- Result: finalized publication in [`0x0f50b6fd8e2839152957bc05a17aa610c1ac03231600e4698b8e429882fb8ef5`](https://explorer-studio.genlayer.com/tx/0x0f50b6fd8e2839152957bc05a17aa610c1ac03231600e4698b8e429882fb8ef5), covenant digest `13ac39b7fc9c8d426d388dd780203158f2c428fbb936c2730e77ebf8bb3c5a05`.
 
 ### Test 2 — delayed activation
 
-- Published at: `1791734583`; eligible at: `1791734643`.
-- Result: activation succeeded only after the one-minute delay and finalized in [`0xeb4d…0cc`](https://explorer-studio.genlayer.com/tx/0xeb4dec5f9421b623a558eac03b10915807ec9e6463cfb9045455abd295e700cc). The service's active key is `payments-api-availability-v4`.
+- Published at 17:03:03 WAT (`1791734583`); eligible at 17:04:03 WAT (`1791734643`) on 11 October 2026.
+- Result: activation succeeded only after the one-minute delay and finalized in [`0xeb4dec5f9421b623a558eac03b10915807ec9e6463cfb9045455abd295e700cc`](https://explorer-studio.genlayer.com/tx/0xeb4dec5f9421b623a558eac03b10915807ec9e6463cfb9045455abd295e700cc). The current finalized active key remains `payments-api-availability-v4`.
 
 ### Test 3 — unauthorized policy publication rejection
 
 - Caller: provider owner `0x82dcdc5b028a13f3475ddec31b5300acfe9815d1`, not service governance.
 - Attempted key: `payments-api-availability-v2-unauthorized`.
-- Result: finalized rejection `only service owner may publish versions` in [`0xf8bd…4901`](https://explorer-studio.genlayer.com/tx/0xf8bd3567d5be4199e52fc8b1be9bec525621f6d700641cfcb0a4f7454e134901).
+- Result: finalized rejection `only service owner may publish versions` in [`0xf8bd3567d5be4199e52fc8b1be9bec525621f6d700641cfcb0a4f7454e134901`](https://explorer-studio.genlayer.com/tx/0xf8bd3567d5be4199e52fc8b1be9bec525621f6d700641cfcb0a4f7454e134901).
 
 ## 4. Cases
 
@@ -80,15 +86,16 @@ These checks were executed sequentially against the finalized production deploym
 
 - Caller: independent provider owner `0x82dcdc5b028a13f3475ddec31b5300acfe9815d1`.
 - Attempt: invoke `ENTER_READ_ONLY` at intensity 60 using the two real production snapshots.
-- Result: finalized rejection `only service owner may open a covenant case` in [`0x1ec8…da60`](https://explorer-studio.genlayer.com/tx/0x1ec8111ec0a6c1a08260a94b89c328b177d5f90a57cf458150c0608e2e19da60).
+- Result: finalized rejection `only service owner may open a covenant case` in [`0x1ec8111ec0a6c1a08260a94b89c328b177d5f90a57cf458150c0608e2e19da60`](https://explorer-studio.genlayer.com/tx/0x1ec8111ec0a6c1a08260a94b89c328b177d5f90a57cf458150c0608e2e19da60).
 
 ### Test 2 — governance opens a frozen, bounded case
 
 - Case: `production-outage-bounded-1791733886`.
 - Claim: provider measured 91.4% availability and the independent observer measured 91.33%; both covered Lagos and Accra, the same 30-minute window, and no maintenance.
-- Requested consequence: `ENTER_READ_ONLY`, intensity 60, until `1791736086` (20 minutes).
+- Opened: 11 October 2026, 17:08:19 WAT (`1791734899`); case expiry: 12 October 2026, 17:08:19 WAT (`1791821299`).
+- Requested consequence: `ENTER_READ_ONLY`, intensity 60, until 11 October 2026, 17:28:06 WAT (`1791736086`), a bounded 20-minute interval.
 - Frozen case digest: `4e859ed60950b41b2bd845c96812cc828fbbf2648f5c84188e29603956f2cc47`.
-- Result: finalized in [`0xd966…174d`](https://explorer-studio.genlayer.com/tx/0xd9661897556d97f3e1ea6d75c5335a3056cac880244a71e67f0de0eeaec4174d).
+- Result: finalized in [`0xd9661897556d97f3e1ea6d75c5335a3056cac880244a71e67f0de0eeaec4174d`](https://explorer-studio.genlayer.com/tx/0xd9661897556d97f3e1ea6d75c5335a3056cac880244a71e67f0de0eeaec4174d).
 
 ### Test 3 — independent semantic adjudication
 
@@ -96,7 +103,7 @@ These checks were executed sequentially against the finalized production deploym
 - Snapshot states: `SUPPORTS_BREACH` for both provider and independent monitor.
 - Decision: `BREACH_PROVEN`; requested intensity 60 was below 80 and duration 20 minutes was below the 30-minute TTL.
 - Verdict digest: `188f24a7436da44489d7efdc690f18826aa31a230b454ac543a0a35732432dec`.
-- Result: finalized adjudication in [`0x5e87…5742`](https://explorer-studio.genlayer.com/tx/0x5e878cfadeb9a5d705f06619095aa203c0a03e78caa5855771bc1ec6b7655742).
+- Result: finalized adjudication at 17:09:07 WAT in [`0x5e878cfadeb9a5d705f06619095aa203c0a03e78caa5855771bc1ec6b7655742`](https://explorer-studio.genlayer.com/tx/0x5e878cfadeb9a5d705f06619095aa203c0a03e78caa5855771bc1ec6b7655742).
 
 ## 5. Mandates
 
@@ -104,21 +111,21 @@ These checks were executed sequentially against the finalized production deploym
 
 - Mandate: `MANDATE-production-outage-bounded-1791733886`.
 - Target: `0x333B99f2cd961C1B6C34EcEA88996D64f325Be3f`.
-- Issued at `1791735035`, expires at `1791736835`, holder `0x8d4e…bf0f`.
+- Issued 11 October 2026 at 17:10:35 WAT (`1791735035`), expired at 17:40:35 WAT (`1791736835`), holder `0x8D4E752AE688C21eC7C7D4d8a232B5e0700DBf0f`.
 - Exact action digest: `7e68d4f425821c46cf2d64f8cf495b5229b706cca8d65907d59126d49feba01f`.
 - Result: the mandate appeared only after the adjudication's finalized child transaction and began in `ISSUED` state.
 
 ### Test 2 — envelope mutation rejection
 
 - Mutation: intensity changed from the authorized 60 to 61 while every other field remained the same.
-- Result: finalized rejection `mandate envelope digest mismatch` in [`0x47a4…a3ae`](https://explorer-studio.genlayer.com/tx/0x47a453f75f42616a97149d63ecd09f885620ac0b61145280abf231fb3ef0a3ae). No target state changed.
+- Result: finalized rejection `mandate envelope digest mismatch` in [`0x47a453f75f42616a97149d63ecd09f885620ac0b61145280abf231fb3ef0a3ae`](https://explorer-studio.genlayer.com/tx/0x47a453f75f42616a97149d63ecd09f885620ac0b61145280abf231fb3ef0a3ae). No target state changed.
 
 ### Test 3 — exact execution and reconciliation
 
 - Exact execution: action `ENTER_READ_ONLY`, intensity 60, authorized target and canonical payload.
-- Dispatch finalized in [`0xf565…8ed1`](https://explorer-studio.genlayer.com/tx/0xf56531015074d4d202178730d7d73c13facb600b10a7258cb4a964da649b8ed1); the target stored the exact action digest.
-- Reconciliation finalized in [`0xd4f5…db06`](https://explorer-studio.genlayer.com/tx/0xd4f5e5277b221dcf92be10f1dde3665f6b7a6df50d936d048573c862515db06c).
-- Result: mandate status `APPLIED`, `dispatch_count: 1`, `applied_at: 1791735180`.
+- Dispatch finalized at 17:11:59 WAT in [`0xf56531015074d4d202178730d7d73c13facb600b10a7258cb4a964da649b8ed1`](https://explorer-studio.genlayer.com/tx/0xf56531015074d4d202178730d7d73c13facb600b10a7258cb4a964da649b8ed1); the target stored the exact action digest.
+- Reconciliation finalized in [`0xd4f5e5277b221dcf92be10f1dde3665f6b7a6df50d936d048573c862515db06c`](https://explorer-studio.genlayer.com/tx/0xd4f5e5277b221dcf92be10f1dde3665f6b7a6df50d936d048573c862515db06c).
+- Result: mandate status `APPLIED`, `dispatch_count: 1`, applied at 17:13:00 WAT (`1791735180`).
 
 ## 6. Service consequence
 
@@ -127,17 +134,20 @@ These checks were executed sequentially against the finalized production deploym
 - Read result during the active mandate: `read_only: true`, `read_only_until: 1791736086`, `applied_mandate_count: 1`, `operation_count: 0`.
 - Router: `0x8f18685a77ED80BE9B8A18c484f8380a206A77F0`; governance: `0x8d4e752ae688c21ec7c7d4d8a232b5e0700dbf0f`.
 - Result: the service exposed the finalized child-transaction consequence, not optimistic parent state.
+- Current finalized state after the bounded interval expired: `read_only: false`, `read_only_until: 1791736086`, `applied_mandate_count: 1`, `operation_count: 0`, `review_threshold: 0`.
 
 ### Test 2 — direct adapter bypass rejection
 
 - Caller: governance attempted to call `apply_mandate` directly with the real action digest.
-- Result: finalized rejection `only MandateRouter may apply remedies` in [`0xa5a8…63cd`](https://explorer-studio.genlayer.com/tx/0xa5a827bdadf7b3eed1ea93eeeb678043130c2e4cfa26c0fa4d6bb4dd169863cd).
+- Result: finalized rejection `only MandateRouter may apply remedies` in [`0xa5a827bdadf7b3eed1ea93eeeb678043130c2e4cfa26c0fa4d6bb4dd169863cd`](https://explorer-studio.genlayer.com/tx/0xa5a827bdadf7b3eed1ea93eeeb678043130c2e4cfa26c0fa4d6bb4dd169863cd).
 
 ### Test 3 — real operation blocked while read-only
 
 - Operation: `settlement-release-lagos-accra-1791733886` with risk score 92.
-- Result: finalized rejection `service is in covenant-enforced read-only mode` in [`0xf2b2…9593`](https://explorer-studio.genlayer.com/tx/0xf2b2807c13ed374365262f3ef08304bced74ecb4a94505d60b7bc06eb9c69593). The operation count remained zero.
+- Result: finalized rejection `service is in covenant-enforced read-only mode` in [`0xf2b2807c13ed374365262f3ef08304bced74ecb4a94505d60b7bc06eb9c69593`](https://explorer-studio.genlayer.com/tx/0xf2b2807c13ed374365262f3ef08304bced74ecb4a94505d60b7bc06eb9c69593). The operation count remained zero.
 
 ## Outcome
 
 All 18 checks passed: three sequential production checks for each of Network, Publishers, Covenants, Cases, Mandates, and Service. The complete happy path reached a validator-settled `BREACH_PROVEN` decision and one bounded target consequence, while each tested privilege escalation, envelope mutation, and active-state bypass failed closed.
+
+The hashes above are public transaction identifiers, not wallet credentials. The production manifest is the canonical machine-readable index of deployment and verification transactions.

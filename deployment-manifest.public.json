@@ -2,6 +2,15 @@
   "project": "VERIDUCT",
   "network": "studionet",
   "chainId": 61999,
+  "rpc": "https://studio.genlayer.com/api",
+  "explorer": "https://explorer-studio.genlayer.com",
+  "application": "https://veri-duct.vercel.app",
+  "productionDeployment": {
+    "provider": "vercel",
+    "deploymentId": "dpl_HVmS4uu4Ap2ZK2EpBjmHoHK2ht2k",
+    "sourceCommit": "20f15c38cedbbc4ea6121cd2eed4fbff0ca68a84",
+    "deployedAt": "2026-10-11T16:20:30.000Z"
+  },
   "contracts": {
     "publisherLedger": "0x5834e07BEd3Efa9038C66cb6dEBd1BAA5A702d43",
     "covenantBook": "0x380a776a5895647b4D82103a47ba1d4E3e9d0338",
@@ -39,6 +48,48 @@
     "readOnlyOperationRejection": "0xf2b2807c13ed374365262f3ef08304bced74ecb4a94505d60b7bc06eb9c69593",
     "unauthorizedCaseRejection": "0x1ec8111ec0a6c1a08260a94b89c328b177d5f90a57cf458150c0608e2e19da60"
   },
+  "activeProductionPolicy": {
+    "serviceKey": "veriduct-production-payments-api",
+    "covenantKey": "payments-api-availability-v4",
+    "version": 4,
+    "covenantDigest": "13ac39b7fc9c8d426d388dd780203158f2c428fbb936c2730e77ebf8bb3c5a05",
+    "publisherKeys": [
+      "provider-operations",
+      "independent-observer"
+    ],
+    "minimumDistinctPublishers": 2,
+    "observationMaxAgeMinutes": 60,
+    "activationDelayMinutes": 1,
+    "mandateTtlMinutes": 30,
+    "actions": {
+      "ENTER_READ_ONLY": {
+        "maxIntensity": 80,
+        "payloadSchemaDigest": "22b8255d4abed99e0afc2c27881e3a8999f02e192440aefda5f70d736d26b950"
+      },
+      "RAISE_REVIEW_THRESHOLD": {
+        "maxIntensity": 70,
+        "payloadSchemaDigest": "63a29967edc6ce09e0e136a79b2af5842e8398699aefaac1fb132931bfa4a22d"
+      }
+    }
+  },
+  "verifiedCase": {
+    "caseKey": "production-outage-bounded-1791733886",
+    "caseDigest": "4e859ed60950b41b2bd845c96812cc828fbbf2648f5c84188e29603956f2cc47",
+    "decision": "BREACH_PROVEN",
+    "verdictDigest": "188f24a7436da44489d7efdc690f18826aa31a230b454ac543a0a35732432dec",
+    "mandateKey": "MANDATE-production-outage-bounded-1791733886",
+    "actionDigest": "7e68d4f425821c46cf2d64f8cf495b5229b706cca8d65907d59126d49feba01f",
+    "mandateStatus": "APPLIED",
+    "dispatchCount": 1
+  },
+  "currentFinalizedServiceState": {
+    "readOnly": false,
+    "readOnlyUntil": 1791736086,
+    "reviewThreshold": 0,
+    "operationCount": 0,
+    "appliedMandateCount": 1,
+    "observedAt": "2026-10-11T16:25:00.000Z"
+  },
   "deployer": "0x8d4e752ae688c21ec7c7d4d8a232b5e0700dbf0f",
-  "generatedAt": "2026-10-11T16:20:30.000Z"
+  "generatedAt": "2026-10-11T16:25:00.000Z"
 }
