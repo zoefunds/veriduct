@@ -18,6 +18,7 @@ const readJson = async (address, functionName, args = []) => {
   const raw = await client.readContract({ address, functionName, args, transactionHashVariant: TransactionHashVariant.LATEST_FINAL });
   return JSON.parse(raw);
 };
+const genvmOutcome = tx => tx.consensus_data?.leader_receipt?.[0]?.execution_result;
 
 const contracts = {
   publisherLedger: "publisher_ledger.py",
@@ -33,20 +34,37 @@ for (const [key, file] of Object.entries(contracts)) {
   const local = await readFile(new URL(`../contracts/${file}`, import.meta.url));
   const deployed = Buffer.from(tx.data?.contract_code || "", "base64");
   assert(`${key} deployment finalized`, tx.statusName === "FINALIZED", `${txHash} status=${tx.statusName}`);
+  assert(`${key} GenVM execution`, genvmOutcome(tx) === "SUCCESS", `${txHash} execution=${genvmOutcome(tx)}`);
   assert(`${key} address`, tx.to_address?.toLowerCase() === manifest.contracts[key].toLowerCase(), `${tx.to_address} == ${manifest.contracts[key]}`);
   assert(`${key} source bytes`, deployed.equals(local), `sha256=${sha256(deployed)} file=${file}`);
 }
 
-const transactionGroups = [
-  manifest.deploymentTransactions,
-  { bindAdjudicator: manifest.bindAdjudicatorTransaction },
-  manifest.adapterRegistrationTransactions,
-  manifest.productionBootstrapTransactions,
-  manifest.verifiedProductionFlow,
-];
-for (const [name, hash] of transactionGroups.flatMap(group => Object.entries(group))) {
+const successfulTransactions = {
+  bindAdjudicator: manifest.bindAdjudicatorTransaction,
+  ...manifest.adapterRegistrationTransactions,
+  ...manifest.productionBootstrapTransactions,
+  providerSnapshot: manifest.verifiedProductionFlow.providerSnapshot,
+  monitorSnapshot: manifest.verifiedProductionFlow.monitorSnapshot,
+  caseOpen: manifest.verifiedProductionFlow.caseOpen,
+  adjudication: manifest.verifiedProductionFlow.adjudication,
+  mandateExecution: manifest.verifiedProductionFlow.mandateExecution,
+  mandateReconciliation: manifest.verifiedProductionFlow.mandateReconciliation,
+};
+const rejectedTransactions = {
+  tamperedEnvelopeRejection: manifest.verifiedProductionFlow.tamperedEnvelopeRejection,
+  directAdapterRejection: manifest.verifiedProductionFlow.directAdapterRejection,
+  readOnlyOperationRejection: manifest.verifiedProductionFlow.readOnlyOperationRejection,
+  unauthorizedCaseRejection: manifest.verifiedProductionFlow.unauthorizedCaseRejection,
+};
+for (const [name, hash] of Object.entries(successfulTransactions)) {
   const tx = await client.getTransaction({ hash });
   assert(`transaction ${name}`, tx.statusName === "FINALIZED", `${hash} status=${tx.statusName} result=${tx.result_name}`);
+  assert(`successful GenVM ${name}`, genvmOutcome(tx) === "SUCCESS", `${hash} execution=${genvmOutcome(tx)}`);
+}
+for (const [name, hash] of Object.entries(rejectedTransactions)) {
+  const tx = await client.getTransaction({ hash });
+  assert(`finalized rejection ${name}`, tx.statusName === "FINALIZED", `${hash} status=${tx.statusName}`);
+  assert(`rejected GenVM ${name}`, genvmOutcome(tx) === "ERROR", `${hash} execution=${genvmOutcome(tx)}`);
 }
 
 const provider = await readJson(manifest.contracts.publisherLedger, "get_snapshot_json", ["provider-production-1791733886"]);
