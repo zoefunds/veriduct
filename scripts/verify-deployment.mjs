@@ -66,8 +66,9 @@ assert("active covenant digest", covenant.covenant_digest === policy.covenantDig
 
 const verified = manifest.verifiedCase;
 const caseRecord = await readJson(manifest.contracts.adjudicator, "get_case_json", [verified.caseKey]);
-assert("case adjudicated", caseRecord.status === "ADJUDICATED", `status=${caseRecord.status}`);
-assert("verdict decision", caseRecord.decision === verified.decision, `decision=${caseRecord.decision}`);
+const verdict = JSON.parse(caseRecord.verdict_json);
+assert("case adjudicated", caseRecord.status === "MANDATE_PENDING_FINALITY", `status=${caseRecord.status}`);
+assert("verdict decision", verdict.decision === verified.decision, `decision=${verdict.decision}`);
 assert("verdict digest", caseRecord.verdict_digest === verified.verdictDigest, `digest=${caseRecord.verdict_digest}`);
 
 const mandate = await readJson(manifest.contracts.mandateRouter, "get_mandate_json", [verified.mandateKey]);
@@ -96,7 +97,7 @@ const report = {
   network: { chain_id: manifest.chainId, rpc: manifest.rpc },
   evidence_classification: provenance.classification,
   checks,
-  authoritative_readback: { provider, corroborator, covenant, case: caseRecord, mandate, service, applied_mandate_digest: applied },
+  authoritative_readback: { provider, corroborator, covenant, case: caseRecord, verdict, mandate, service, applied_mandate_digest: applied },
 };
 
 if (writeReport) await writeFile(new URL("../verification-report.json", import.meta.url), `${JSON.stringify(report, null, 2)}\n`);

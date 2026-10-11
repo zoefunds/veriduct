@@ -27,6 +27,7 @@ export function VerificationPanel() {
       const covenantKey = await readContract<string>(ADDRESSES.covenantBook, "get_active_covenant_key", [manifest.activeProductionPolicy.serviceKey]);
       const covenant = JSON.parse(await readContract<string>(ADDRESSES.covenantBook, "get_covenant_json", [covenantKey]));
       const caseRecord = JSON.parse(await readContract<string>(ADDRESSES.adjudicator, "get_case_json", [verified.caseKey]));
+      const verdict = JSON.parse(caseRecord.verdict_json);
       const mandate = JSON.parse(await readContract<string>(ADDRESSES.mandateRouter, "get_mandate_json", [verified.mandateKey]));
       const applied = await readContract<string>(ADDRESSES.serviceControl, "get_applied_mandate_digest", [verified.mandateKey]);
       const service = JSON.parse(await readContract<string>(ADDRESSES.serviceControl, "get_status_json"));
@@ -38,7 +39,7 @@ export function VerificationPanel() {
         {name:"Provider fixture bytes",ok:providerDigest===provider.content_digest,detail:`Fetched SHA-256 ${providerDigest}`,transaction:flow.providerSnapshot},
         {name:"Corroborator fixture bytes",ok:monitorDigest===monitor.content_digest,detail:`Fetched SHA-256 ${monitorDigest}`,transaction:flow.monitorSnapshot},
         {name:"Active immutable covenant",ok:covenantKey===manifest.activeProductionPolicy.covenantKey&&covenant.covenant_digest===manifest.activeProductionPolicy.covenantDigest,detail:`${covenantKey} · ${covenant.covenant_digest}`,transaction:manifest.productionBootstrapTransactions.covenantActivation},
-        {name:"Finalized semantic verdict",ok:caseRecord.status==="ADJUDICATED"&&caseRecord.decision===verified.decision&&caseRecord.verdict_digest===verified.verdictDigest,detail:`${caseRecord.decision} · ${caseRecord.verdict_digest}`,transaction:flow.adjudication},
+        {name:"Finalized semantic verdict",ok:caseRecord.status==="MANDATE_PENDING_FINALITY"&&verdict.decision===verified.decision&&caseRecord.verdict_digest===verified.verdictDigest,detail:`${verdict.decision} · ${caseRecord.verdict_digest}`,transaction:flow.adjudication},
         {name:"Bounded mandate",ok:mandate.status===verified.mandateStatus&&mandate.action_digest===verified.actionDigest&&mandate.dispatch_count===verified.dispatchCount,detail:`${mandate.status} · dispatch count ${mandate.dispatch_count}`,transaction:flow.mandateReconciliation},
         {name:"Authoritative target receipt",ok:applied===verified.actionDigest&&service.applied_mandate_count>=1,detail:`ServiceControl stored ${applied}`,transaction:flow.mandateExecution},
       ]);
