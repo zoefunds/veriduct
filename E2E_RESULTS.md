@@ -4,8 +4,8 @@
 - Network: GenLayer Studionet (`61999`)
 - Application: [https://veri-duct.vercel.app](https://veri-duct.vercel.app)
 - RPC: `https://studio.genlayer.com/api`
-- Current production deployment: `dpl_BGz7MQBVf2BjQFy35Zv5GRiPy6hM`
-- Current frontend source commit: `d5fd7bfb8f99cfada663b761a8297a74dabf9110`
+- Current production deployment: `dpl_5bVfyELrxG1rbCE5rzVVQad53ft4`
+- Current frontend source commit: `dd1001c2ac17b1eefd17cf84365ccd307065d307`
 - Original onchain workflow execution source commit: `20f15c38cedbbc4ea6121cd2eed4fbff0ca68a84`
 
 These checks were executed sequentially against the finalized production deployment. Expected rejections are passing security tests only when the transaction itself reached `FINALIZED` and the validators agreed on the exact contract error.
@@ -157,6 +157,6 @@ The demonstrated read-only consequence applies only to `ServiceControl.submit_op
 
 All 18 checks passed: three sequential production checks for each of Network, Publishers, Covenants, Cases, Mandates, and Service. The complete happy path reached a validator-settled `BREACH_PROVEN` decision and one bounded target consequence, while each tested privilege escalation, envelope mutation, and active-state bypass failed closed.
 
-On 11 October 2026, the deployed `/verification` page was also executed in a browser against commit `d5fd7bfb8f99cfada663b761a8297a74dabf9110`. It visibly passed all six frontend readback stages: provider fixture digest, corroborator fixture digest, active covenant digest, finalized `BREACH_PROVEN` verdict, `APPLIED` mandate with dispatch count 1, and the exact ServiceControl target receipt. Each row links to its corresponding explorer transaction. This demonstrates successful frontend execution of authoritative reads; it does not retroactively convert the fixture streams into independent telemetry.
+On 11 October 2026, the deployed `/verification` page was also executed in a browser against commit `dd1001c2ac17b1eefd17cf84365ccd307065d307`. It visibly passed all six frontend readback stages: provider fixture digest, corroborator fixture digest, active covenant digest, finalized `BREACH_PROVEN` verdict, `APPLIED` mandate with dispatch count 1, and the exact ServiceControl target receipt. Each row links to its corresponding explorer transaction. This demonstrates successful frontend execution of authoritative reads; it does not retroactively convert the fixture streams into independent telemetry.
 
 The hashes above are public transaction identifiers, not wallet credentials. The production manifest is the canonical machine-readable index of deployment and verification transactions. Run `npm run verify:deployment` to byte-compare all five repository contracts with their finalized deployment transaction sources, re-check every transaction status, re-hash both frozen response bodies, and read the complete authoritative state path. The browser-facing equivalent is `/verification`; the most recent complete output is committed as [verification-report.json](./verification-report.json).

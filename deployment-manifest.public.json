@@ -16,9 +16,9 @@
   },
   "productionDeployment": {
     "provider": "vercel",
-    "deploymentId": "dpl_BGz7MQBVf2BjQFy35Zv5GRiPy6hM",
-    "sourceCommit": "d5fd7bfb8f99cfada663b761a8297a74dabf9110",
-    "deployedAt": "2026-10-11T18:10:00.000Z"
+    "deploymentId": "dpl_5bVfyELrxG1rbCE5rzVVQad53ft4",
+    "sourceCommit": "dd1001c2ac17b1eefd17cf84365ccd307065d307",
+    "deployedAt": "2026-10-11T18:20:00.000Z"
   },
   "contracts": {
     "publisherLedger": "0x5834e07BEd3Efa9038C66cb6dEBd1BAA5A702d43",

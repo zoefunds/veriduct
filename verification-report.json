@@ -1,8 +1,8 @@
 {
   "schema": "veriduct-deployment-verification-v1",
-  "generated_at": "2026-10-11T17:45:51.010Z",
-  "verifier_commit": "d5fd7bfb8f99cfada663b761a8297a74dabf9110",
-  "deployed_frontend_commit": "d5fd7bfb8f99cfada663b761a8297a74dabf9110",
+  "generated_at": "2026-10-11T17:49:05.677Z",
+  "verifier_commit": "dd1001c2ac17b1eefd17cf84365ccd307065d307",
+  "deployed_frontend_commit": "dd1001c2ac17b1eefd17cf84365ccd307065d307",
   "network": {
     "chain_id": 61999,
     "rpc": "https://studio.genlayer.com/api"
@@ -13,6 +13,11 @@
       "name": "publisherLedger deployment finalized",
       "passed": true,
       "evidence": "0x1596d11ce07439a85f52ba315c7c72ba23766b2d6e47fc217f7c356e7eb1d4d8 status=FINALIZED"
+    },
+    {
+      "name": "publisherLedger GenVM execution",
+      "passed": true,
+      "evidence": "0x1596d11ce07439a85f52ba315c7c72ba23766b2d6e47fc217f7c356e7eb1d4d8 execution=SUCCESS"
     },
     {
       "name": "publisherLedger address",
@@ -30,6 +35,11 @@
       "evidence": "0xf6acc8a65a78c04bd3adfdeb94a8ba12bb76e7c9835438a59b02ee8d04a08415 status=FINALIZED"
     },
     {
+      "name": "covenantBook GenVM execution",
+      "passed": true,
+      "evidence": "0xf6acc8a65a78c04bd3adfdeb94a8ba12bb76e7c9835438a59b02ee8d04a08415 execution=SUCCESS"
+    },
+    {
       "name": "covenantBook address",
       "passed": true,
       "evidence": "0x380a776a5895647b4D82103a47ba1d4E3e9d0338 == 0x380a776a5895647b4D82103a47ba1d4E3e9d0338"
@@ -43,6 +53,11 @@
       "name": "adjudicator deployment finalized",
       "passed": true,
       "evidence": "0xc9aebc9ba317d8b6716f55df0e64fdc9b2c7b4777ada0536890a1a8aad752155 status=FINALIZED"
+    },
+    {
+      "name": "adjudicator GenVM execution",
+      "passed": true,
+      "evidence": "0xc9aebc9ba317d8b6716f55df0e64fdc9b2c7b4777ada0536890a1a8aad752155 execution=SUCCESS"
     },
     {
       "name": "adjudicator address",
@@ -60,6 +75,11 @@
       "evidence": "0x1d77ea4426bd3a105af0b7d7d00ad81513c137a91a31a5f6013fd3c6387bfb63 status=FINALIZED"
     },
     {
+      "name": "mandateRouter GenVM execution",
+      "passed": true,
+      "evidence": "0x1d77ea4426bd3a105af0b7d7d00ad81513c137a91a31a5f6013fd3c6387bfb63 execution=SUCCESS"
+    },
+    {
       "name": "mandateRouter address",
       "passed": true,
       "evidence": "0x8f18685a77ED80BE9B8A18c484f8380a206A77F0 == 0x8f18685a77ED80BE9B8A18c484f8380a206A77F0"
@@ -75,6 +95,11 @@
       "evidence": "0x28d7452bcccffc1944ccc8d62aacf43d4b72e0346d3a25265e3366ebee4c3ded status=FINALIZED"
     },
     {
+      "name": "serviceControl GenVM execution",
+      "passed": true,
+      "evidence": "0x28d7452bcccffc1944ccc8d62aacf43d4b72e0346d3a25265e3366ebee4c3ded execution=SUCCESS"
+    },
+    {
       "name": "serviceControl address",
       "passed": true,
       "evidence": "0x333B99f2cd961C1B6C34EcEA88996D64f325Be3f == 0x333B99f2cd961C1B6C34EcEA88996D64f325Be3f"
@@ -85,34 +110,14 @@
       "evidence": "sha256=44cfca5e601b3b3256d63f3594b570ec3497da55c483370ab72471074c4372af file=service_control.py"
     },
     {
-      "name": "transaction publisherLedger",
-      "passed": true,
-      "evidence": "0x1596d11ce07439a85f52ba315c7c72ba23766b2d6e47fc217f7c356e7eb1d4d8 status=FINALIZED result=MAJORITY_AGREE"
-    },
-    {
-      "name": "transaction covenantBook",
-      "passed": true,
-      "evidence": "0xf6acc8a65a78c04bd3adfdeb94a8ba12bb76e7c9835438a59b02ee8d04a08415 status=FINALIZED result=MAJORITY_AGREE"
-    },
-    {
-      "name": "transaction mandateRouter",
-      "passed": true,
-      "evidence": "0x1d77ea4426bd3a105af0b7d7d00ad81513c137a91a31a5f6013fd3c6387bfb63 status=FINALIZED result=MAJORITY_AGREE"
-    },
-    {
-      "name": "transaction adjudicator",
-      "passed": true,
-      "evidence": "0xc9aebc9ba317d8b6716f55df0e64fdc9b2c7b4777ada0536890a1a8aad752155 status=FINALIZED result=MAJORITY_AGREE"
-    },
-    {
-      "name": "transaction serviceControl",
-      "passed": true,
-      "evidence": "0x28d7452bcccffc1944ccc8d62aacf43d4b72e0346d3a25265e3366ebee4c3ded status=FINALIZED result=MAJORITY_AGREE"
-    },
-    {
       "name": "transaction bindAdjudicator",
       "passed": true,
       "evidence": "0x470f192d2fe6a6582f676cde5c267d4a67fb44b9db6d37aadc995df7e5006570 status=FINALIZED result=MAJORITY_AGREE"
+    },
+    {
+      "name": "successful GenVM bindAdjudicator",
+      "passed": true,
+      "evidence": "0x470f192d2fe6a6582f676cde5c267d4a67fb44b9db6d37aadc995df7e5006570 execution=SUCCESS"
     },
     {
       "name": "transaction ENTER_READ_ONLY",
@@ -120,9 +125,19 @@
       "evidence": "0xd60a516e2afa373e227e04af86808f848db35af927126aebffd174ba082532a6 status=FINALIZED result=MAJORITY_AGREE"
     },
     {
+      "name": "successful GenVM ENTER_READ_ONLY",
+      "passed": true,
+      "evidence": "0xd60a516e2afa373e227e04af86808f848db35af927126aebffd174ba082532a6 execution=SUCCESS"
+    },
+    {
       "name": "transaction RAISE_REVIEW_THRESHOLD",
       "passed": true,
       "evidence": "0xbc62e0e318fd42237e3d49159f5c2e0219d1f53605b4151877f898ae9be0e126 status=FINALIZED result=MAJORITY_AGREE"
+    },
+    {
+      "name": "successful GenVM RAISE_REVIEW_THRESHOLD",
+      "passed": true,
+      "evidence": "0xbc62e0e318fd42237e3d49159f5c2e0219d1f53605b4151877f898ae9be0e126 execution=SUCCESS"
     },
     {
       "name": "transaction providerRegistration",
@@ -130,9 +145,19 @@
       "evidence": "0x9fb8c86b9add00fa78c75a2e612e52eb93e98ce0803d4b0cba1f48b50c616025 status=FINALIZED result=MAJORITY_AGREE"
     },
     {
+      "name": "successful GenVM providerRegistration",
+      "passed": true,
+      "evidence": "0x9fb8c86b9add00fa78c75a2e612e52eb93e98ce0803d4b0cba1f48b50c616025 execution=SUCCESS"
+    },
+    {
       "name": "transaction independentMonitorRegistration",
       "passed": true,
       "evidence": "0x0cdb82844b59e15b2db7a24d332889b6cfcc02ba54f16b63a282fe01b95927f8 status=FINALIZED result=MAJORITY_AGREE"
+    },
+    {
+      "name": "successful GenVM independentMonitorRegistration",
+      "passed": true,
+      "evidence": "0x0cdb82844b59e15b2db7a24d332889b6cfcc02ba54f16b63a282fe01b95927f8 execution=SUCCESS"
     },
     {
       "name": "transaction covenantPublish",
@@ -140,9 +165,19 @@
       "evidence": "0x0f50b6fd8e2839152957bc05a17aa610c1ac03231600e4698b8e429882fb8ef5 status=FINALIZED result=MAJORITY_AGREE"
     },
     {
+      "name": "successful GenVM covenantPublish",
+      "passed": true,
+      "evidence": "0x0f50b6fd8e2839152957bc05a17aa610c1ac03231600e4698b8e429882fb8ef5 execution=SUCCESS"
+    },
+    {
       "name": "transaction covenantActivation",
       "passed": true,
       "evidence": "0xeb4dec5f9421b623a558eac03b10915807ec9e6463cfb9045455abd295e700cc status=FINALIZED result=MAJORITY_AGREE"
+    },
+    {
+      "name": "successful GenVM covenantActivation",
+      "passed": true,
+      "evidence": "0xeb4dec5f9421b623a558eac03b10915807ec9e6463cfb9045455abd295e700cc execution=SUCCESS"
     },
     {
       "name": "transaction providerSnapshot",
@@ -150,9 +185,19 @@
       "evidence": "0x6823eaae175d14d14120569acf452ae67ffa385c556ad5d968a115186d8d7e99 status=FINALIZED result=MAJORITY_AGREE"
     },
     {
+      "name": "successful GenVM providerSnapshot",
+      "passed": true,
+      "evidence": "0x6823eaae175d14d14120569acf452ae67ffa385c556ad5d968a115186d8d7e99 execution=SUCCESS"
+    },
+    {
       "name": "transaction monitorSnapshot",
       "passed": true,
       "evidence": "0x0d8e6729d37e1f3fae97f229d3c401da89c25a6319ca7a336c442874125d87a8 status=FINALIZED result=MAJORITY_AGREE"
+    },
+    {
+      "name": "successful GenVM monitorSnapshot",
+      "passed": true,
+      "evidence": "0x0d8e6729d37e1f3fae97f229d3c401da89c25a6319ca7a336c442874125d87a8 execution=SUCCESS"
     },
     {
       "name": "transaction caseOpen",
@@ -160,14 +205,19 @@
       "evidence": "0xd9661897556d97f3e1ea6d75c5335a3056cac880244a71e67f0de0eeaec4174d status=FINALIZED result=MAJORITY_AGREE"
     },
     {
+      "name": "successful GenVM caseOpen",
+      "passed": true,
+      "evidence": "0xd9661897556d97f3e1ea6d75c5335a3056cac880244a71e67f0de0eeaec4174d execution=SUCCESS"
+    },
+    {
       "name": "transaction adjudication",
       "passed": true,
       "evidence": "0x5e878cfadeb9a5d705f06619095aa203c0a03e78caa5855771bc1ec6b7655742 status=FINALIZED result=MAJORITY_AGREE"
     },
     {
-      "name": "transaction tamperedEnvelopeRejection",
+      "name": "successful GenVM adjudication",
       "passed": true,
-      "evidence": "0x47a453f75f42616a97149d63ecd09f885620ac0b61145280abf231fb3ef0a3ae status=FINALIZED result=MAJORITY_AGREE"
+      "evidence": "0x5e878cfadeb9a5d705f06619095aa203c0a03e78caa5855771bc1ec6b7655742 execution=SUCCESS"
     },
     {
       "name": "transaction mandateExecution",
@@ -175,24 +225,59 @@
       "evidence": "0xf56531015074d4d202178730d7d73c13facb600b10a7258cb4a964da649b8ed1 status=FINALIZED result=MAJORITY_AGREE"
     },
     {
+      "name": "successful GenVM mandateExecution",
+      "passed": true,
+      "evidence": "0xf56531015074d4d202178730d7d73c13facb600b10a7258cb4a964da649b8ed1 execution=SUCCESS"
+    },
+    {
       "name": "transaction mandateReconciliation",
       "passed": true,
       "evidence": "0xd4f5e5277b221dcf92be10f1dde3665f6b7a6df50d936d048573c862515db06c status=FINALIZED result=MAJORITY_AGREE"
     },
     {
-      "name": "transaction directAdapterRejection",
+      "name": "successful GenVM mandateReconciliation",
       "passed": true,
-      "evidence": "0xa5a827bdadf7b3eed1ea93eeeb678043130c2e4cfa26c0fa4d6bb4dd169863cd status=FINALIZED result=MAJORITY_AGREE"
+      "evidence": "0xd4f5e5277b221dcf92be10f1dde3665f6b7a6df50d936d048573c862515db06c execution=SUCCESS"
     },
     {
-      "name": "transaction readOnlyOperationRejection",
+      "name": "finalized rejection tamperedEnvelopeRejection",
       "passed": true,
-      "evidence": "0xf2b2807c13ed374365262f3ef08304bced74ecb4a94505d60b7bc06eb9c69593 status=FINALIZED result=MAJORITY_AGREE"
+      "evidence": "0x47a453f75f42616a97149d63ecd09f885620ac0b61145280abf231fb3ef0a3ae status=FINALIZED"
     },
     {
-      "name": "transaction unauthorizedCaseRejection",
+      "name": "rejected GenVM tamperedEnvelopeRejection",
       "passed": true,
-      "evidence": "0x1ec8111ec0a6c1a08260a94b89c328b177d5f90a57cf458150c0608e2e19da60 status=FINALIZED result=MAJORITY_AGREE"
+      "evidence": "0x47a453f75f42616a97149d63ecd09f885620ac0b61145280abf231fb3ef0a3ae execution=ERROR"
+    },
+    {
+      "name": "finalized rejection directAdapterRejection",
+      "passed": true,
+      "evidence": "0xa5a827bdadf7b3eed1ea93eeeb678043130c2e4cfa26c0fa4d6bb4dd169863cd status=FINALIZED"
+    },
+    {
+      "name": "rejected GenVM directAdapterRejection",
+      "passed": true,
+      "evidence": "0xa5a827bdadf7b3eed1ea93eeeb678043130c2e4cfa26c0fa4d6bb4dd169863cd execution=ERROR"
+    },
+    {
+      "name": "finalized rejection readOnlyOperationRejection",
+      "passed": true,
+      "evidence": "0xf2b2807c13ed374365262f3ef08304bced74ecb4a94505d60b7bc06eb9c69593 status=FINALIZED"
+    },
+    {
+      "name": "rejected GenVM readOnlyOperationRejection",
+      "passed": true,
+      "evidence": "0xf2b2807c13ed374365262f3ef08304bced74ecb4a94505d60b7bc06eb9c69593 execution=ERROR"
+    },
+    {
+      "name": "finalized rejection unauthorizedCaseRejection",
+      "passed": true,
+      "evidence": "0x1ec8111ec0a6c1a08260a94b89c328b177d5f90a57cf458150c0608e2e19da60 status=FINALIZED"
+    },
+    {
+      "name": "rejected GenVM unauthorizedCaseRejection",
+      "passed": true,
+      "evidence": "0x1ec8111ec0a6c1a08260a94b89c328b177d5f90a57cf458150c0608e2e19da60 execution=ERROR"
     },
     {
       "name": "provider HTTP status",
@@ -272,7 +357,7 @@
     {
       "name": "public build identity",
       "passed": true,
-      "evidence": "status=200 git_commit=d5fd7bfb8f99cfada663b761a8297a74dabf9110"
+      "evidence": "status=200 git_commit=dd1001c2ac17b1eefd17cf84365ccd307065d307"
     }
   ],
   "authoritative_readback": {
