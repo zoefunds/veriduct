@@ -1,0 +1,9 @@
+.verificationPanel { max-width: 980px; }
+.verificationCheck { display: grid; grid-template-columns: 24px 1fr auto; gap: 12px; align-items: center; padding: 16px 4px; border-bottom: 1px solid var(--line); }
+.verificationCheck.ok > svg { color: #23765b; }
+.verificationCheck.fail > svg { color: var(--danger); }
+.verificationCheck b,.verificationCheck code { display: block; }
+.verificationCheck b { font-size: 12px; }
+.verificationCheck code { margin-top: 5px; color: var(--muted); font: 10px/1.5 DM Mono; overflow-wrap: anywhere; }
+.verificationCheck a { color: var(--ink); }
+.verificationFoot { margin: 20px 0 0; color: var(--muted); font-size: 11px; line-height: 1.6; }

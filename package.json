@@ -10,7 +10,9 @@
     "typecheck": "tsc --noEmit",
     "test": "pytest tests/unit -q",
     "test:contracts": "node scripts/check-contracts.mjs",
-    "check": "npm run typecheck && npm test && npm run test:contracts"
+    "check": "npm run typecheck && npm test && npm run test:contracts",
+    "verify:deployment": "node scripts/verify-deployment.mjs",
+    "verify:deployment:report": "node scripts/verify-deployment.mjs --write-report"
   },
   "dependencies": {
     "genlayer-js": "1.1.8",

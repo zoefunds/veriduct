@@ -32,3 +32,18 @@ export function monitorEvidence(observedAt: number) {
     finding: "Sustained availability below 95 percent across two independent regions.",
   };
 }
+
+export const evidenceProvenance = {
+  classification: "DEMONSTRATION_FIXTURE",
+  measurement_independence: false,
+  publisher_identity_independence: true,
+  hosting_independence: false,
+  operator: "VERIDUCT demonstration application",
+  collection_method: "Deterministic synthetic JSON generated from the requested observation timestamp",
+  accuracy_claim: "No claim of independently acquired production telemetry or real payments-service measurements",
+  authentication_guarantee: "The onchain snapshot and validator fetch authenticate exact response bytes, URL origin, publisher wallet, and freshness; they do not prove measurement accuracy",
+  feeds: {
+    provider: "/api/evidence/provider/{unix_timestamp}",
+    corroborator: "/api/evidence/monitor/{unix_timestamp}",
+  },
+} as const;

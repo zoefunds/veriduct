@@ -87,6 +87,21 @@ def test_governed_autofill_cannot_create_an_attacker_owned_covenant():
     assert 'get_active_covenant_key' in form
     assert 'veriduct-production-availability-${Math.floor(Date.now()/1000)}' in form
     assert 'localStorage.setItem("veriduct-demo-covenant"' in form
-    assert 'case_key:`production-outage-${Math.floor(Date.now()/1000)}`' in form
+    assert 'case_key:`demo-outage-${Math.floor(Date.now()/1000)}`' in form
     assert "Math.floor(Date.now()/1000)+1200" in form
-    assert "bounded 20-minute read-only remedy inside the 30-minute mandate TTL" in form
+    assert "bounded 20-minute ServiceControl read-only remedy inside the 30-minute mandate TTL" in form
+
+
+def test_demo_provenance_and_adapter_scope_are_explicit():
+    evidence = (ROOT / "lib" / "evidence.ts").read_text()
+    home = (ROOT / "app" / "page.tsx").read_text()
+    publishers = (ROOT / "app" / "publishers" / "page.tsx").read_text()
+    service = (ROOT / "app" / "service" / "page.tsx").read_text()
+    verifier = (ROOT / "scripts" / "verify-deployment.mjs").read_text()
+    assert 'classification: "DEMONSTRATION_FIXTURE"' in evidence
+    assert "measurement_independence: false" in evidence
+    assert "Identity independence is not measurement independence" in publishers
+    assert "Exact-byte authentication proves what validators fetched" in home
+    assert "does not pause, modify, or make claims about any external production payments system" in service
+    assert 'tx.data?.contract_code' in verifier
+    assert 'TransactionHashVariant.LATEST_FINAL' in verifier

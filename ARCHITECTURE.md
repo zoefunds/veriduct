@@ -39,12 +39,14 @@ A publisher record freezes:
 publisher_key, owner, display_name, origin_host, registered_at, sequence
 ```
 
-The active production identities are:
+The active demonstration identities are:
 
 | Key | Onchain owner | Canonical host | Sequence |
 |---|---|---|---:|
 | `provider-operations` | `0x82dcDC5B028A13f3475DDeC31B5300acfe9815d1` | `veri-duct.vercel.app` | 2 |
 | `independent-observer` | `0x1ADd10608F0c52EECa68Ba4e5795817828f184a0` | `veri-duct.vercel.app` | 2 |
+
+The distinct owners are an onchain authorization property only. Both registered origins point to the same host, and both endpoint families are deterministic fixture generators in `lib/evidence.ts`. This deployment therefore makes no claim of independent monitoring infrastructure, separate operators, or independently acquired production telemetry.
 
 A snapshot freezes `snapshot_key`, publisher key and owner, publisher sequence, exact HTTPS URL, observation time, validity limit, content SHA-256, anchor time, and a digest of the complete record. The Ledger validates canonical HTTPS construction and the registered hostname before storage.
 
@@ -69,7 +71,7 @@ Adjudication then separates deterministic provenance from semantic judgment:
 5. Validators independently repeat the evaluation, require the same decision and per-snapshot states, and separately compare clauses, findings, proportionality, and contradictions for material equivalence.
 6. Contract code downgrades `BREACH_PROVEN` if authenticated supporting sources do not meet the covenant threshold.
 
-The verified production case froze two exact-byte sources, received `SUPPORTS_BREACH` for both, and finalized `BREACH_PROVEN` with verdict digest `188f24a7436da44489d7efdc690f18826aa31a230b454ac543a0a35732432dec`.
+The verified demonstration case froze two exact-byte fixture sources, received `SUPPORTS_BREACH` for both, and finalized `BREACH_PROVEN` with verdict digest `188f24a7436da44489d7efdc690f18826aa31a230b454ac543a0a35732432dec`.
 
 ## Generic action adapters
 
@@ -107,9 +109,13 @@ Mandate:                         ISSUED
 
 `ACCEPTED` never grants authority. A proven parent emits issuance with `on="finalized"`; an exact dispatch emits target application with `on="finalized"`. Reconciliation reads `get_applied_mandate_digest` from the target and marks `APPLIED` only when it equals the frozen action digest.
 
-## Production application boundary
+## Demonstration application boundary
 
-The Next.js application contains static interface routes plus dynamic evidence Route Handlers. It has no signing key, database, or private indexer. Wallets sign writes directly; `genlayer-js` reads finalized state directly from Studionet. The browser uses local storage only to carry submitted workflow keys and exact payload values between forms. That browser state never grants authority: every later step must load and validate the corresponding finalized onchain record.
+The Next.js application contains static interface routes plus dynamic demonstration-evidence Route Handlers. It has no signing key, database, or private indexer. Wallets sign writes directly; `genlayer-js` reads finalized state directly from Studionet. The browser uses local storage only to carry submitted workflow keys and exact payload values between forms. That browser state never grants authority: every later step must load and validate the corresponding finalized onchain record.
+
+Authentication and accuracy are deliberately separated. PublisherLedger and Adjudicator can establish the publisher wallet, canonical URL, observation timestamps, HTTP success, and equality between fetched bytes and the committed SHA-256 digest. They cannot establish that a number inside those authenticated bytes was measured correctly. Independent measurement requires separately operated collection infrastructure and documentary or cryptographic provenance outside the guarantees demonstrated here.
+
+ServiceControl is the complete enforcement boundary in this deployment. `ENTER_READ_ONLY` blocks only `submit_operation` calls made to that contract while its bounded interval is active. No external payments API, bank, processor, or offchain service is controlled by this adapter.
 
 ## Failure behavior
 

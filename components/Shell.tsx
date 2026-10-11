@@ -1,12 +1,12 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Activity, BookOpenText, Boxes, CircleGauge, DatabaseZap, Gavel, Menu, Route, X } from "lucide-react";
+import { Activity, BadgeCheck, BookOpenText, Boxes, CircleGauge, DatabaseZap, Gavel, Menu, Route, X } from "lucide-react";
 import { useState } from "react";
 
 const nav = [
   ["/", "Network", CircleGauge], ["/publishers", "Publishers", DatabaseZap], ["/covenants", "Covenants", BookOpenText],
-  ["/cases", "Decision lab", Gavel], ["/mandates", "Mandates", Route], ["/service", "Service", Boxes],
+  ["/cases", "Decision lab", Gavel], ["/mandates", "Mandates", Route], ["/service", "Service", Boxes], ["/verification", "Verification", BadgeCheck],
 ] as const;
 
 export function Shell({ children }: { children: React.ReactNode }) {

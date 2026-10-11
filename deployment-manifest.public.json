@@ -5,6 +5,15 @@
   "rpc": "https://studio.genlayer.com/api",
   "explorer": "https://explorer-studio.genlayer.com",
   "application": "https://veri-duct.vercel.app",
+  "evidenceProvenance": {
+    "classification": "DEMONSTRATION_FIXTURE",
+    "publisherIdentityIndependence": true,
+    "measurementIndependence": false,
+    "hostingIndependence": false,
+    "operator": "VERIDUCT demonstration application",
+    "disclosureEndpoint": "https://veri-duct.vercel.app/api/provenance",
+    "accuracyClaim": "No claim of independently acquired production telemetry or measurements from an externally operated payments service"
+  },
   "productionDeployment": {
     "provider": "vercel",
     "deploymentId": "dpl_HVmS4uu4Ap2ZK2EpBjmHoHK2ht2k",
@@ -24,6 +33,13 @@
     "mandateRouter": "0x1d77ea4426bd3a105af0b7d7d00ad81513c137a91a31a5f6013fd3c6387bfb63",
     "adjudicator": "0xc9aebc9ba317d8b6716f55df0e64fdc9b2c7b4777ada0536890a1a8aad752155",
     "serviceControl": "0x28d7452bcccffc1944ccc8d62aacf43d4b72e0346d3a25265e3366ebee4c3ded"
+  },
+  "deployedSourceSha256": {
+    "publisherLedger": "8067a3361108c50916106be798a2e6c674b60533e77c93aa949b0f8a50536527",
+    "covenantBook": "3f4e06cba4ba2cfb3a2f6d6f683a14c386cfe3fb51cdd9dd246e30c702875ce8",
+    "adjudicator": "0313e1b5a8f0e7f1a373e082facbdf0bfd33b56c02ba5991f0299a36fd0b5636",
+    "mandateRouter": "d9e974be0e74a4eaaa99efc4431e01ebedef4a371225c5b5a0eef4494be6803a",
+    "serviceControl": "44cfca5e601b3b3256d63f3594b570ec3497da55c483370ab72471074c4372af"
   },
   "bindAdjudicatorTransaction": "0x470f192d2fe6a6582f676cde5c267d4a67fb44b9db6d37aadc995df7e5006570",
   "adapterRegistrationTransactions": {
@@ -89,6 +105,11 @@
     "operationCount": 0,
     "appliedMandateCount": 1,
     "observedAt": "2026-10-11T16:25:00.000Z"
+  },
+  "enforcementScope": {
+    "target": "ServiceControl demonstration adapter",
+    "externalPaymentsServiceConnected": false,
+    "guarantee": "Read-only enforcement applies only to operations submitted to the deployed ServiceControl contract"
   },
   "deployer": "0x8d4e752ae688c21ec7c7d4d8a232b5e0700dbf0f",
   "generatedAt": "2026-10-11T16:25:00.000Z"

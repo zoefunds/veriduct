@@ -1,0 +1,21 @@
+.scopeNotice {
+  margin: 14px 0;
+  display: grid;
+  grid-template-columns: 220px 1fr auto;
+  gap: 18px;
+  align-items: center;
+  border: 1px solid #d5b96f;
+  background: #fff7df;
+  padding: 18px 20px;
+}
+
+.scopeNotice small,
+.scopeNotice b { display: block; }
+.scopeNotice small { font: 9px DM Mono; letter-spacing: .14em; color: #856719; }
+.scopeNotice b { font-size: 13px; margin-top: 5px; }
+.scopeNotice p { font-size: 12px; line-height: 1.6; color: #655b43; margin: 0; }
+.scopeNotice a { font: 10px DM Mono; color: #5c4915; text-decoration: underline; white-space: nowrap; }
+
+@media (max-width: 900px) {
+  .scopeNotice { grid-template-columns: 1fr; }
+}

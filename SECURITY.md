@@ -26,9 +26,21 @@ This policy covers the five GenLayer contracts, the Next.js interface, the two d
 
 ## Trust and threat model
 
-VERIDUCT proves authenticated provenance and policy-relative validator agreement, not universal factual truth. Service governance chooses publisher identities and the policy itself. Risk is bounded by immutable source anchors, distinct onchain owners, a precommitted quorum, delayed policy activation, explicit freshness limits, independent validator retrieval, exact-byte hashing, strict semantic response shape, validator comparison, bounded adapters, expiry, finality, and replay protection.
+VERIDUCT proves authenticated bytes and policy-relative validator agreement, not universal factual truth. The deployed fixtures have distinct onchain owners but a single application operator, host, codebase, and data generator. Consequently, this deployment provides publisher-identity independence only; it does not provide measurement, infrastructure, operator, or hosting independence. Service governance chooses publisher identities and the policy itself. Risk is bounded by immutable source anchors, distinct onchain owners, a precommitted quorum, delayed policy activation, explicit freshness limits, independent validator retrieval, exact-byte hashing, strict semantic response shape, validator comparison, bounded adapters, expiry, finality, and replay protection.
 
-The production ServiceControl target changes operational controls only. It does not custody user funds and does not perform asynchronous token transfers. Its two actions are bounded read-only mode and a numeric review threshold. The verified read-only interval ended at 17:28:06 WAT on 11 October 2026; current finalized state is open, one mandate is recorded as applied, and operation count remains zero.
+The deployed ServiceControl target is a demonstration adapter that changes its own onchain operational controls only. It is not connected to an externally operated payments API, does not custody user funds, and does not perform asynchronous token transfers. Its two actions are bounded read-only mode and a numeric review threshold. The verified read-only interval ended at 17:28:06 WAT on 11 October 2026; current finalized state is open, one mandate is recorded as applied, and operation count remains zero.
+
+## Evidence claim matrix
+
+| Property | Demonstrated? | Proof / limitation |
+|---|---:|---|
+| Exact response bytes match the onchain SHA-256 commitment | Yes | Validator retrieval and the reproducible verifier hash the raw body. |
+| Snapshot was anchored by the registered publisher wallet | Yes | PublisherLedger enforces sender ownership and freezes the owner in the record. |
+| Two publisher records have different wallet owners | Yes | Finalized registry state contains two distinct addresses. |
+| Measurements came from independent systems or operators | No | Both fixture routes run in the same Vercel deployment and source tree. |
+| Fixture values describe a real payments service | No | Values are deterministic synthetic demonstration data. |
+| Validators independently retrieve and interpret committed bytes | Yes | Finalized adjudication transaction and verdict record. |
+| Read-only affects an external payments service | No | Enforcement ends at the deployed ServiceControl adapter. |
 
 ## Verified production regressions
 
