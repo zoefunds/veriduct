@@ -85,7 +85,7 @@ npm run test:contracts
 npm run build
 ```
 
-The current verification baseline is 26 passing Python tests, five parsed and validated Intelligent Contract sources, a passing TypeScript check, and a successful production build. The model suite covers the full registry-to-target path and explicit regressions for target seizure, forged publisher ownership, origin substitution, fake quorum, every material envelope-field mutation, non-proven issuance, and replay after application. The `/verification` interface re-fetches both frozen bodies and reads the active covenant, adjudicated case, applied mandate, and ServiceControl receipt at `LATEST_FINAL`.
+The current verification baseline is 27 passing Python tests, five parsed and validated Intelligent Contract sources, a passing TypeScript check, and a successful production build. The model suite covers the full registry-to-target path and explicit regressions for target seizure, forged publisher ownership, origin substitution, fake quorum, every material envelope-field mutation, non-proven issuance, and replay after application. The `/verification` interface re-fetches both frozen bodies and reads the active covenant, adjudicated case, applied mandate, and ServiceControl receipt at `LATEST_FINAL`.
 
 ## Reproduce the deployment proof
 
