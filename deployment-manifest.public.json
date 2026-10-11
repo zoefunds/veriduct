@@ -5,22 +5,40 @@
   "contracts": {
     "publisherLedger": "0x5834e07BEd3Efa9038C66cb6dEBd1BAA5A702d43",
     "covenantBook": "0x380a776a5895647b4D82103a47ba1d4E3e9d0338",
-    "adjudicator": "0x9967beb076c6087C56486D1E89F8B85128c90b5E",
-    "mandateRouter": "0x5966dF42ff5E1Dc3698FB4660Eeb3683c760bb5C",
-    "serviceControl": "0x846C908b0a1d1245ca4292A8cCF1dF04941CAE18"
+    "adjudicator": "0xA50886124A3Ed027dc56dd37c0f658677320430b",
+    "mandateRouter": "0x8f18685a77ED80BE9B8A18c484f8380a206A77F0",
+    "serviceControl": "0x333B99f2cd961C1B6C34EcEA88996D64f325Be3f"
   },
   "deploymentTransactions": {
     "publisherLedger": "0x1596d11ce07439a85f52ba315c7c72ba23766b2d6e47fc217f7c356e7eb1d4d8",
     "covenantBook": "0xf6acc8a65a78c04bd3adfdeb94a8ba12bb76e7c9835438a59b02ee8d04a08415",
-    "mandateRouter": "0x3b583c8b0a113de0e8b7afa6f17753cc88137e0673d65509addb12f433449f0d",
-    "adjudicator": "0xb8621cd8c2a58ba6e4f6983e2c7a35d6ead2ae9e0f537240d4ecf615c8ad6df0",
-    "serviceControl": "0xb64dfa31d8543bebbe2487b4b8636a5cee048ae5bd8afb072949026b6daa6a70"
+    "mandateRouter": "0x1d77ea4426bd3a105af0b7d7d00ad81513c137a91a31a5f6013fd3c6387bfb63",
+    "adjudicator": "0xc9aebc9ba317d8b6716f55df0e64fdc9b2c7b4777ada0536890a1a8aad752155",
+    "serviceControl": "0x28d7452bcccffc1944ccc8d62aacf43d4b72e0346d3a25265e3366ebee4c3ded"
   },
-  "bindAdjudicatorTransaction": "0x7381d8ad2c00712ffa560c2f466668699e66a1077123b7cd17a843a71f66c722",
+  "bindAdjudicatorTransaction": "0x470f192d2fe6a6582f676cde5c267d4a67fb44b9db6d37aadc995df7e5006570",
   "adapterRegistrationTransactions": {
-    "ENTER_READ_ONLY": "0x3d1f7a6152a8944a54290aa1672fe3da6b430fc1858f1205a2fcb8e42b26b777",
-    "RAISE_REVIEW_THRESHOLD": "0x069d681d13282c35e692ce60db42cc0ac662fe2d9d6150c31cc2a66a5294335d"
+    "ENTER_READ_ONLY": "0xd60a516e2afa373e227e04af86808f848db35af927126aebffd174ba082532a6",
+    "RAISE_REVIEW_THRESHOLD": "0xbc62e0e318fd42237e3d49159f5c2e0219d1f53605b4151877f898ae9be0e126"
+  },
+  "productionBootstrapTransactions": {
+    "providerRegistration": "0x9fb8c86b9add00fa78c75a2e612e52eb93e98ce0803d4b0cba1f48b50c616025",
+    "independentMonitorRegistration": "0x0cdb82844b59e15b2db7a24d332889b6cfcc02ba54f16b63a282fe01b95927f8",
+    "covenantPublish": "0x0f50b6fd8e2839152957bc05a17aa610c1ac03231600e4698b8e429882fb8ef5",
+    "covenantActivation": "0xeb4dec5f9421b623a558eac03b10915807ec9e6463cfb9045455abd295e700cc"
+  },
+  "verifiedProductionFlow": {
+    "providerSnapshot": "0x6823eaae175d14d14120569acf452ae67ffa385c556ad5d968a115186d8d7e99",
+    "monitorSnapshot": "0x0d8e6729d37e1f3fae97f229d3c401da89c25a6319ca7a336c442874125d87a8",
+    "caseOpen": "0xd9661897556d97f3e1ea6d75c5335a3056cac880244a71e67f0de0eeaec4174d",
+    "adjudication": "0x5e878cfadeb9a5d705f06619095aa203c0a03e78caa5855771bc1ec6b7655742",
+    "tamperedEnvelopeRejection": "0x47a453f75f42616a97149d63ecd09f885620ac0b61145280abf231fb3ef0a3ae",
+    "mandateExecution": "0xf56531015074d4d202178730d7d73c13facb600b10a7258cb4a964da649b8ed1",
+    "mandateReconciliation": "0xd4f5e5277b221dcf92be10f1dde3665f6b7a6df50d936d048573c862515db06c",
+    "directAdapterRejection": "0xa5a827bdadf7b3eed1ea93eeeb678043130c2e4cfa26c0fa4d6bb4dd169863cd",
+    "readOnlyOperationRejection": "0xf2b2807c13ed374365262f3ef08304bced74ecb4a94505d60b7bc06eb9c69593",
+    "unauthorizedCaseRejection": "0x1ec8111ec0a6c1a08260a94b89c328b177d5f90a57cf458150c0608e2e19da60"
   },
   "deployer": "0x8d4e752ae688c21ec7c7d4d8a232b5e0700dbf0f",
-  "generatedAt": "2026-10-11T15:49:00.000Z"
+  "generatedAt": "2026-10-11T16:20:30.000Z"
 }

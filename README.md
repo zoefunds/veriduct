@@ -71,11 +71,11 @@ Deployment order is Ledger → Book → Router → Adjudicator → one-time Rout
 |---|---|
 | PublisherLedger | `0x5834e07BEd3Efa9038C66cb6dEBd1BAA5A702d43` |
 | CovenantBook | `0x380a776a5895647b4D82103a47ba1d4E3e9d0338` |
-| Adjudicator | `0x9967beb076c6087C56486D1E89F8B85128c90b5E` |
-| MandateRouter | `0x5966dF42ff5E1Dc3698FB4660Eeb3683c760bb5C` |
-| ServiceControl | `0x846C908b0a1d1245ca4292A8cCF1dF04941CAE18` |
+| Adjudicator | `0xA50886124A3Ed027dc56dd37c0f658677320430b` |
+| MandateRouter | `0x8f18685a77ED80BE9B8A18c484f8380a206A77F0` |
+| ServiceControl | `0x333B99f2cd961C1B6C34EcEA88996D64f325Be3f` |
 
-The full finalized deployment and adapter-registration transaction record is committed in `deployment-manifest.public.json`.
+The full finalized deployment, adapter-registration, production bootstrap, and verified execution record is committed in `deployment-manifest.public.json`. The sequential production checks and their exact inputs are documented in `E2E_RESULTS.md`.
 
 ## One-click demo data
 

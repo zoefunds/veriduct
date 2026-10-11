@@ -60,6 +60,8 @@ def test_semantic_prompt_receives_frozen_publisher_provenance():
     assert '"publisher_owner": snapshot["publisher_owner"]' in text
     assert '"publisher_sequence": snapshot["publisher_sequence"]' in text
     assert "all publisher keys and onchain publisher owners are distinct" in text
+    assert "Never omit or rename snapshot_states" in text
+    assert 'isinstance(raw.get("states"), dict)' in text
 
 def test_demo_evidence_urls_are_canonical_contract_safe_paths():
     form = (ROOT / "components" / "TransactionForm.tsx").read_text()
@@ -86,3 +88,5 @@ def test_governed_autofill_cannot_create_an_attacker_owned_covenant():
     assert 'veriduct-production-availability-${Math.floor(Date.now()/1000)}' in form
     assert 'localStorage.setItem("veriduct-demo-covenant"' in form
     assert 'case_key:`production-outage-${Math.floor(Date.now()/1000)}`' in form
+    assert "Math.floor(Date.now()/1000)+1200" in form
+    assert "bounded 20-minute read-only remedy inside the 30-minute mandate TTL" in form
