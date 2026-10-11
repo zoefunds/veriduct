@@ -5,7 +5,7 @@
 - Network: GenLayer Studionet (`61999`)
 - Application: [https://veri-duct.vercel.app](https://veri-duct.vercel.app)
 - RPC: `https://studio.genlayer.com/api`
-- Current production deployment: `dpl_5bVfyELrxG1rbCE5rzVVQad53ft4`
+- Current Vercel production deployment: `dpl_5bVfyELrxG1rbCE5rzVVQad53ft4`
 - Current frontend source commit: `dd1001c2ac17b1eefd17cf84365ccd307065d307`
 - Original onchain workflow execution source commit: `20f15c38cedbbc4ea6121cd2eed4fbff0ca68a84`
 
@@ -23,7 +23,7 @@ The demonstrated read-only consequence applies only to `ServiceControl.submit_op
 
 - Request: `GET /api/evidence/provider/1791733886`
 - Observation time: 11 October 2026, 16:51:26 WAT (`1791733886`).
-- Service: `VERIDUCT Production Payments API`
+- Service label returned by the immutable fixture: `VERIDUCT Production Payments API` (historical demonstration label, not an external production service)
 - Observation: 91.4% availability, 4,820 ms p95 latency, 8.6% errors, Lagos and Accra affected, no scheduled maintenance.
 - Exact response-body SHA-256: `5d2c5617bfc623cf8ff04590d5a0224f1bd1b2d2f7ba44af3b02c8abbad69fef`
 - Result: HTTP 200 with deterministic JSON suitable for exact-byte onchain authentication.
@@ -48,7 +48,7 @@ The demonstrated read-only consequence applies only to `ServiceControl.submit_op
 
 - Key: `provider-operations`
 - Owner: `0x82dcdc5b028a13f3475ddec31b5300acfe9815d1`
-- Identity: `VERIDUCT Provider Operations — Lagos and Accra Production Reliability`.
+- Immutable registered identity label: `VERIDUCT Provider Operations — Lagos and Accra Production Reliability` (historical demonstration label).
 - Canonical hostname: `veri-duct.vercel.app`.
 - Registered: 11 October 2026, 16:16:12 WAT (`1791731772`).
 - Result: finalized registration transaction [`0x9fb8c86b9add00fa78c75a2e612e52eb93e98ce0803d4b0cba1f48b50c616025`](https://explorer-studio.genlayer.com/tx/0x9fb8c86b9add00fa78c75a2e612e52eb93e98ce0803d4b0cba1f48b50c616025).
@@ -93,13 +93,13 @@ The demonstrated read-only consequence applies only to `ServiceControl.submit_op
 ### Test 1 — unauthorized case opening rejection
 
 - Caller: independent provider owner `0x82dcdc5b028a13f3475ddec31b5300acfe9815d1`.
-- Attempt: invoke `ENTER_READ_ONLY` at intensity 60 using the two real production snapshots.
+- Attempt: invoke `ENTER_READ_ONLY` at intensity 60 using the two finalized demonstration-fixture snapshots.
 - Result: finalized rejection `only service owner may open a covenant case` in [`0x1ec8111ec0a6c1a08260a94b89c328b177d5f90a57cf458150c0608e2e19da60`](https://explorer-studio.genlayer.com/tx/0x1ec8111ec0a6c1a08260a94b89c328b177d5f90a57cf458150c0608e2e19da60).
 
 ### Test 2 — governance opens a frozen, bounded case
 
 - Case: `production-outage-bounded-1791733886`.
-- Claim: provider measured 91.4% availability and the independent observer measured 91.33%; both covered Lagos and Accra, the same 30-minute window, and no maintenance.
+- Frozen demonstration claim: the provider fixture reported 91.4% availability and the separately owned corroborator fixture reported 91.33%; both described Lagos and Accra, the same synthetic 30-minute window, and no maintenance.
 - Opened: 11 October 2026, 17:08:19 WAT (`1791734899`); case expiry: 12 October 2026, 17:08:19 WAT (`1791821299`).
 - Requested consequence: `ENTER_READ_ONLY`, intensity 60, until 11 October 2026, 17:28:06 WAT (`1791736086`), a bounded 20-minute interval.
 - Frozen case digest: `4e859ed60950b41b2bd845c96812cc828fbbf2648f5c84188e29603956f2cc47`.
@@ -142,7 +142,7 @@ The demonstrated read-only consequence applies only to `ServiceControl.submit_op
 - Read result during the active mandate: `read_only: true`, `read_only_until: 1791736086`, `applied_mandate_count: 1`, `operation_count: 0`.
 - Router: `0x8f18685a77ED80BE9B8A18c484f8380a206A77F0`; governance: `0x8d4e752ae688c21ec7c7d4d8a232b5e0700dbf0f`.
 - Result: the ServiceControl demonstration adapter exposed the finalized child-transaction consequence, not optimistic parent state.
-- Current finalized state after the bounded interval expired: `read_only: false`, `read_only_until: 1791736086`, `applied_mandate_count: 1`, `operation_count: 0`, `review_threshold: 0`.
+- Verified finalized state after the bounded interval expired, reconfirmed at 18:56 WAT on 11 October 2026: `read_only: false`, `read_only_until: 1791736086`, `applied_mandate_count: 1`, `operation_count: 0`, `review_threshold: 0`.
 
 ### Test 2 — direct adapter bypass rejection
 
@@ -160,4 +160,4 @@ All 18 checks passed: three sequential deployed checks for each of Network, Publ
 
 On 11 October 2026, the deployed `/verification` page was also executed in a browser against commit `dd1001c2ac17b1eefd17cf84365ccd307065d307`. It visibly passed all six frontend readback stages: provider fixture digest, corroborator fixture digest, active covenant digest, finalized `BREACH_PROVEN` verdict, `APPLIED` mandate with dispatch count 1, and the exact ServiceControl target receipt. Each row links to its corresponding explorer transaction. This demonstrates successful frontend execution of authoritative reads; it does not retroactively convert the fixture streams into independent telemetry.
 
-The hashes above are public transaction identifiers, not wallet credentials. The production manifest is the canonical machine-readable index of deployment and verification transactions. Run `npm run verify:deployment` to byte-compare all five repository contracts with their finalized deployment transaction sources, re-check every transaction status, re-hash both frozen response bodies, and read the complete authoritative state path. The browser-facing equivalent is `/verification`; the most recent complete output is committed as [verification-report.json](./verification-report.json).
+The hashes above are public transaction identifiers, not wallet credentials. The public deployment manifest is the canonical machine-readable index of deployment and verification transactions. Run `npm run verify:deployment` to byte-compare all five repository contracts with their finalized deployment transaction sources, re-check every transaction status, re-hash both frozen response bodies, and read the complete authoritative state path. The browser-facing equivalent is `/verification`; the most recent complete output is committed as [verification-report.json](./verification-report.json).

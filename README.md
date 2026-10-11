@@ -24,11 +24,11 @@ VERIDUCT is a public Studionet demonstration of a GenLayer service-reliability c
 | `MandateRouter` | `0x8f18685a77ED80BE9B8A18c484f8380a206A77F0` | Maintains generic action adapters and verifies the complete execution envelope and digest before finality-gated dispatch. |
 | `ServiceControl` | `0x333B99f2cd961C1B6C34EcEA88996D64f325Be3f` | Applies read-only or review-threshold consequences after rechecking router authority, governance, schema, payload bounds, and replay state. |
 
-The service-governance and deployment address is `0x8d4e752ae688c21ec7c7d4d8a232b5e0700dbf0f`. Contract creation, router binding, adapter registration, production bootstrap, and E2E transaction hashes are recorded without abbreviation in [deployment-manifest.public.json](./deployment-manifest.public.json).
+The service-governance and deployment address is `0x8d4e752ae688c21ec7c7d4d8a232b5e0700dbf0f`. Contract creation, router binding, adapter registration, deployed bootstrap, and E2E transaction hashes are recorded without abbreviation in [deployment-manifest.public.json](./deployment-manifest.public.json).
 
 ## Why GenLayer
 
-Ordinary deterministic contracts can compare a number with a threshold, but the production decision here requires validators to determine whether heterogeneous provider and monitor reports describe the same service window, satisfy the natural-language covenant clauses, materially corroborate one another, and justify the requested operational response. VERIDUCT confines nondeterminism to that semantic comparison. Publisher ownership, hostname binding, HTTPS status, exact-byte digest matching, freshness, distinct-owner quorum, covenant version, adapter compatibility, remedy limits, expiry, action digest, finality, and replay protection remain deterministic.
+Ordinary deterministic contracts can compare a number with a threshold, but the demonstrated covenant decision requires validators to determine whether heterogeneous provider and corroborator reports describe the same service window, satisfy the natural-language covenant clauses, materially corroborate one another, and justify the requested operational response. VERIDUCT confines nondeterminism to that semantic comparison. Publisher ownership, hostname binding, HTTPS status, exact-byte digest matching, freshness, distinct-owner quorum, covenant version, adapter compatibility, remedy limits, expiry, action digest, finality, and replay protection remain deterministic.
 
 ## Active deployed demonstration policy
 
@@ -104,7 +104,7 @@ cp .env.generated .env.local
 npm run build
 ```
 
-Deployment order is PublisherLedger → CovenantBook → MandateRouter → Adjudicator → one-time adjudicator binding → ServiceControl → adapter registrations. Every write must finalize before the dependent step begins. `deploy/deployScript.ts` writes local generated configuration; the reviewed production source of truth is [deployment-manifest.public.json](./deployment-manifest.public.json).
+Deployment order is PublisherLedger → CovenantBook → MandateRouter → Adjudicator → one-time adjudicator binding → ServiceControl → adapter registrations. Every write must finalize before the dependent step begins. `deploy/deployScript.ts` writes local generated configuration; the reviewed public deployment record is [deployment-manifest.public.json](./deployment-manifest.public.json).
 
 ## Interface map
 
