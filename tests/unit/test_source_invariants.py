@@ -48,6 +48,19 @@ def test_adjudicator_constructor_accepts_cli_decoded_address_values():
     assert "self.book_address = _address_hex(book_address)" in text
     assert "self.router_address = _address_hex(router_address)" in text
 
+def test_public_json_boundaries_accept_cli_decoded_objects():
+    adjudicator = source("adjudicator.py")
+    router = source("mandate_router.py")
+    assert "payload_json if isinstance(payload_json, dict) else json.loads(payload_json)" in adjudicator
+    assert router.count("payload_json if isinstance(payload_json, dict) else json.loads(payload_json)") == 2
+    assert 'raise gl.vm.UserError("payload must be a JSON object")' in router
+
+def test_semantic_prompt_receives_frozen_publisher_provenance():
+    text = source("adjudicator.py")
+    assert '"publisher_owner": snapshot["publisher_owner"]' in text
+    assert '"publisher_sequence": snapshot["publisher_sequence"]' in text
+    assert "all publisher keys and onchain publisher owners are distinct" in text
+
 def test_demo_evidence_urls_are_canonical_contract_safe_paths():
     form = (ROOT / "components" / "TransactionForm.tsx").read_text()
     assert "api/evidence/${preset.evidence}/${observedAt}" in form
@@ -58,7 +71,7 @@ def test_demo_evidence_urls_are_canonical_contract_safe_paths():
     assert (ROOT / "app" / "api" / "evidence" / "provider" / "[at]" / "route.ts").is_file()
     assert (ROOT / "app" / "api" / "evidence" / "monitor" / "[at]" / "route.ts").is_file()
 
-def test_governed_demo_cannot_autofill_an_attacker_owned_covenant():
+def test_governed_autofill_cannot_create_an_attacker_owned_covenant():
     config = (ROOT / "lib" / "config.ts").read_text()
     form = (ROOT / "components" / "TransactionForm.tsx").read_text()
     covenants = (ROOT / "app" / "covenants" / "page.tsx").read_text()
@@ -66,10 +79,10 @@ def test_governed_demo_cannot_autofill_an_attacker_owned_covenant():
     assert "SERVICE_GOVERNANCE = manifest.deployer" in config
     assert "account.toLowerCase() !== requiredAccount.toLowerCase()" in form
     assert 'workflow:"covenant"' in covenants
-    assert 'service_key:"veriduct-demo-payments-api"' in covenants
+    assert 'service_key:"veriduct-production-payments-api"' in covenants
     assert 'requiredAccount={SERVICE_GOVERNANCE}' in covenants
     assert 'requiredAccount={SERVICE_GOVERNANCE}' in cases
     assert 'get_active_covenant_key' in form
-    assert 'veriduct-demo-availability-${Math.floor(Date.now()/1000)}' in form
+    assert 'veriduct-production-availability-${Math.floor(Date.now()/1000)}' in form
     assert 'localStorage.setItem("veriduct-demo-covenant"' in form
-    assert 'case_key:`demo-outage-${Math.floor(Date.now()/1000)}`' in form
+    assert 'case_key:`production-outage-${Math.floor(Date.now()/1000)}`' in form

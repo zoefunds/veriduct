@@ -5,7 +5,7 @@ import { connectWallet, readContract, waitFinalized, writeContract } from "@/lib
 import { ADDRESSES, explorerTx } from "@/lib/config";
 
 export type Field = { name: string; label: string; placeholder?: string; kind?: "text" | "number" | "textarea"; initial?: string };
-type Preset = { label: string; values?: Record<string,string>; evidence?: "provider" | "monitor"; workflow?: "covenant" | "activation" | "case" | "adjudicate" | "mandate" };
+type Preset = { label: string; values?: Record<string,string>; evidence?: "provider" | "monitor"; workflow?: "covenant" | "activation" | "case" | "adjudicate" | "mandate" | "reconcile" };
 export function TransactionForm({ address, method, fields, submitLabel, presets = [], requiredAccount }: { address: string; method: string; fields: Field[]; submitLabel: string; presets?: Preset[]; requiredAccount?: string }) {
   const [values, setValues] = useState<Record<string,string>>(() => Object.fromEntries(fields.map(f => [f.name, f.initial || ""])));
   const [state, setState] = useState<{ busy?: boolean; hash?: string; error?: string }>({});
@@ -33,11 +33,11 @@ export function TransactionForm({ address, method, fields, submitLabel, presets 
     try {
       let next = { ...values, ...(preset.values || {}) };
       if (preset.workflow === "covenant") {
-        next = { ...next, covenant_key: `veriduct-demo-availability-${Math.floor(Date.now()/1000)}` };
+        next = { ...next, covenant_key: `veriduct-production-availability-${Math.floor(Date.now()/1000)}` };
       }
       if (preset.workflow === "activation") {
         const covenantKey = localStorage.getItem("veriduct-demo-covenant");
-        if (!covenantKey) throw new Error("Publish a demo covenant first; its finalized key will be inserted here automatically.");
+        if (!covenantKey) throw new Error("Publish a test covenant first; its finalized key will be inserted here automatically.");
         next = { ...next, covenant_key: covenantKey };
       }
       if (preset.evidence) {
@@ -53,20 +53,25 @@ export function TransactionForm({ address, method, fields, submitLabel, presets 
       }
       if (preset.workflow === "case") {
         const snapshots = JSON.parse(localStorage.getItem("veriduct-demo-snapshots") || "[]") as string[];
-        if (snapshots.length < 2) throw new Error("Anchor both demo observations first; their live keys will be inserted here automatically.");
-        const covenantKey = await readContract<string>(ADDRESSES.covenantBook, "get_active_covenant_key", ["veriduct-demo-payments-api"]);
-        if (!covenantKey) throw new Error("The governed demo covenant is not active yet.");
-        next = { ...next, case_key:`demo-outage-${Math.floor(Date.now()/1000)}`, covenant_key:covenantKey, action_id:"ENTER_READ_ONLY", intensity:"60", payload_json:JSON.stringify({reason:"Sustained multi-region availability breach",until:Math.floor(Date.now()/1000)+3600}), claim:"Two authenticated publishers report sustained availability near 91 percent and elevated errors across multiple regions, satisfying the active covenant threshold. A one-hour read-only period is requested to prevent unsafe writes while service integrity is restored.", snapshot_keys_json:JSON.stringify(snapshots) };
+        if (snapshots.length < 2) throw new Error("Anchor both production observations first; their live keys will be inserted here automatically.");
+        const covenantKey = await readContract<string>(ADDRESSES.covenantBook, "get_active_covenant_key", ["veriduct-production-payments-api"]);
+        if (!covenantKey) throw new Error("The governed production covenant is not active yet.");
+        next = { ...next, case_key:`production-outage-${Math.floor(Date.now()/1000)}`, covenant_key:covenantKey, action_id:"ENTER_READ_ONLY", intensity:"60", payload_json:JSON.stringify({reason:"Sustained multi-region availability below the 95 percent covenant threshold",until:Math.floor(Date.now()/1000)+3600}), claim:"Provider Operations measured 91.4 percent availability, 4,820 ms p95 latency, and 8.6 percent errors across Lagos and Accra. The independent observatory separately recorded 274 successful checks out of 300, or 91.33 percent availability, with sustained degradation across the same regions and observation window. No maintenance was scheduled. This satisfies the active two-publisher threshold and supports a bounded one-hour read-only remedy while payment integrity is restored.", snapshot_keys_json:JSON.stringify(snapshots) };
       }
       if (preset.workflow === "adjudicate") {
         const caseValues = JSON.parse(localStorage.getItem("veriduct-demo-case") || "{}") as Record<string,string>;
-        if (!caseValues.case_key) throw new Error("Open the demo case first; its live key will be inserted here automatically.");
+        if (!caseValues.case_key) throw new Error("Open the production case first; its live key will be inserted here automatically.");
         next = { ...next, case_key: caseValues.case_key };
       }
       if (preset.workflow === "mandate") {
         const caseValues = JSON.parse(localStorage.getItem("veriduct-demo-case") || "{}") as Record<string,string>;
-        if (!caseValues.case_key) throw new Error("Open the demo case first; its exact mandate envelope will be inserted here automatically.");
+        if (!caseValues.case_key) throw new Error("Open the production case first; its exact mandate envelope will be inserted here automatically.");
         next = { ...next, mandate_key:`MANDATE-${caseValues.case_key}`, target:ADDRESSES.serviceControl, action_id:caseValues.action_id, intensity:caseValues.intensity, payload_json:caseValues.payload_json };
+      }
+      if (preset.workflow === "reconcile") {
+        const caseValues = JSON.parse(localStorage.getItem("veriduct-demo-case") || "{}") as Record<string,string>;
+        if (!caseValues.case_key) throw new Error("Open a case first; its exact mandate key will be inserted here automatically.");
+        next = { ...next, mandate_key:`MANDATE-${caseValues.case_key}` };
       }
       setValues(next); setState({});
     } catch (error) { setState({ error: error instanceof Error ? error.message : String(error) }); }

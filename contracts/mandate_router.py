@@ -78,7 +78,7 @@ class MandateRouter(gl.Contract):
         if int(intensity) < 1 or int(intensity) > 100 or int(ttl_seconds) < 60 or int(ttl_seconds) > 7200:
             raise gl.vm.UserError("mandate bounds invalid")
         try:
-            payload = json.loads(payload_json)
+            payload = payload_json if isinstance(payload_json, dict) else json.loads(payload_json)
         except Exception:
             raise gl.vm.UserError("payload must be canonical JSON")
         canonical_payload = json.dumps(payload, sort_keys=True, separators=(",", ":"))
@@ -110,7 +110,10 @@ class MandateRouter(gl.Contract):
             raise gl.vm.UserError("mandate already applied")
         if record["status"] == "ISSUED" and _now() > int(record["expires_at"]):
             raise gl.vm.UserError("mandate expired")
-        canonical_payload = json.dumps(json.loads(payload_json), sort_keys=True, separators=(",", ":"))
+        decoded_payload = payload_json if isinstance(payload_json, dict) else json.loads(payload_json)
+        if not isinstance(decoded_payload, dict):
+            raise gl.vm.UserError("payload must be a JSON object")
+        canonical_payload = json.dumps(decoded_payload, sort_keys=True, separators=(",", ":"))
         envelope = {
             "case_key": record["case_key"], "covenant_digest": record["covenant_digest"],
             "target": _address_hex(target), "action_id": action_id, "intensity": int(intensity),

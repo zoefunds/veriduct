@@ -5,22 +5,22 @@
   "contracts": {
     "publisherLedger": "0x5834e07BEd3Efa9038C66cb6dEBd1BAA5A702d43",
     "covenantBook": "0x380a776a5895647b4D82103a47ba1d4E3e9d0338",
-    "adjudicator": "0xE19FDAB0Da7E8d1dC69676383A1A32B0b1F0FAb2",
-    "mandateRouter": "0x2c85eAa9eF2467F68eB71D76a965879398ed8480",
-    "serviceControl": "0x54a1df6F101Ac0b69eD68f317b2D5305E4A8983C"
+    "adjudicator": "0x9967beb076c6087C56486D1E89F8B85128c90b5E",
+    "mandateRouter": "0x5966dF42ff5E1Dc3698FB4660Eeb3683c760bb5C",
+    "serviceControl": "0x846C908b0a1d1245ca4292A8cCF1dF04941CAE18"
   },
   "deploymentTransactions": {
     "publisherLedger": "0x1596d11ce07439a85f52ba315c7c72ba23766b2d6e47fc217f7c356e7eb1d4d8",
     "covenantBook": "0xf6acc8a65a78c04bd3adfdeb94a8ba12bb76e7c9835438a59b02ee8d04a08415",
-    "mandateRouter": "0xe11c20ca3630362fc7034480b339eb8c397aba3e5913ba27ce9fda10725a2a7d",
-    "adjudicator": "0x6a7cfd311fa1e41a9c4857365ed2161370886fa476b5632e52f791bed25a236b",
-    "serviceControl": "0x420f9c95a2ed875b992c7212cb6a78f96d2619f56270bba3bef46039b82cd22f"
+    "mandateRouter": "0x3b583c8b0a113de0e8b7afa6f17753cc88137e0673d65509addb12f433449f0d",
+    "adjudicator": "0xb8621cd8c2a58ba6e4f6983e2c7a35d6ead2ae9e0f537240d4ecf615c8ad6df0",
+    "serviceControl": "0xb64dfa31d8543bebbe2487b4b8636a5cee048ae5bd8afb072949026b6daa6a70"
   },
-  "bindAdjudicatorTransaction": "0xc8fce0d60299382926032f28bcf6b544326dd64488f6d54c1b64887f8c196c2b",
+  "bindAdjudicatorTransaction": "0x7381d8ad2c00712ffa560c2f466668699e66a1077123b7cd17a843a71f66c722",
   "adapterRegistrationTransactions": {
-    "ENTER_READ_ONLY": "0x973b1d906cf569cdb26ac5879bccc68a6466f7de1820a766484dae723e7d7698",
-    "RAISE_REVIEW_THRESHOLD": "0x48827bac67d9fd8ed2b8bfe815b5efc340f1b429afa94523db3d67c8f14088b4"
+    "ENTER_READ_ONLY": "0x3d1f7a6152a8944a54290aa1672fe3da6b430fc1858f1205a2fcb8e42b26b777",
+    "RAISE_REVIEW_THRESHOLD": "0x069d681d13282c35e692ce60db42cc0ac662fe2d9d6150c31cc2a66a5294335d"
   },
   "deployer": "0x8d4e752ae688c21ec7c7d4d8a232b5e0700dbf0f",
-  "generatedAt": "2026-10-11T15:10:00.000Z"
+  "generatedAt": "2026-10-11T15:49:00.000Z"
 }

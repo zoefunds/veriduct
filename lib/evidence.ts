@@ -5,7 +5,7 @@ export function parseObservationTime(value: string): number | null {
 
 export function providerEvidence(observedAt: number) {
   return {
-    service: "VERIDUCT Demo Payments API",
+    service: "VERIDUCT Production Payments API",
     publisher: "provider-operations",
     observed_at: observedAt,
     window_minutes: 30,
@@ -20,7 +20,7 @@ export function providerEvidence(observedAt: number) {
 
 export function monitorEvidence(observedAt: number) {
   return {
-    service: "VERIDUCT Demo Payments API",
+    service: "VERIDUCT Production Payments API",
     publisher: "independent-observer",
     observed_at: observedAt,
     window_minutes: 30,

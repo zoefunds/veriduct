@@ -28,7 +28,7 @@ export default function Cases() {
         </section>
         <section className="panel compactAction">
           <div className="panelHead"><div><small>NONDETERMINISTIC DECISION</small><h2>Adjudicate case</h2></div></div>
-          <TransactionForm address={ADDRESSES.adjudicator} method="adjudicate" submitLabel="Run validator adjudication" presets={[{label:"Latest demo case",workflow:"adjudicate"}]} fields={[{name:"case_key",label:"Open case key"}]}/>
+          <TransactionForm address={ADDRESSES.adjudicator} method="adjudicate" submitLabel="Run validator adjudication" presets={[{label:"Latest production case",workflow:"adjudicate"}]} fields={[{name:"case_key",label:"Open case key"}]}/>
         </section>
       </div>
     </div>

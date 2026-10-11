@@ -5,9 +5,9 @@ import { ChainRecords } from "@/components/ChainRecords";
 import { ADDRESSES, SERVICE_GOVERNANCE } from "@/lib/config";
 
 export default function Covenants() {
-  const demoActions = JSON.stringify([
-    {action_id:"ENTER_READ_ONLY",target:ADDRESSES.serviceControl,max_intensity:100,payload_schema_digest:"22b8255d4abed99e0afc2c27881e3a8999f02e192440aefda5f70d736d26b950"},
-    {action_id:"RAISE_REVIEW_THRESHOLD",target:ADDRESSES.serviceControl,max_intensity:90,payload_schema_digest:"63a29967edc6ce09e0e136a79b2af5842e8398699aefaac1fb132931bfa4a22d"},
+  const productionActions = JSON.stringify([
+    {action_id:"ENTER_READ_ONLY",target:ADDRESSES.serviceControl,max_intensity:80,payload_schema_digest:"22b8255d4abed99e0afc2c27881e3a8999f02e192440aefda5f70d736d26b950"},
+    {action_id:"RAISE_REVIEW_THRESHOLD",target:ADDRESSES.serviceControl,max_intensity:70,payload_schema_digest:"63a29967edc6ce09e0e136a79b2af5842e8398699aefaac1fb132931bfa4a22d"},
   ]);
   return <div className="page workspace">
     <WorkspaceHeader kicker="POLICY PLANE" title="Covenant composer" copy="Define the evidence quorum, semantic breach test, and every remedy envelope before a dispute exists."/>
@@ -19,12 +19,12 @@ export default function Covenants() {
           workflow:"covenant",
           values:{
             covenant_key:"",
-            service_key:"veriduct-demo-payments-api",
-            service_name:"VERIDUCT Demo Payments API",
-            remedy_policy:"A material breach exists when at least two approved independent publishers authenticate observations showing availability below 95 percent for a sustained 30-minute window. ENTER_READ_ONLY is proportionate at intensity 60 when error rate exceeds 5 percent across multiple regions; RAISE_REVIEW_THRESHOLD is proportionate up to intensity 80 for degraded but partially available service.",
-            evidence_policy:"Every supporting observation must be fresh, anchored by its registered publisher identity, fetched successfully from the exact canonical HTTPS URL, and byte-identical to the anchored SHA-256 digest. Contradictory or unavailable observations fail closed.",
+            service_key:"veriduct-production-payments-api",
+            service_name:"VERIDUCT Production Payments API",
+            remedy_policy:"When two approved independent publishers each report availability below 95 percent for the same 30-minute observation window, validators may authorize read-only mode at intensity no greater than 80 for no longer than the mandate expiry. The remedy protects balances and payment integrity while operators restore multi-region service.",
+            evidence_policy:"Validators must fetch every frozen HTTPS evidence URL, hash the exact response bytes with SHA-256, match each digest to its anchored snapshot, confirm the contract-verified distinct registered publisher owners, and compare the reported availability, latency, errors, regions, observation times, and maintenance status against this covenant. Separate origin-bound paths on the canonical production host are permitted.",
             publishers_json:'["provider-operations","independent-observer"]',
-            actions_json:demoActions,
+            actions_json:productionActions,
             minimum_publishers:"2",
             observation_max_age_minutes:"60",
             mandate_ttl_minutes:"30",
