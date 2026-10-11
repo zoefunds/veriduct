@@ -41,6 +41,13 @@ def test_router_accepts_cli_decoded_address_values():
     assert 'hasattr(value, "as_hex")' in text
     assert "target_hex = _address_hex(target)" in text
 
+def test_adjudicator_constructor_accepts_cli_decoded_address_values():
+    text = source("adjudicator.py")
+    assert 'hasattr(value, "as_hex")' in text
+    assert "self.ledger_address = _address_hex(ledger_address)" in text
+    assert "self.book_address = _address_hex(book_address)" in text
+    assert "self.router_address = _address_hex(router_address)" in text
+
 def test_demo_evidence_urls_are_canonical_contract_safe_paths():
     form = (ROOT / "components" / "TransactionForm.tsx").read_text()
     assert "api/evidence/${preset.evidence}/${observedAt}" in form

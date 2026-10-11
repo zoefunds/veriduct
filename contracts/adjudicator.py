@@ -17,6 +17,10 @@ def _now() -> int:
     return int(datetime.now(timezone.utc).timestamp())
 
 
+def _address_hex(value) -> str:
+    return value.as_hex if hasattr(value, "as_hex") else Address(value).as_hex
+
+
 def _text(value, limit: int) -> str:
     return str(value or "").strip()[:limit]
 
@@ -55,9 +59,9 @@ class Adjudicator(gl.Contract):
     case_keys: DynArray[str]
 
     def __init__(self, ledger_address: str, book_address: str, router_address: str):
-        self.ledger_address = Address(ledger_address).as_hex
-        self.book_address = Address(book_address).as_hex
-        self.router_address = Address(router_address).as_hex
+        self.ledger_address = _address_hex(ledger_address)
+        self.book_address = _address_hex(book_address)
+        self.router_address = _address_hex(router_address)
 
     def _digest(self, value) -> str:
         return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":")).encode()).hexdigest()

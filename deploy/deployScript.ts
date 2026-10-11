@@ -4,6 +4,8 @@ import type { DecodedDeployData, GenLayerClient, TransactionHash } from "genlaye
 
 const CHAIN_ID = 61999;
 const RPC = "https://studio.genlayer.com/api";
+const READ_ONLY_SCHEMA = "22b8255d4abed99e0afc2c27881e3a8999f02e192440aefda5f70d736d26b950";
+const REVIEW_SCHEMA = "63a29967edc6ce09e0e136a79b2af5842e8398699aefaac1fb132931bfa4a22d";
 const code = (name: string) => new Uint8Array(readFileSync(path.resolve(process.cwd(), "contracts", name)));
 
 async function final(client: GenLayerClient<any>, hash: TransactionHash) {
@@ -32,8 +34,10 @@ export default async function main(client: GenLayerClient<any>) {
   const adjudicator = await deploy(client, "adjudicator.py", [publisherLedger.address, covenantBook.address, mandateRouter.address]);
   const bindAdjudicatorTx = await write(client, mandateRouter.address, "bind_adjudicator", [adjudicator.address]);
   const serviceControl = await deploy(client, "service_control.py", [mandateRouter.address]);
+  const enterReadOnlyTx = await write(client, mandateRouter.address, "register_adapter", ["ENTER_READ_ONLY", serviceControl.address, READ_ONLY_SCHEMA]);
+  const raiseReviewThresholdTx = await write(client, mandateRouter.address, "register_adapter", ["RAISE_REVIEW_THRESHOLD", serviceControl.address, REVIEW_SCHEMA]);
   const contracts = { publisherLedger: publisherLedger.address, covenantBook: covenantBook.address, adjudicator: adjudicator.address, mandateRouter: mandateRouter.address, serviceControl: serviceControl.address };
   const env = [`NEXT_PUBLIC_GENLAYER_CHAIN_ID=${CHAIN_ID}`,`NEXT_PUBLIC_GENLAYER_RPC_URL=${RPC}`,"NEXT_PUBLIC_GENLAYER_EXPLORER=https://explorer-studio.genlayer.com",...Object.entries(contracts).map(([k,v])=>`NEXT_PUBLIC_${k.replace(/[A-Z]/g,m=>`_${m}`).toUpperCase()}_ADDRESS=${v}`),""];
   writeFileSync(path.resolve(".env.generated"), env.join("\n"));
-  writeFileSync(path.resolve("deployment-manifest.generated.json"), JSON.stringify({ project:"VERIDUCT",network:"studionet",chainId:CHAIN_ID,rpc:RPC,contracts,deploymentTransactions:{publisherLedger:publisherLedger.txId,covenantBook:covenantBook.txId,mandateRouter:mandateRouter.txId,adjudicator:adjudicator.txId,serviceControl:serviceControl.txId},bindAdjudicatorTx,generatedAt:new Date().toISOString() },null,2)+"\n");
+  writeFileSync(path.resolve("deployment-manifest.generated.json"), JSON.stringify({ project:"VERIDUCT",network:"studionet",chainId:CHAIN_ID,rpc:RPC,contracts,deploymentTransactions:{publisherLedger:publisherLedger.txId,covenantBook:covenantBook.txId,mandateRouter:mandateRouter.txId,adjudicator:adjudicator.txId,serviceControl:serviceControl.txId},bindAdjudicatorTx,adapterRegistrationTransactions:{ENTER_READ_ONLY:enterReadOnlyTx,RAISE_REVIEW_THRESHOLD:raiseReviewThresholdTx},generatedAt:new Date().toISOString() },null,2)+"\n");
 }

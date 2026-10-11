@@ -69,11 +69,11 @@ Deployment order is Ledger → Book → Router → Adjudicator → one-time Rout
 
 | Contract | Address |
 |---|---|
-| PublisherLedger | `0xAEDf509D72E94fEfb9cd1e02485472267c117aE1` |
-| CovenantBook | `0xCE134DCeADAA02f852e0E3103FDDbfF4EA56A038` |
-| Adjudicator | `0x961Ee233B32fd333B69FBF80081b80F954A3B76D` |
-| MandateRouter | `0x14d3AD0b62da131E0883bd1f2c193549890418Ee` |
-| ServiceControl | `0x0de5F4B74e4F7aB3C67A26FdC4A1334Ee04e5C85` |
+| PublisherLedger | `0x5834e07BEd3Efa9038C66cb6dEBd1BAA5A702d43` |
+| CovenantBook | `0x380a776a5895647b4D82103a47ba1d4E3e9d0338` |
+| Adjudicator | `0xE19FDAB0Da7E8d1dC69676383A1A32B0b1F0FAb2` |
+| MandateRouter | `0x2c85eAa9eF2467F68eB71D76a965879398ed8480` |
+| ServiceControl | `0x54a1df6F101Ac0b69eD68f317b2D5305E4A8983C` |
 
 The full finalized deployment and adapter-registration transaction record is committed in `deployment-manifest.public.json`.
 
