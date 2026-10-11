@@ -89,7 +89,7 @@ The current verification baseline is 26 passing Python tests, five parsed and va
 
 ## Reproduce the deployment proof
 
-Run `npm run verify:deployment`. The verifier downloads every deployment transaction from Studionet, decodes its `contract_code`, byte-compares it with the corresponding file in `contracts/`, confirms every listed workflow transaction is `FINALIZED`, re-hashes both frozen HTTPS bodies, and reads the covenant, case, mandate, and ServiceControl receipt directly at latest-final state. `npm run verify:deployment:report` writes the complete machine-readable result to `verification-report.json`.
+Run `npm run verify:deployment`. The verifier downloads every deployment transaction from Studionet, decodes its `contract_code`, byte-compares it with the corresponding file in `contracts/`, confirms every listed workflow transaction is `FINALIZED`, re-hashes both frozen HTTPS bodies, and reads the covenant, case, mandate, and ServiceControl receipt directly at latest-final state. `npm run verify:deployment:report` writes the complete machine-readable result to [verification-report.json](./verification-report.json). The committed report contains 53 passing checks and identifies the same Git commit from both the verifier checkout and the live `/api/build` endpoint.
 
 This check requires network access to the public RPC and application. It never requires a wallet or private key.
 

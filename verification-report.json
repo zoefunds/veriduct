@@ -1,0 +1,447 @@
+{
+  "schema": "veriduct-deployment-verification-v1",
+  "generated_at": "2026-10-11T17:45:51.010Z",
+  "verifier_commit": "d5fd7bfb8f99cfada663b761a8297a74dabf9110",
+  "deployed_frontend_commit": "d5fd7bfb8f99cfada663b761a8297a74dabf9110",
+  "network": {
+    "chain_id": 61999,
+    "rpc": "https://studio.genlayer.com/api"
+  },
+  "evidence_classification": "DEMONSTRATION_FIXTURE",
+  "checks": [
+    {
+      "name": "publisherLedger deployment finalized",
+      "passed": true,
+      "evidence": "0x1596d11ce07439a85f52ba315c7c72ba23766b2d6e47fc217f7c356e7eb1d4d8 status=FINALIZED"
+    },
+    {
+      "name": "publisherLedger address",
+      "passed": true,
+      "evidence": "0x5834e07BEd3Efa9038C66cb6dEBd1BAA5A702d43 == 0x5834e07BEd3Efa9038C66cb6dEBd1BAA5A702d43"
+    },
+    {
+      "name": "publisherLedger source bytes",
+      "passed": true,
+      "evidence": "sha256=8067a3361108c50916106be798a2e6c674b60533e77c93aa949b0f8a50536527 file=publisher_ledger.py"
+    },
+    {
+      "name": "covenantBook deployment finalized",
+      "passed": true,
+      "evidence": "0xf6acc8a65a78c04bd3adfdeb94a8ba12bb76e7c9835438a59b02ee8d04a08415 status=FINALIZED"
+    },
+    {
+      "name": "covenantBook address",
+      "passed": true,
+      "evidence": "0x380a776a5895647b4D82103a47ba1d4E3e9d0338 == 0x380a776a5895647b4D82103a47ba1d4E3e9d0338"
+    },
+    {
+      "name": "covenantBook source bytes",
+      "passed": true,
+      "evidence": "sha256=3f4e06cba4ba2cfb3a2f6d6f683a14c386cfe3fb51cdd9dd246e30c702875ce8 file=covenant_book.py"
+    },
+    {
+      "name": "adjudicator deployment finalized",
+      "passed": true,
+      "evidence": "0xc9aebc9ba317d8b6716f55df0e64fdc9b2c7b4777ada0536890a1a8aad752155 status=FINALIZED"
+    },
+    {
+      "name": "adjudicator address",
+      "passed": true,
+      "evidence": "0xA50886124A3Ed027dc56dd37c0f658677320430b == 0xA50886124A3Ed027dc56dd37c0f658677320430b"
+    },
+    {
+      "name": "adjudicator source bytes",
+      "passed": true,
+      "evidence": "sha256=0313e1b5a8f0e7f1a373e082facbdf0bfd33b56c02ba5991f0299a36fd0b5636 file=adjudicator.py"
+    },
+    {
+      "name": "mandateRouter deployment finalized",
+      "passed": true,
+      "evidence": "0x1d77ea4426bd3a105af0b7d7d00ad81513c137a91a31a5f6013fd3c6387bfb63 status=FINALIZED"
+    },
+    {
+      "name": "mandateRouter address",
+      "passed": true,
+      "evidence": "0x8f18685a77ED80BE9B8A18c484f8380a206A77F0 == 0x8f18685a77ED80BE9B8A18c484f8380a206A77F0"
+    },
+    {
+      "name": "mandateRouter source bytes",
+      "passed": true,
+      "evidence": "sha256=d9e974be0e74a4eaaa99efc4431e01ebedef4a371225c5b5a0eef4494be6803a file=mandate_router.py"
+    },
+    {
+      "name": "serviceControl deployment finalized",
+      "passed": true,
+      "evidence": "0x28d7452bcccffc1944ccc8d62aacf43d4b72e0346d3a25265e3366ebee4c3ded status=FINALIZED"
+    },
+    {
+      "name": "serviceControl address",
+      "passed": true,
+      "evidence": "0x333B99f2cd961C1B6C34EcEA88996D64f325Be3f == 0x333B99f2cd961C1B6C34EcEA88996D64f325Be3f"
+    },
+    {
+      "name": "serviceControl source bytes",
+      "passed": true,
+      "evidence": "sha256=44cfca5e601b3b3256d63f3594b570ec3497da55c483370ab72471074c4372af file=service_control.py"
+    },
+    {
+      "name": "transaction publisherLedger",
+      "passed": true,
+      "evidence": "0x1596d11ce07439a85f52ba315c7c72ba23766b2d6e47fc217f7c356e7eb1d4d8 status=FINALIZED result=MAJORITY_AGREE"
+    },
+    {
+      "name": "transaction covenantBook",
+      "passed": true,
+      "evidence": "0xf6acc8a65a78c04bd3adfdeb94a8ba12bb76e7c9835438a59b02ee8d04a08415 status=FINALIZED result=MAJORITY_AGREE"
+    },
+    {
+      "name": "transaction mandateRouter",
+      "passed": true,
+      "evidence": "0x1d77ea4426bd3a105af0b7d7d00ad81513c137a91a31a5f6013fd3c6387bfb63 status=FINALIZED result=MAJORITY_AGREE"
+    },
+    {
+      "name": "transaction adjudicator",
+      "passed": true,
+      "evidence": "0xc9aebc9ba317d8b6716f55df0e64fdc9b2c7b4777ada0536890a1a8aad752155 status=FINALIZED result=MAJORITY_AGREE"
+    },
+    {
+      "name": "transaction serviceControl",
+      "passed": true,
+      "evidence": "0x28d7452bcccffc1944ccc8d62aacf43d4b72e0346d3a25265e3366ebee4c3ded status=FINALIZED result=MAJORITY_AGREE"
+    },
+    {
+      "name": "transaction bindAdjudicator",
+      "passed": true,
+      "evidence": "0x470f192d2fe6a6582f676cde5c267d4a67fb44b9db6d37aadc995df7e5006570 status=FINALIZED result=MAJORITY_AGREE"
+    },
+    {
+      "name": "transaction ENTER_READ_ONLY",
+      "passed": true,
+      "evidence": "0xd60a516e2afa373e227e04af86808f848db35af927126aebffd174ba082532a6 status=FINALIZED result=MAJORITY_AGREE"
+    },
+    {
+      "name": "transaction RAISE_REVIEW_THRESHOLD",
+      "passed": true,
+      "evidence": "0xbc62e0e318fd42237e3d49159f5c2e0219d1f53605b4151877f898ae9be0e126 status=FINALIZED result=MAJORITY_AGREE"
+    },
+    {
+      "name": "transaction providerRegistration",
+      "passed": true,
+      "evidence": "0x9fb8c86b9add00fa78c75a2e612e52eb93e98ce0803d4b0cba1f48b50c616025 status=FINALIZED result=MAJORITY_AGREE"
+    },
+    {
+      "name": "transaction independentMonitorRegistration",
+      "passed": true,
+      "evidence": "0x0cdb82844b59e15b2db7a24d332889b6cfcc02ba54f16b63a282fe01b95927f8 status=FINALIZED result=MAJORITY_AGREE"
+    },
+    {
+      "name": "transaction covenantPublish",
+      "passed": true,
+      "evidence": "0x0f50b6fd8e2839152957bc05a17aa610c1ac03231600e4698b8e429882fb8ef5 status=FINALIZED result=MAJORITY_AGREE"
+    },
+    {
+      "name": "transaction covenantActivation",
+      "passed": true,
+      "evidence": "0xeb4dec5f9421b623a558eac03b10915807ec9e6463cfb9045455abd295e700cc status=FINALIZED result=MAJORITY_AGREE"
+    },
+    {
+      "name": "transaction providerSnapshot",
+      "passed": true,
+      "evidence": "0x6823eaae175d14d14120569acf452ae67ffa385c556ad5d968a115186d8d7e99 status=FINALIZED result=MAJORITY_AGREE"
+    },
+    {
+      "name": "transaction monitorSnapshot",
+      "passed": true,
+      "evidence": "0x0d8e6729d37e1f3fae97f229d3c401da89c25a6319ca7a336c442874125d87a8 status=FINALIZED result=MAJORITY_AGREE"
+    },
+    {
+      "name": "transaction caseOpen",
+      "passed": true,
+      "evidence": "0xd9661897556d97f3e1ea6d75c5335a3056cac880244a71e67f0de0eeaec4174d status=FINALIZED result=MAJORITY_AGREE"
+    },
+    {
+      "name": "transaction adjudication",
+      "passed": true,
+      "evidence": "0x5e878cfadeb9a5d705f06619095aa203c0a03e78caa5855771bc1ec6b7655742 status=FINALIZED result=MAJORITY_AGREE"
+    },
+    {
+      "name": "transaction tamperedEnvelopeRejection",
+      "passed": true,
+      "evidence": "0x47a453f75f42616a97149d63ecd09f885620ac0b61145280abf231fb3ef0a3ae status=FINALIZED result=MAJORITY_AGREE"
+    },
+    {
+      "name": "transaction mandateExecution",
+      "passed": true,
+      "evidence": "0xf56531015074d4d202178730d7d73c13facb600b10a7258cb4a964da649b8ed1 status=FINALIZED result=MAJORITY_AGREE"
+    },
+    {
+      "name": "transaction mandateReconciliation",
+      "passed": true,
+      "evidence": "0xd4f5e5277b221dcf92be10f1dde3665f6b7a6df50d936d048573c862515db06c status=FINALIZED result=MAJORITY_AGREE"
+    },
+    {
+      "name": "transaction directAdapterRejection",
+      "passed": true,
+      "evidence": "0xa5a827bdadf7b3eed1ea93eeeb678043130c2e4cfa26c0fa4d6bb4dd169863cd status=FINALIZED result=MAJORITY_AGREE"
+    },
+    {
+      "name": "transaction readOnlyOperationRejection",
+      "passed": true,
+      "evidence": "0xf2b2807c13ed374365262f3ef08304bced74ecb4a94505d60b7bc06eb9c69593 status=FINALIZED result=MAJORITY_AGREE"
+    },
+    {
+      "name": "transaction unauthorizedCaseRejection",
+      "passed": true,
+      "evidence": "0x1ec8111ec0a6c1a08260a94b89c328b177d5f90a57cf458150c0608e2e19da60 status=FINALIZED result=MAJORITY_AGREE"
+    },
+    {
+      "name": "provider HTTP status",
+      "passed": true,
+      "evidence": "https://veri-duct.vercel.app/api/evidence/provider/1791733886 status=200"
+    },
+    {
+      "name": "provider exact bytes",
+      "passed": true,
+      "evidence": "5d2c5617bfc623cf8ff04590d5a0224f1bd1b2d2f7ba44af3b02c8abbad69fef == 5d2c5617bfc623cf8ff04590d5a0224f1bd1b2d2f7ba44af3b02c8abbad69fef"
+    },
+    {
+      "name": "corroborator HTTP status",
+      "passed": true,
+      "evidence": "https://veri-duct.vercel.app/api/evidence/monitor/1791733886 status=200"
+    },
+    {
+      "name": "corroborator exact bytes",
+      "passed": true,
+      "evidence": "a13467a2cdebdd3ee90784091f0bef3695ce15d587ee0e64b0f2d9b9aa0672ec == a13467a2cdebdd3ee90784091f0bef3695ce15d587ee0e64b0f2d9b9aa0672ec"
+    },
+    {
+      "name": "active covenant key",
+      "passed": true,
+      "evidence": "payments-api-availability-v4 == payments-api-availability-v4"
+    },
+    {
+      "name": "active covenant digest",
+      "passed": true,
+      "evidence": "13ac39b7fc9c8d426d388dd780203158f2c428fbb936c2730e77ebf8bb3c5a05 == 13ac39b7fc9c8d426d388dd780203158f2c428fbb936c2730e77ebf8bb3c5a05"
+    },
+    {
+      "name": "case adjudicated",
+      "passed": true,
+      "evidence": "status=MANDATE_PENDING_FINALITY"
+    },
+    {
+      "name": "verdict decision",
+      "passed": true,
+      "evidence": "decision=BREACH_PROVEN"
+    },
+    {
+      "name": "verdict digest",
+      "passed": true,
+      "evidence": "digest=188f24a7436da44489d7efdc690f18826aa31a230b454ac543a0a35732432dec"
+    },
+    {
+      "name": "mandate applied",
+      "passed": true,
+      "evidence": "status=APPLIED"
+    },
+    {
+      "name": "mandate action digest",
+      "passed": true,
+      "evidence": "digest=7e68d4f425821c46cf2d64f8cf495b5229b706cca8d65907d59126d49feba01f"
+    },
+    {
+      "name": "mandate single dispatch",
+      "passed": true,
+      "evidence": "dispatch_count=1"
+    },
+    {
+      "name": "target receipt digest",
+      "passed": true,
+      "evidence": "7e68d4f425821c46cf2d64f8cf495b5229b706cca8d65907d59126d49feba01f == 7e68d4f425821c46cf2d64f8cf495b5229b706cca8d65907d59126d49feba01f"
+    },
+    {
+      "name": "target application count",
+      "passed": true,
+      "evidence": "applied_mandate_count=1"
+    },
+    {
+      "name": "public provenance endpoint",
+      "passed": true,
+      "evidence": "status=200"
+    },
+    {
+      "name": "public build identity",
+      "passed": true,
+      "evidence": "status=200 git_commit=d5fd7bfb8f99cfada663b761a8297a74dabf9110"
+    }
+  ],
+  "authoritative_readback": {
+    "provider": {
+      "anchored_at": 1791733927,
+      "content_digest": "5d2c5617bfc623cf8ff04590d5a0224f1bd1b2d2f7ba44af3b02c8abbad69fef",
+      "observed_at": 1791733886,
+      "publisher_key": "provider-operations",
+      "publisher_owner": "0x82dcDC5B028A13f3475DDeC31B5300acfe9815d1",
+      "publisher_sequence": 2,
+      "snapshot_digest": "c77c744ec991a14642d736671038198fee723e509d15af05cc3d27becc5a3236",
+      "snapshot_key": "provider-production-1791733886",
+      "url": "https://veri-duct.vercel.app/api/evidence/provider/1791733886",
+      "valid_until": 1791741086
+    },
+    "corroborator": {
+      "anchored_at": 1791733985,
+      "content_digest": "a13467a2cdebdd3ee90784091f0bef3695ce15d587ee0e64b0f2d9b9aa0672ec",
+      "observed_at": 1791733886,
+      "publisher_key": "independent-observer",
+      "publisher_owner": "0x1ADd10608F0c52EECa68Ba4e5795817828f184a0",
+      "publisher_sequence": 2,
+      "snapshot_digest": "82d4f1cddcceda64a817a02f2c4f5a6acaa2ac2ae845adec7f3d431c4867da2c",
+      "snapshot_key": "monitor-production-1791733886",
+      "url": "https://veri-duct.vercel.app/api/evidence/monitor/1791733886",
+      "valid_until": 1791741086
+    },
+    "covenant": {
+      "actions": [
+        {
+          "action_id": "ENTER_READ_ONLY",
+          "max_intensity": 80,
+          "payload_schema_digest": "22b8255d4abed99e0afc2c27881e3a8999f02e192440aefda5f70d736d26b950",
+          "target": "0x333B99f2cd961C1B6C34EcEA88996D64f325Be3f"
+        },
+        {
+          "action_id": "RAISE_REVIEW_THRESHOLD",
+          "max_intensity": 70,
+          "payload_schema_digest": "63a29967edc6ce09e0e136a79b2af5842e8398699aefaac1fb132931bfa4a22d",
+          "target": "0x333B99f2cd961C1B6C34EcEA88996D64f325Be3f"
+        }
+      ],
+      "activation_delay_minutes": 1,
+      "covenant_digest": "13ac39b7fc9c8d426d388dd780203158f2c428fbb936c2730e77ebf8bb3c5a05",
+      "covenant_key": "payments-api-availability-v4",
+      "eligible_at": 1791734643,
+      "evidence_policy": "Validators must fetch every frozen HTTPS evidence URL, hash the exact response bytes with SHA-256, match each digest to its anchored snapshot, confirm the contract-verified distinct registered publisher owners, and compare the reported availability, latency, errors, regions, observation times, and maintenance status against this covenant. Separate origin-bound paths on the canonical production host are permitted.",
+      "mandate_ttl_minutes": 30,
+      "minimum_publishers": 2,
+      "observation_max_age_minutes": 60,
+      "owner": "0x8D4E752AE688C21eC7C7D4d8a232B5e0700DBf0f",
+      "published_at": 1791734583,
+      "publisher_keys": [
+        "provider-operations",
+        "independent-observer"
+      ],
+      "remedy_policy": "When two approved independent publishers each report availability below 95 percent for the same 30-minute observation window, validators may authorize read-only mode at intensity no greater than 80 for no longer than the mandate expiry. The remedy protects balances and payment integrity while operators restore multi-region service.",
+      "service_key": "veriduct-production-payments-api",
+      "service_name": "VERIDUCT Production Payments API",
+      "version": 4
+    },
+    "case": {
+      "action_id": "ENTER_READ_ONLY",
+      "case_digest": "4e859ed60950b41b2bd845c96812cc828fbbf2648f5c84188e29603956f2cc47",
+      "case_key": "production-outage-bounded-1791733886",
+      "claim": "Provider Operations measured 91.4 percent availability, 4,820 ms p95 latency, and 8.6 percent errors across Lagos and Accra. The independent observatory separately recorded 274 successful checks out of 300, or 91.33 percent availability, and sustained degradation across the same 30-minute window. Both exact response bodies are production-labeled, SHA-256 matched, and anchored by distinct on-chain owners. No maintenance was scheduled. A bounded 20-minute read-only remedy at intensity 60 remains inside the 30-minute mandate TTL and protects payment integrity while service is restored.",
+      "covenant_digest": "13ac39b7fc9c8d426d388dd780203158f2c428fbb936c2730e77ebf8bb3c5a05",
+      "covenant_key": "payments-api-availability-v4",
+      "expires_at": 1791821299,
+      "intensity": 60,
+      "mandate_key": "MANDATE-production-outage-bounded-1791733886",
+      "opened_at": 1791734899,
+      "payload_json": "{\"reason\":\"Sustained production availability below 95 percent across Lagos and Accra\",\"until\":1791736086}",
+      "payload_schema_digest": "22b8255d4abed99e0afc2c27881e3a8999f02e192440aefda5f70d736d26b950",
+      "requester": "0x8D4E752AE688C21eC7C7D4d8a232B5e0700DBf0f",
+      "snapshot_keys": [
+        "provider-production-1791733886",
+        "monitor-production-1791733886"
+      ],
+      "snapshots": [
+        {
+          "anchored_at": 1791733927,
+          "content_digest": "5d2c5617bfc623cf8ff04590d5a0224f1bd1b2d2f7ba44af3b02c8abbad69fef",
+          "observed_at": 1791733886,
+          "publisher_key": "provider-operations",
+          "publisher_owner": "0x82dcDC5B028A13f3475DDeC31B5300acfe9815d1",
+          "publisher_sequence": 2,
+          "snapshot_digest": "c77c744ec991a14642d736671038198fee723e509d15af05cc3d27becc5a3236",
+          "snapshot_key": "provider-production-1791733886",
+          "url": "https://veri-duct.vercel.app/api/evidence/provider/1791733886",
+          "valid_until": 1791741086
+        },
+        {
+          "anchored_at": 1791733985,
+          "content_digest": "a13467a2cdebdd3ee90784091f0bef3695ce15d587ee0e64b0f2d9b9aa0672ec",
+          "observed_at": 1791733886,
+          "publisher_key": "independent-observer",
+          "publisher_owner": "0x1ADd10608F0c52EECa68Ba4e5795817828f184a0",
+          "publisher_sequence": 2,
+          "snapshot_digest": "82d4f1cddcceda64a817a02f2c4f5a6acaa2ac2ae845adec7f3d431c4867da2c",
+          "snapshot_key": "monitor-production-1791733886",
+          "url": "https://veri-duct.vercel.app/api/evidence/monitor/1791733886",
+          "valid_until": 1791741086
+        }
+      ],
+      "status": "MANDATE_PENDING_FINALITY",
+      "target": "0x333B99f2cd961C1B6C34EcEA88996D64f325Be3f",
+      "verdict_digest": "188f24a7436da44489d7efdc690f18826aa31a230b454ac543a0a35732432dec",
+      "verdict_json": "{\"adjudicated_at\": 1791734947, \"applied_covenant_clauses\": [\"evidence_policy: Two approved independent publishers with distinct on-chain owners each submitted authenticated snapshots; digests match anchored values.\", \"remedy_policy: Both publishers report availability below 95 percent for the same 30-minute window; requested intensity 60 does not exceed 80; 20-minute duration does not exceed the 30-minute mandate TTL.\"], \"case_digest\": \"4e859ed60950b41b2bd845c96812cc828fbbf2648f5c84188e29603956f2cc47\", \"covenant_digest\": \"13ac39b7fc9c8d426d388dd780203158f2c428fbb936c2730e77ebf8bb3c5a05\", \"decision\": \"BREACH_PROVEN\", \"findings\": [\"Publisher 'provider-operations' (owner 0x82dcDC5B028A13f3475DDeC31B5300acfe9815d1) reports 91.4% availability, 8.6% error rate, p95 latency 4820ms across lagos-edge and accra-edge; anchored digest matches fetched digest.\", \"Publisher 'independent-observer' (owner 0x1ADd10608F0c52EECa68Ba4e5795817828f184a0) reports 91.33% availability (274/300 checks), median latency 3910ms, status degraded; anchored digest matches fetched digest.\", \"Publisher owners are distinct (0x82dc... vs 0x1ADd...) satisfying the independent-publisher requirement.\", \"Both observation windows align at timestamp 1791733886 covering 30 minutes with no scheduled maintenance.\", \"Requested remedy: intensity 60 (\\u2264 80 ceiling), duration 20 minutes (\\u2264 30-minute mandate), scope read-only \\u2014 proportionate under the remedy policy.\"], \"provenance_commitment\": \"a8d158b5ef72b0064118564b5d234c3d940bbeae59d189db97c5118eecf1c1e4\", \"snapshot_states\": [{\"finding\": \"Reports 91.4% availability and 8.6% error rate across lagos-edge and accra-edge during the 30-minute window; fetched digest 5d2c5617... matches anchored digest; no maintenance scheduled.\", \"snapshot_key\": \"provider-production-1791733886\", \"state\": \"SUPPORTS_BREACH\"}, {\"finding\": \"Independent observer records 274/300 successful checks (91.33% availability) with sustained degradation across two regions; fetched digest a13467a2... matches anchored digest.\", \"snapshot_key\": \"monitor-production-1791733886\", \"state\": \"SUPPORTS_BREACH\"}], \"summary\": \"Two independent authenticated publishers both report availability below 95 percent across the same 30-minute observation window with no scheduled maintenance. The requested remedy (intensity 60, 20-minute duration) is within the covenant's authorized bounds (intensity \\u2264 80, duration \\u2264 30 minutes).\"}"
+    },
+    "verdict": {
+      "adjudicated_at": 1791734947,
+      "applied_covenant_clauses": [
+        "evidence_policy: Two approved independent publishers with distinct on-chain owners each submitted authenticated snapshots; digests match anchored values.",
+        "remedy_policy: Both publishers report availability below 95 percent for the same 30-minute window; requested intensity 60 does not exceed 80; 20-minute duration does not exceed the 30-minute mandate TTL."
+      ],
+      "case_digest": "4e859ed60950b41b2bd845c96812cc828fbbf2648f5c84188e29603956f2cc47",
+      "covenant_digest": "13ac39b7fc9c8d426d388dd780203158f2c428fbb936c2730e77ebf8bb3c5a05",
+      "decision": "BREACH_PROVEN",
+      "findings": [
+        "Publisher 'provider-operations' (owner 0x82dcDC5B028A13f3475DDeC31B5300acfe9815d1) reports 91.4% availability, 8.6% error rate, p95 latency 4820ms across lagos-edge and accra-edge; anchored digest matches fetched digest.",
+        "Publisher 'independent-observer' (owner 0x1ADd10608F0c52EECa68Ba4e5795817828f184a0) reports 91.33% availability (274/300 checks), median latency 3910ms, status degraded; anchored digest matches fetched digest.",
+        "Publisher owners are distinct (0x82dc... vs 0x1ADd...) satisfying the independent-publisher requirement.",
+        "Both observation windows align at timestamp 1791733886 covering 30 minutes with no scheduled maintenance.",
+        "Requested remedy: intensity 60 (≤ 80 ceiling), duration 20 minutes (≤ 30-minute mandate), scope read-only — proportionate under the remedy policy."
+      ],
+      "provenance_commitment": "a8d158b5ef72b0064118564b5d234c3d940bbeae59d189db97c5118eecf1c1e4",
+      "snapshot_states": [
+        {
+          "finding": "Reports 91.4% availability and 8.6% error rate across lagos-edge and accra-edge during the 30-minute window; fetched digest 5d2c5617... matches anchored digest; no maintenance scheduled.",
+          "snapshot_key": "provider-production-1791733886",
+          "state": "SUPPORTS_BREACH"
+        },
+        {
+          "finding": "Independent observer records 274/300 successful checks (91.33% availability) with sustained degradation across two regions; fetched digest a13467a2... matches anchored digest.",
+          "snapshot_key": "monitor-production-1791733886",
+          "state": "SUPPORTS_BREACH"
+        }
+      ],
+      "summary": "Two independent authenticated publishers both report availability below 95 percent across the same 30-minute observation window with no scheduled maintenance. The requested remedy (intensity 60, 20-minute duration) is within the covenant's authorized bounds (intensity ≤ 80, duration ≤ 30 minutes)."
+    },
+    "mandate": {
+      "action_digest": "7e68d4f425821c46cf2d64f8cf495b5229b706cca8d65907d59126d49feba01f",
+      "action_id": "ENTER_READ_ONLY",
+      "applied_at": 1791735180,
+      "case_key": "production-outage-bounded-1791733886",
+      "covenant_digest": "13ac39b7fc9c8d426d388dd780203158f2c428fbb936c2730e77ebf8bb3c5a05",
+      "dispatch_count": 1,
+      "dispatched_at": 1791735119,
+      "expires_at": 1791736835,
+      "holder": "0x8D4E752AE688C21eC7C7D4d8a232B5e0700DBf0f",
+      "intensity": 60,
+      "issued_at": 1791735035,
+      "mandate_key": "MANDATE-production-outage-bounded-1791733886",
+      "payload_json": "{\"reason\":\"Sustained production availability below 95 percent across Lagos and Accra\",\"until\":1791736086}",
+      "payload_schema_digest": "22b8255d4abed99e0afc2c27881e3a8999f02e192440aefda5f70d736d26b950",
+      "status": "APPLIED",
+      "target": "0x333B99f2cd961C1B6C34EcEA88996D64f325Be3f",
+      "verdict_digest": "188f24a7436da44489d7efdc690f18826aa31a230b454ac543a0a35732432dec"
+    },
+    "service": {
+      "applied_mandate_count": 1,
+      "governance_address": "0x8d4e752ae688c21ec7c7d4d8a232b5e0700dbf0f",
+      "operation_count": "0",
+      "read_only": false,
+      "read_only_until": 1791736086,
+      "review_threshold": 0,
+      "router_address": "0x8f18685a77ed80be9b8a18c484f8380a206a77f0"
+    },
+    "applied_mandate_digest": "7e68d4f425821c46cf2d64f8cf495b5229b706cca8d65907d59126d49feba01f"
+  }
+}
