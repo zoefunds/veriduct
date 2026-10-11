@@ -1,6 +1,7 @@
-# Production E2E verification
+# Deployed demonstration E2E verification
 
-- Verification completed: 11 October 2026, 17:20 WAT
+- Original onchain workflow verification completed: 11 October 2026, 17:20 WAT
+- Documentation and live-state audit completed: 11 October 2026, 18:56 WAT
 - Network: GenLayer Studionet (`61999`)
 - Application: [https://veri-duct.vercel.app](https://veri-duct.vercel.app)
 - RPC: `https://studio.genlayer.com/api`
@@ -8,7 +9,7 @@
 - Current frontend source commit: `dd1001c2ac17b1eefd17cf84365ccd307065d307`
 - Original onchain workflow execution source commit: `20f15c38cedbbc4ea6121cd2eed4fbff0ca68a84`
 
-These checks were executed sequentially against the finalized production deployment. Expected rejections are passing security tests only when the transaction itself reached `FINALIZED` and the validators agreed on the exact contract error.
+These checks were executed sequentially against the finalized Studionet deployment. Expected rejections are passing security tests only when the transaction itself reached `FINALIZED` and the validators agreed on the exact contract error.
 
 ## Evidence and enforcement scope
 
@@ -155,7 +156,7 @@ The demonstrated read-only consequence applies only to `ServiceControl.submit_op
 
 ## Outcome
 
-All 18 checks passed: three sequential production checks for each of Network, Publishers, Covenants, Cases, Mandates, and Service. The complete happy path reached a validator-settled `BREACH_PROVEN` decision and one bounded target consequence, while each tested privilege escalation, envelope mutation, and active-state bypass failed closed.
+All 18 checks passed: three sequential deployed checks for each of Network, Publishers, Covenants, Cases, Mandates, and Service. The complete happy path reached a validator-settled `BREACH_PROVEN` decision and one bounded target consequence, while each tested privilege escalation, envelope mutation, and active-state bypass failed closed.
 
 On 11 October 2026, the deployed `/verification` page was also executed in a browser against commit `dd1001c2ac17b1eefd17cf84365ccd307065d307`. It visibly passed all six frontend readback stages: provider fixture digest, corroborator fixture digest, active covenant digest, finalized `BREACH_PROVEN` verdict, `APPLIED` mandate with dispatch count 1, and the exact ServiceControl target receipt. Each row links to its corresponding explorer transaction. This demonstrates successful frontend execution of authoritative reads; it does not retroactively convert the fixture streams into independent telemetry.
 

@@ -18,7 +18,8 @@
     "provider": "vercel",
     "deploymentId": "dpl_5bVfyELrxG1rbCE5rzVVQad53ft4",
     "sourceCommit": "dd1001c2ac17b1eefd17cf84365ccd307065d307",
-    "deployedAt": "2026-10-11T18:20:00.000Z"
+    "createdAt": "2026-10-11T17:48:03.788Z",
+    "readyAt": "2026-10-11T17:48:24.882Z"
   },
   "contracts": {
     "publisherLedger": "0x5834e07BEd3Efa9038C66cb6dEBd1BAA5A702d43",
@@ -98,7 +99,7 @@
     "mandateStatus": "APPLIED",
     "dispatchCount": 1
   },
-  "currentFinalizedServiceState": {
+  "verifiedServiceStateSnapshot": {
     "readOnly": false,
     "readOnlyUntil": 1791736086,
     "reviewThreshold": 0,
@@ -112,5 +113,5 @@
     "guarantee": "Read-only enforcement applies only to operations submitted to the deployed ServiceControl contract"
   },
   "deployer": "0x8d4e752ae688c21ec7c7d4d8a232b5e0700dbf0f",
-  "generatedAt": "2026-10-11T16:25:00.000Z"
+  "manifestLastAuditedAt": "2026-10-11T17:56:10.000Z"
 }

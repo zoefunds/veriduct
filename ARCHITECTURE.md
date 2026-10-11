@@ -21,7 +21,7 @@ Service governance ── immutable covenant ───────────�
                                                         0x333B…Be3f
 ```
 
-| Component | Finalized production address |
+| Component | Finalized Studionet address |
 |---|---|
 | PublisherLedger | `0x5834e07BEd3Efa9038C66cb6dEBd1BAA5A702d43` |
 | CovenantBook | `0x380a776a5895647b4D82103a47ba1d4E3e9d0338` |
@@ -56,7 +56,7 @@ During adjudication every validator retrieves the frozen URL. Deterministic cont
 
 `CovenantBook` stores immutable versions under one service key. Only the original service owner can publish a higher version. Activation is delayed and monotonic. A policy freezes its approved publisher keys, minimum distinct-owner threshold, maximum observation age, evidence instructions, remedy policy, mandate TTL, action targets, action schemas, and intensity ceilings.
 
-The active production covenant is version 4, key `payments-api-availability-v4`, digest `13ac39b7fc9c8d426d388dd780203158f2c428fbb936c2730e77ebf8bb3c5a05`. It requires two approved, separately owned publishers and limits observations to 60 minutes old. Read-only authority is capped at intensity 80; review-threshold authority is capped at 70; issued mandates expire after 30 minutes.
+The active deployed demonstration covenant is version 4, key `payments-api-availability-v4`, digest `13ac39b7fc9c8d426d388dd780203158f2c428fbb936c2730e77ebf8bb3c5a05`. It requires two approved, separately owned publisher identities and limits observations to 60 minutes old. Read-only authority is capped at intensity 80; review-threshold authority is capped at 70; issued mandates expire after 30 minutes. The distinct-owner rule is an authorization and quorum property, not evidence that the two fixture measurements were independently collected.
 
 ## Case and semantic decision
 

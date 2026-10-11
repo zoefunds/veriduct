@@ -2,7 +2,7 @@
 
 ## Scope
 
-This policy covers the five GenLayer contracts, the Next.js interface, the two deterministic evidence Route Handler families, deployment configuration, and the boundary between finalized onchain state and browser workflow state. The production contracts and transaction proofs are listed in [deployment-manifest.public.json](./deployment-manifest.public.json).
+This policy covers the five GenLayer contracts, the Next.js interface, the two deterministic evidence Route Handler families, deployment configuration, and the boundary between finalized onchain state and browser workflow state. The deployed Studionet contracts and transaction proofs are listed in [deployment-manifest.public.json](./deployment-manifest.public.json).
 
 ## Enforced invariants
 
@@ -28,7 +28,7 @@ This policy covers the five GenLayer contracts, the Next.js interface, the two d
 
 VERIDUCT proves authenticated bytes and policy-relative validator agreement, not universal factual truth. The deployed fixtures have distinct onchain owners but a single application operator, host, codebase, and data generator. Consequently, this deployment provides publisher-identity independence only; it does not provide measurement, infrastructure, operator, or hosting independence. Service governance chooses publisher identities and the policy itself. Risk is bounded by immutable source anchors, distinct onchain owners, a precommitted quorum, delayed policy activation, explicit freshness limits, independent validator retrieval, exact-byte hashing, strict semantic response shape, validator comparison, bounded adapters, expiry, finality, and replay protection.
 
-The deployed ServiceControl target is a demonstration adapter that changes its own onchain operational controls only. It is not connected to an externally operated payments API, does not custody user funds, and does not perform asynchronous token transfers. Its two actions are bounded read-only mode and a numeric review threshold. The verified read-only interval ended at 17:28:06 WAT on 11 October 2026; current finalized state is open, one mandate is recorded as applied, and operation count remains zero.
+The deployed ServiceControl target is a demonstration adapter that changes its own onchain operational controls only. It is not connected to an externally operated payments API, does not custody user funds, and does not perform asynchronous token transfers. Its two actions are bounded read-only mode and a numeric review threshold. The verified read-only interval ended at 17:28:06 WAT on 11 October 2026. A fresh `LATEST_FINAL` read at 18:56 WAT confirmed that the adapter is open, one mandate is recorded as applied, and operation count remains zero.
 
 ## Evidence claim matrix
 
@@ -42,7 +42,7 @@ The deployed ServiceControl target is a demonstration adapter that changes its o
 | Validators independently retrieve and interpret committed bytes | Yes | Finalized adjudication transaction and verdict record. |
 | Read-only affects an external payments service | No | Enforcement ends at the deployed ServiceControl adapter. |
 
-## Verified production regressions
+## Verified deployed regressions
 
 | Attack or failure | Finalized result | Transaction |
 |---|---|---|
@@ -52,11 +52,11 @@ The deployed ServiceControl target is a demonstration adapter that changes its o
 | Governance bypasses the router and calls the adapter | Rejected: `only MandateRouter may apply remedies` | [`0xa5a827bdadf7b3eed1ea93eeeb678043130c2e4cfa26c0fa4d6bb4dd169863cd`](https://explorer-studio.genlayer.com/tx/0xa5a827bdadf7b3eed1ea93eeeb678043130c2e4cfa26c0fa4d6bb4dd169863cd) |
 | Risk-92 settlement runs during authorized read-only mode | Rejected: `service is in covenant-enforced read-only mode` | [`0xf2b2807c13ed374365262f3ef08304bced74ecb4a94505d60b7bc06eb9c69593`](https://explorer-studio.genlayer.com/tx/0xf2b2807c13ed374365262f3ef08304bced74ecb4a94505d60b7bc06eb9c69593) |
 
-The complete 18-check production sequence, including successful paths and exact inputs, is in [E2E_RESULTS.md](./E2E_RESULTS.md). Local model tests additionally cover forged publisher ownership, hostname substitution, stale sources, fake quorum, target seizure, all material envelope mutations, non-proven issuance, and replay.
+The complete 18-check deployed demonstration sequence, including successful paths and exact inputs, is in [E2E_RESULTS.md](./E2E_RESULTS.md). Local model tests additionally cover forged publisher ownership, hostname substitution, stale sources, fake quorum, target seizure, all material envelope mutations, non-proven issuance, and replay.
 
 ## Secret handling
 
-The repository contains only public contract addresses and public transaction hashes. Wallet private keys, seed phrases, keystore passwords, and deployment credentials must never be committed, placed in `NEXT_PUBLIC_*` variables, pasted into issues, or sent with vulnerability reports. The production interface requires an EIP-1193 wallet and never asks a backend to sign on the user's behalf.
+The repository contains only public contract addresses and public transaction hashes. Wallet private keys, seed phrases, keystore passwords, and deployment credentials must never be committed, placed in `NEXT_PUBLIC_*` variables, pasted into issues, or sent with vulnerability reports. The deployed interface requires an EIP-1193 wallet and never asks a backend to sign on the user's behalf.
 
 ## Responsible testing and reporting
 
