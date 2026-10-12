@@ -13,6 +13,7 @@ const allowed = new Map<string, Set<string>>([
   [manifest.contracts.mandateRouter.toLowerCase(), new Set(["list_mandate_keys", "get_mandate_json", "get_adapter_json"])],
   [manifest.contracts.serviceControl.toLowerCase(), new Set(["get_status_json", "get_applied_mandate_digest", "get_operation_json"])],
 ]);
+const canonicalAddress = new Map(Object.values(manifest.contracts).map(address => [address.toLowerCase(), address]));
 
 function failure(message: string, status = 400) {
   return Response.json({ error: message }, { status, headers: { "Cache-Control": "no-store" } });
@@ -30,7 +31,7 @@ export async function POST(request: Request) {
       const args = body.args;
       if (!/^0x[0-9a-f]{40}$/.test(address) || !allowed.get(address)?.has(functionName)) return failure("contract read is not allowed", 403);
       if (!Array.isArray(args) || args.length > 12) return failure("invalid contract arguments");
-      const result = await client.readContract({ address: address as `0x${string}`, functionName, args, transactionHashVariant: TransactionHashVariant.LATEST_FINAL } as never);
+      const result = await client.readContract({ address: canonicalAddress.get(address) as `0x${string}`, functionName, args, transactionHashVariant: TransactionHashVariant.LATEST_FINAL } as never);
       return Response.json({ result }, { headers: { "Cache-Control": "no-store" } });
     }
     if (body.operation === "transaction") {
