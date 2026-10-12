@@ -1,5 +1,7 @@
 # VERIDUCT security model
 
+This security model applies to the five Studionet deployments listed in `deployment-manifest.public.json`. It was reconciled with the contract sources, 42-test suite, and 88-check public deployment report on 12 October 2026.
+
 ## Guarantees
 
 1. Authority sources are admitted by protocol curation, not created by a covenant owner.
@@ -20,7 +22,7 @@
 | Claim | Demonstrated | Boundary |
 |---|---:|---|
 | Retrieved bytes match frozen commitments | Yes | SHA-256 is recomputed by validators and the verifier. |
-| Evidence origins are independently operated | Yes | USGS and EMSC operate different authority systems and hosts. |
+| Evidence origins are independently operated | Yes | USGS and EMSC operate different authority systems, hosts, APIs, and record formats. |
 | Authority records materially corroborate the event | Yes | Both report Mw/Mww 8.8, origin times ~1.04 seconds apart, and nearby Kamchatka coordinates. |
 | VERIDUCT independently certifies scientific accuracy | No | Each authority remains responsible for measurement methodology and accuracy. |
 | A non-owner can initiate and execute | Yes | Finalized flow uses claimant `0xF526…6276`, distinct from owner `0x8D4E…Bf0f`. |
@@ -55,6 +57,8 @@ Expected failures count only when the transaction reaches finality and GenVM ret
 ## Residual trust
 
 The authority curator can change which sources are available for future covenant versions, and service governance chooses a policy from the registered set. Existing snapshots, activated covenant versions, cases, verdicts, and mandates remain immutable. GenLayer validator consensus and availability of the authority endpoints remain dependencies. The protocol reduces evidence and enforcement discretion; it does not eliminate governance, scientific uncertainty, or network liveness risk.
+
+The curator and service-governance roles in this deployment use the same public address. This does not make the evidence hosts owner-controlled: the bytes are retrieved from USGS and EMSC, and a covenant must satisfy the registry, distinct-host, distinct-class, and corroboration rules. It does mean governance remains trusted to curate source eligibility for future policies, which is why source registration, immutable policy versions, delayed activation, and the supersession claim window are explicit onchain controls.
 
 ## Secrets and reporting
 

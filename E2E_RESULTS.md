@@ -1,6 +1,6 @@
 # Studionet end-to-end verification
 
-Executed 12 October 2026 on GenLayer Studionet (`61999`). Every success and expected rejection below is a real transaction. Explorer base: `https://explorer-studio.genlayer.com/tx/`.
+Executed and independently re-verified from public state on 12 October 2026 on GenLayer Studionet (`61999`). Every success and expected rejection below is a real finalized transaction, not a local fixture or simulated receipt. Explorer base: `https://explorer-studio.genlayer.com/tx/`.
 
 ## Deployment and configuration
 
@@ -31,7 +31,7 @@ The sources are distinct in operator, authority class, hostname, API, format, an
 
 1. Governance published covenant v1 in [`0xbfb86aed…9b93`](https://explorer-studio.genlayer.com/tx/0xbfb86aedaba8cc93f6074c32a85a4112180745fa367d41c67f79602f0db19b93). An early activation attempt correctly rejected in [`0x2a6609bd…a153`](https://explorer-studio.genlayer.com/tx/0x2a6609bd2e1b7dcd4368a4150a902d17c2e30d8b2d2a48141bd882fb0705a153), then activation finalized in [`0x3cb7d071…8c46`](https://explorer-studio.genlayer.com/tx/0x3cb7d0716607c1d6747cf1b07dd7074724aaceab34ef52d2794a1ecf2a188c46).
 2. Independent wallet `0xF526ADbdEB5169e7CeA32c06EF69d7ce4a2D6276`, not owner `0x8D4E…Bf0f`, opened `kamchatka-independent-claim-v1` in [`0x69718a54…a922`](https://explorer-studio.genlayer.com/tx/0x69718a54228943af28a459e6cfb35d24c4ffc083309ccad112d7a9367b76a922).
-3. Validator adjudication finalized in [`0x5b626535…8105`](https://explorer-studio.genlayer.com/tx/0x5b626535efaff29218516c04114622f8f5794c4d82e920215ac948f854fd8105). Both validators' fetched digests matched. Both source states were `SUPPORTS_BREACH`; decision was `BREACH_PROVEN`.
+3. Validator adjudication finalized in [`0x5b626535…8105`](https://explorer-studio.genlayer.com/tx/0x5b626535efaff29218516c04114622f8f5794c4d82e920215ac948f854fd8105). Consensus re-fetched both URLs, matched both frozen digests, classified both source states as `SUPPORTS_BREACH`, and finalized `BREACH_PROVEN`.
 4. The finality child issued `MANDATE-kamchatka-independent-claim-v1` in [`0x3085fd6e…2cd3`](https://explorer-studio.genlayer.com/tx/0x3085fd6efa05281250be0b303664b5112fc33040ed8cdd895010508b9c5b2cd3).
 5. The independent participant executed the exact mandate in [`0x6f48e981…1d2f`](https://explorer-studio.genlayer.com/tx/0x6f48e98145121d5a7a43713a217438bf57ae4eb825a6e0acf46b17cfaab61d2f). Finalized target application is [`0x87c4665f…78ef`](https://explorer-studio.genlayer.com/tx/0x87c4665f8b9a97928c537f5b11e073f2cdf06c40c54ee542fc0e576d1dbd78ef).
 6. Receipt reconciliation finalized in [`0xa0597167…7b47`](https://explorer-studio.genlayer.com/tx/0xa0597167c431e2535d2f6740ae396be3f0d16ddd55b47cc3132c12564d8f7b47).
@@ -51,8 +51,10 @@ Authoritative readback: case digest `7c8b781d…caa9`; verdict digest `93e508e8�
 
 The expiry proof used active covenant v2, independent case [`0x86f3d6b9…e22b`](https://explorer-studio.genlayer.com/tx/0x86f3d6b925e4876d134b052d294c95775ee74626cb7848bcdcdebf337303e22b), and validator adjudication [`0xe8c0693e…8b59`](https://explorer-studio.genlayer.com/tx/0xe8c0693eca2d32bc5a82e14bb9525f1ade26987f7f4bd9c714be3760eab88b59). Its mandate expired at Unix `1791835410`; the complete execution envelope was submitted after expiry and no target child was emitted.
 
+The successful applied workflow uses covenant v1, while the expiry proof uses the currently active v2. The version difference is deliberate: v2 reduced the mandate TTL to five minutes specifically for an observable, finalized expiry test without altering the already finalized v1 case or receipt.
+
 ## Reproduction
 
-Run `npm run verify:deployment`. It checks finalized success/error outcomes, byte-compares deployed contract code with local source, re-fetches both authority URLs, reads the active permissionless policy, confirms the claimant differs from the owner, validates the successful verdict/mandate/receipt chain, and confirms the manipulated case produced no mandate. `npm run verify:deployment:report` writes all authoritative records to `verification-report.json`.
+Run `npm run verify:deployment`. It checks finalized success/error outcomes, byte-compares deployed contract code with local source, re-fetches both authority URLs, reads the active permissionless policy, confirms the claimant differs from the owner, validates the successful verdict/mandate/receipt chain, and confirms the manipulated case produced no mandate. `npm run verify:deployment:report` writes all authoritative records to `verification-report.json`; the report regenerated on 12 October 2026 passed 88 of 88 assertions.
 
 The `/verification` frontend performs the corresponding public readback without a private key through an allowlisted same-origin `LATEST_FINAL` read route, avoiding browser RPC/CORS dependence. It also displays the complete source-to-receipt trace and finalized negative-test links. The exact browser workflow is documented in [FRONTEND_EVIDENCE.md](./FRONTEND_EVIDENCE.md). Enforcement shown here is scoped to the deployed `ServiceControl` adapter; it is not evidence of control over an external production service.

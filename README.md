@@ -14,6 +14,8 @@ VERIDUCT is a GenLayer protocol for adjudicating reliability or safety covenants
 - Security model: [SECURITY.md](./SECURITY.md)
 - Machine-readable deployment index: [deployment-manifest.public.json](./deployment-manifest.public.json)
 
+Documentation and deployment state were re-audited on **12 October 2026**. The committed verifier report was regenerated from public Studionet reads and contains **88/88 passing checks**. The repository test suite contains **42 passing Python tests**, including **15 tests that execute the actual five contract classes**.
+
 ## Deployed contracts
 
 | Contract | Studionet address | Purpose |
@@ -35,9 +37,16 @@ The authority registry is protocol-level; a covenant owner chooses only from alr
 | United States Geological Survey | `GOVERNMENT` | `earthquake.usgs.gov` | QuakeML origin for `us6000qw60` | `8e91ad76139bae8bd9efc3935760ef5493d8d6a02d0d1d1a4cda10bab56331b7` |
 | Euro-Mediterranean Seismological Centre | `INTERGOVERNMENTAL` | `www.seismicportal.eu` | EMSC-RTS event `1838723` | `9558eae3d2ea9b891602f148c57a116d6ca1b2c7c7c033631330d229e019556b` |
 
+The frozen URLs are:
+
+- USGS: `https://earthquake.usgs.gov/product/origin/us6000qw60/us/1760216255040/quakeml.xml`
+- EMSC: `https://www.seismicportal.eu/fdsnws/event/1/query?catalog=EMSC-RTS&source_id=1838723&format=json`
+
 USGS reported Mww 8.8 at `2025-07-29T23:24:52.483Z`, 52.4948/160.2395. EMSC reported Mw 8.8 at `2025-07-29T23:24:51.44Z`, 52.6050/160.0725. They are separately operated authority systems with different hosts and record formats.
 
 The guarantee is deliberately precise: SHA-256 matching authenticates the exact bytes retrieved from the frozen authority URL. It does not independently certify the scientific accuracy of either catalog. Accuracy is supported by cross-authority agreement and remains the responsibility of the originating authorities.
+
+The current active policy is `seismic-safety-kamchatka-v2`, version `2`, digest `3727ddfea37a693378a8909609e625858add542fd5d0e570049fabab3d1e0fd7`. The completed successful case was opened under immutable version `seismic-safety-kamchatka-v1`, digest `7d6317c7325b38290a21fcb053d09c9ba31783168a672c7774a6d44622db3b8a`; version 2 was subsequently activated to produce the short-TTL expiry proof. This is intentional historical state, not a configuration mismatch.
 
 ## Neutral initiation and suppression resistance
 
@@ -66,7 +75,7 @@ npm run verify:deployment
 
 `npm run check` runs TypeScript checking, 42 Python tests, and GenLayer source parsing. Fifteen integration tests execute the actual five contract classes in one instrumented GenLayer runtime, including finality-gated child calls and authoritative receipt reads. Coverage includes permissionless claims, distinct authority classes and hosts, manipulated bytes, contradictions, malformed payloads, duplicate dispatch, expired/failed/dispatched/applied states, and receipt-only recovery.
 
-`npm run verify:deployment` performs live Studionet checks: exact deployed source comparison, finalized transaction outcomes, live USGS/EMSC re-hashing, active covenant readback, independent claimant verification, validator verdict, one-shot applied mandate, target receipt, and manipulated-evidence denial. Use `npm run verify:deployment:report` to refresh `verification-report.json`.
+`npm run verify:deployment` performs live Studionet checks: exact deployed source comparison, finalized transaction outcomes, live USGS/EMSC re-hashing, active covenant readback, independent claimant verification, validator verdict, one-shot applied mandate, target receipt, and manipulated-evidence denial. Use `npm run verify:deployment:report` to refresh `verification-report.json`. The committed report records its generation time, verifier commit, deployed frontend commit, every individual assertion, and complete authoritative contract readbacks.
 
 ## Frontend workflow
 

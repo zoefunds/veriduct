@@ -2,6 +2,8 @@
 
 This document maps every live frontend surface to finalized Studionet evidence. The production build identity is exposed at `GET /api/build`; the browser-facing verifier is [https://veri-duct.vercel.app/verification](https://veri-duct.vercel.app/verification).
 
+The deployed frontend reports application commit `82a470d226479e1d703203865652a100e5cebe88`. Documentation-only commits made after that deployment do not change the application bundle or contract behavior. The public verifier confirmed that build identity on 12 October 2026.
+
 ## Browser execution model
 
 Wallet writes are submitted through the user's EIP-1193 provider. The frontend then polls `POST /api/genlayer` for the public transaction record until `FINALIZED`; it does not treat `ACCEPTED` as success. Public contract reads use the same same-origin route and force `LATEST_FINAL`. The route permits only the five deployed addresses and an explicit allowlist of view methods. This avoids browser CORS dependence without introducing a signer, private RPC capability, or mutable backend state.
@@ -36,7 +38,7 @@ The case requester and successful dispatcher are `0xF526ADbdEB5169e7CeA32c06EF69
 
 ## Browser-visible authoritative result
 
-The `/verification` page must render six green checks:
+The deployed `/verification` page renders six green checks when its public reads complete:
 
 - USGS authoritative bytes;
 - EMSC authoritative bytes;
@@ -45,7 +47,7 @@ The `/verification` page must render six green checks:
 - bounded mandate with dispatch count one; and
 - authoritative target receipt.
 
-The reproducible command-line counterpart is `npm run verify:deployment`. It also verifies deployed contract source bytes, all finality results, rejection transactions, independent hosts/classes, permissionless claimant identity, manipulated-evidence denial, and the production build identity. Its last complete output is committed in `verification-report.json`.
+The reproducible command-line counterpart is `npm run verify:deployment`. It also verifies deployed contract source bytes, all finality results, rejection transactions, independent hosts/classes, permissionless claimant identity, manipulated-evidence denial, and the production build identity. The committed `verification-report.json`, regenerated on 12 October 2026, contains 88 passing checks and complete latest-final readbacks.
 
 ## Scope
 

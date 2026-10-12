@@ -1,5 +1,7 @@
 # VERIDUCT architecture
 
+This document describes the contracts deployed at the addresses in `deployment-manifest.public.json`. It was checked against the deployed source commitments and authoritative state on 12 October 2026.
+
 ## Trust-separated flow
 
 ```text
@@ -84,3 +86,5 @@ Mandate: ISSUED ── execute once ─> DISPATCHED ── receipt match ─> AP
 ## Deployed proof
 
 The independent claimant `0xF526…6276` opened and dispatched the successful case; governance is `0x8D4E…Bf0f`. Validators matched both authority digests and agreed on the M8.8 event within approximately 1.04 seconds and nearby epicenters. The mandate reached `APPLIED` with `dispatch_count = 1`. Separate finalized transactions reject duplicate dispatch, direct target calls, malformed payloads, manipulated authority bytes, and expired execution. Full hashes and readbacks are in [E2E_RESULTS.md](./E2E_RESULTS.md).
+
+The active covenant is version 2. The successful applied mandate belongs to immutable version 1; version 2 supplies the five-minute TTL used by the finalized expiry rejection. Both versions remain visible because contract history is append-only.

@@ -1,10 +1,10 @@
-# VERIDUCT acceptance-response review
+# VERIDUCT implementation and verification review
 
 ## Purpose
 
-This document records the implementation, deployment, testing, and documentation work completed in response to the additional acceptance requirements. It is intended to let a reviewer reproduce every material claim without relying on screenshots, private infrastructure, or an unverifiable narrative.
+This document records the current implementation, deployment, testing, and public verification evidence. It lets a reviewer reproduce every material claim without screenshots, private infrastructure, or an unverifiable narrative.
 
-The corrected system is deployed on GenLayer Studionet (`chainId 61999`) and exposed through [https://veri-duct.vercel.app](https://veri-duct.vercel.app). The public browser verifier is [https://veri-duct.vercel.app/verification](https://veri-duct.vercel.app/verification).
+The system is deployed on GenLayer Studionet (`chainId 61999`) and exposed through [https://veri-duct.vercel.app](https://veri-duct.vercel.app). The public browser verifier is [https://veri-duct.vercel.app/verification](https://veri-duct.vercel.app/verification). The evidence below was re-audited on 12 October 2026: 42 Python tests passed, all five contract sources parsed and validated, the application typecheck passed, and the public deployment verifier passed 88 of 88 checks.
 
 ## Final deployed contracts
 
@@ -22,13 +22,13 @@ Deployment transaction hashes and deployed-source SHA-256 commitments are record
 
 ## 1. Independent evidence verification
 
-### Acceptance concern
+### Security requirement
 
-The earlier model allowed the covenant owner to select publisher identities while both bundled streams were served by the same application host. Separate wallet addresses established different onchain identities, but they did not prove separate monitoring systems, independent operators, or independently acquired measurements.
+Evidence must originate from independently operated authoritative systems rather than relying on wallet separation or application-hosted demonstration feeds.
 
-### Implemented correction
+### Current implementation
 
-The evidence model was replaced with a protocol-curated authority registry. `PublisherLedger.register_authority_source()` now records:
+The protocol uses a curated authority registry. `PublisherLedger.register_authority_source()` records:
 
 - a stable authority source key;
 - the authority's public name;
@@ -81,19 +81,19 @@ A syntactically valid snapshot was anchored with a false USGS digest. Validator 
 
 ### Accuracy boundary
 
-The documentation now states the precise guarantee. SHA-256 matching proves which exact bytes were retrieved from a registered authority URL. It does not independently certify the scientific accuracy of either authority. Measurement credibility comes from the originating authorities and material cross-authority agreement, not from VERIDUCT claiming to operate either measurement system.
+SHA-256 matching proves which exact bytes were retrieved from a registered authority URL. It does not independently certify the scientific accuracy of either authority. Measurement credibility comes from the originating authorities and material cross-authority agreement, not from VERIDUCT claiming to operate either measurement system.
 
 ---
 
 ## 2. Neutral enforcement and authorization
 
-### Acceptance concern
+### Security requirement
 
-The earlier workflow depended on the covenant owner for source selection, case creation and remedy execution. The same party could control the entire path or decline to initiate an otherwise valid breach claim.
+Eligible counterparties or permissionless participants must be able to initiate and complete a valid workflow without depending on the covenant owner.
 
-### Implemented correction
+### Current implementation
 
-`CovenantBook` now supports two explicit claim modes:
+`CovenantBook` supports two explicit claim modes:
 
 - `PERMISSIONLESS`: any address may open a conforming case.
 - `ALLOWLIST`: the owner and named counterparties may open cases.
@@ -117,13 +117,13 @@ When governance activates a newer covenant version, the previous version is not 
 
 ## 3. Prevention of repeated remedy execution
 
-### Acceptance concern
+### Security requirement
 
-The earlier `execute_mandate()` path allowed a second dispatch while a mandate was already `DISPATCHED`. Treating redispatch as a retry risked applying a consequence more than once.
+An issued remedy must produce at most one target dispatch, including when receipt delivery is delayed.
 
-### Implemented correction
+### Current implementation
 
-`MandateRouter.execute_mandate()` now requires status exactly `ISSUED`. Every other lifecycle state rejects before any target call:
+`MandateRouter.execute_mandate()` requires status exactly `ISSUED`. Every other lifecycle state rejects before any target call:
 
 - `DISPATCHED`;
 - `APPLIED`;
@@ -168,13 +168,13 @@ The successful mandate reached `APPLIED` with `dispatch_count = 1`. A second exe
 
 ## 4. Consistent mandate expiration
 
-### Acceptance concern
+### Security requirement
 
-Expiry was not enforced consistently across repeated dispatch attempts and later lifecycle paths.
+No expired mandate may reach the destination, regardless of its lifecycle history.
 
-### Implemented correction
+### Current implementation
 
-Expiry is now enforced at multiple layers:
+Expiry is enforced at multiple layers:
 
 - `MandateRouter.execute_mandate()` rejects an expired `ISSUED` mandate before target emission.
 - Every non-`ISSUED` state rejects before reaching the expiry-independent envelope path.
@@ -207,13 +207,13 @@ A second covenant version used a five-minute mandate TTL. An independent partici
 
 ## 5. Complete payload validation
 
-### Acceptance concern
+### Security requirement
 
-Remedy payloads needed complete validation of required fields, types, allowed values, addresses and amounts where applicable, covenant consistency, and modification resistance.
+Every remedy payload must satisfy its exact schema, covenant bounds, authorization envelope, and modification-resistance checks before dispatch.
 
-### Implemented correction
+### Current implementation
 
-Payload validation now occurs at three stages:
+Payload validation occurs at three stages:
 
 1. The Adjudicator calls the target's `validate_payload()` before storing a case.
 2. The Router calls `validate_payload()` again immediately before dispatch.
@@ -226,7 +226,7 @@ The deployed actions use exact schemas:
 The payload must contain exactly:
 
 ```json
-{"reason":"nonempty bounded string","until":1234567890}
+{"reason":"Independent USGS and EMSC catalogs confirm the covenant seismic threshold.","until":1791835293}
 ```
 
 `until` must be a true integer, not a Boolean or string, must be in the future, and must be no more than two hours ahead. Unknown or missing fields reject.
@@ -236,7 +236,7 @@ The payload must contain exactly:
 The payload must contain exactly:
 
 ```json
-{"queue":"all|payments|withdrawals","reason":"nonempty bounded string"}
+{"queue":"payments","reason":"Independent authority evidence requires enhanced review."}
 ```
 
 The queue is a strict enum and both strings have bounds.
@@ -264,11 +264,11 @@ The mandate record additionally freezes the requester, verdict digest and issue 
 
 ## 6. Contract and integration testing
 
-### Acceptance concern
+### Security requirement
 
-Earlier tests relied too heavily on simplified models and source-string assertions. They did not sufficiently execute the real five-contract path or accurately model mandate lifecycle behavior.
+Tests must execute the actual five-contract methods and lifecycle, while public deployment checks must verify real nondeterministic GenVM transactions and latest-final state.
 
-### Implemented correction
+### Current implementation
 
 `tests/integration/test_contract_workflow.py` imports and executes the actual contract classes from:
 
@@ -317,7 +317,7 @@ npm run build
 
 ### Corrected deployment
 
-All five corrected contracts were redeployed. Deployment, configuration and source commitments are recorded in `deployment-manifest.public.json`. `scripts/verify-deployment.mjs` checks:
+All five contracts are deployed. Deployment, configuration and source commitments are recorded in `deployment-manifest.public.json`. `scripts/verify-deployment.mjs` checks:
 
 - finalized deployment state;
 - successful GenVM execution;
@@ -337,7 +337,7 @@ All five corrected contracts were redeployed. Deployment, configuration and sour
 - production build identity; and
 - the browser-safe same-origin finalized-read path.
 
-The committed `verification-report.json` contains 88 passing checks.
+The committed `verification-report.json` was regenerated on 12 October 2026 and contains 88 of 88 passing checks.
 
 ### Successful end-to-end trace
 
@@ -439,4 +439,4 @@ The deployed consequence is deliberately bounded to the onchain `ServiceControl`
 
 ## Acceptance conclusion
 
-The corrected protocol no longer relies on same-host owner-selected evidence or owner-only initiation and execution. Validators independently retrieve exact records from USGS and EMSC, distinguish authentic corroboration from manipulated bytes, and issue only a digest-bound and expiring capability. The Router permits exactly one dispatch, recovery cannot redispatch, the target repeats authorization and schema checks, and every material success and rejection is represented by finalized Studionet evidence. The repository source, deployed contracts, tests, frontend and documentation are aligned and reproducibly verifiable.
+The deployed protocol uses independent USGS and EMSC authority records and permissionless initiation and execution. Validators independently retrieve exact records, distinguish authenticated corroboration from manipulated bytes, and issue only a digest-bound and expiring capability. The Router permits exactly one dispatch, recovery cannot redispatch, the target repeats authorization and schema checks, and every material success and rejection is represented by finalized Studionet evidence. The repository source, deployed contracts, tests, frontend and documentation are aligned and reproducibly verifiable.
