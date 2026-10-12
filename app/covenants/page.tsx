@@ -7,7 +7,7 @@ import { ADDRESSES, SERVICE_GOVERNANCE } from "@/lib/config";
 export default function Covenants() {
   const productionActions = JSON.stringify([
     {action_id:"ENTER_READ_ONLY",target:ADDRESSES.serviceControl,max_intensity:80,payload_schema_digest:"22b8255d4abed99e0afc2c27881e3a8999f02e192440aefda5f70d736d26b950"},
-    {action_id:"RAISE_REVIEW_THRESHOLD",target:ADDRESSES.serviceControl,max_intensity:70,payload_schema_digest:"63a29967edc6ce09e0e136a79b2af5842e8398699aefaac1fb132931bfa4a22d"},
+    {action_id:"RAISE_REVIEW_THRESHOLD",target:ADDRESSES.serviceControl,max_intensity:70,payload_schema_digest:"d228bbd387df5ce0b935c89e00da2f1aa2fb2149dab0202fe65999ce56d4a098"},
   ]);
   return <div className="page workspace">
     <WorkspaceHeader kicker="POLICY PLANE" title="Covenant composer" copy="Define the evidence quorum, semantic breach test, and every remedy envelope before a dispute exists."/>
@@ -15,18 +15,21 @@ export default function Covenants() {
       <section className="panel">
         <div className="panelHead"><div><small>VERSIONED POLICY</small><h2>Publish immutable covenant</h2></div><BookOpenText/></div>
         <TransactionForm address={ADDRESSES.covenantBook} method="publish_covenant" submitLabel="Publish covenant" requiredAccount={SERVICE_GOVERNANCE} presets={[{
-          label:"Governed availability covenant",
+          label:"Independent seismic covenant",
           workflow:"covenant",
           values:{
             covenant_key:"",
-            service_key:"veriduct-production-payments-api",
-            service_name:"VERIDUCT Production Payments API",
-            remedy_policy:"For this demonstration, when two approved separately owned publisher identities each supply authenticated fixture bytes reporting availability below 95 percent for the same 30-minute window, validators may authorize ServiceControl read-only mode at intensity no greater than 80 for no longer than the mandate expiry. This consequence applies only to the onchain demonstration adapter.",
-            evidence_policy:"Validators must fetch every frozen HTTPS evidence URL, hash the exact response bytes with SHA-256, match each digest to its anchored snapshot, confirm the contract-verified distinct registered publisher owners, and compare the reported availability, latency, errors, regions, observation times, and maintenance status against this covenant. Both demo feeds share one host and generator, so wallet independence must not be interpreted as independent measurement accuracy.",
-            publishers_json:'["provider-operations","independent-observer"]',
+            service_key:"veriduct-seismic-control",
+            service_name:"VERIDUCT Seismic Safety Control",
+            remedy_policy:"When the independently operated USGS and EMSC earthquake catalogs both identify the same seismic event at magnitude 8.0 or greater, with materially compatible origin time and location, validators may authorize ServiceControl read-only mode at intensity no greater than 80 for no more than two hours. This bounded consequence applies only to the deployed onchain demonstration adapter.",
+            evidence_policy:"Validators must independently fetch the exact USGS and EMSC authority URLs, hash the response bytes with SHA-256, match every anchored commitment, confirm distinct registered hosts and required authority classes, and compare event identity, magnitude, origin time, latitude, longitude, and depth. Missing, altered, unrelated, or materially conflicting authority records must fail closed and cannot produce BREACH_PROVEN.",
+            sources_json:'["usgs-origin","emsc-catalog"]',
+            required_source_classes_json:'["GOVERNMENT","INTERGOVERNMENTAL"]',
+            claim_mode:"PERMISSIONLESS",
+            claimants_json:"[]",
             actions_json:productionActions,
-            minimum_publishers:"2",
-            observation_max_age_minutes:"60",
+            minimum_sources:"2",
+            observation_max_age_minutes:"5256000",
             mandate_ttl_minutes:"30",
             activation_delay_minutes:"1",
           },
@@ -36,9 +39,12 @@ export default function Covenants() {
           {name:"service_name",label:"Service name"},
           {name:"remedy_policy",label:"Breach and proportionality policy",kind:"textarea"},
           {name:"evidence_policy",label:"Evidence-quality policy",kind:"textarea"},
-          {name:"publishers_json",label:"Approved publisher keys (JSON)",kind:"textarea",placeholder:'["status-primary","monitor-independent"]'},
+          {name:"sources_json",label:"Verified authority source keys (JSON)",kind:"textarea"},
+          {name:"required_source_classes_json",label:"Required authority classes (JSON)",kind:"textarea"},
+          {name:"claim_mode",label:"Claim initiation mode"},
+          {name:"claimants_json",label:"Authorized counterparties for allowlist mode (JSON)",kind:"textarea"},
           {name:"actions_json",label:"Allowed remedies (JSON)",kind:"textarea",placeholder:'[{"action_id":"ENTER_READ_ONLY","target":"0x…","max_intensity":100,"payload_schema_digest":"…"}]'},
-          {name:"minimum_publishers",label:"Minimum distinct publishers",kind:"number",initial:"2"},
+          {name:"minimum_sources",label:"Minimum independent sources",kind:"number",initial:"2"},
           {name:"observation_max_age_minutes",label:"Maximum observation age",kind:"number",initial:"60"},
           {name:"mandate_ttl_minutes",label:"Mandate TTL",kind:"number",initial:"30"},
           {name:"activation_delay_minutes",label:"Activation delay",kind:"number",initial:"60"},

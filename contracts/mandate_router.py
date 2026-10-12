@@ -6,14 +6,11 @@ import re
 from datetime import datetime, timezone
 from genlayer import *
 
-
 def _now() -> int:
     return int(datetime.now(timezone.utc).timestamp())
 
-
 def _address_hex(value) -> str:
     return value.as_hex if hasattr(value, "as_hex") else Address(value).as_hex
-
 
 class MandateRouter(gl.Contract):
     deployer: str
@@ -34,6 +31,15 @@ class MandateRouter(gl.Contract):
 
     def _digest(self, payload: dict) -> str:
         return hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+
+    def _payload(self, payload_json) -> tuple:
+        try:
+            payload = payload_json if isinstance(payload_json, dict) else json.loads(payload_json)
+        except Exception:
+            raise gl.vm.UserError("payload must be valid JSON")
+        if not isinstance(payload, dict):
+            raise gl.vm.UserError("payload must be a JSON object")
+        return payload, json.dumps(payload, sort_keys=True, separators=(",", ":"))
 
     @gl.public.write
     def bind_adjudicator(self, address: str) -> str:
@@ -62,7 +68,7 @@ class MandateRouter(gl.Contract):
         return action
 
     @gl.public.write
-    def issue_mandate(self, mandate_key: str, case_key: str, holder: str, target: str, action_id: str, intensity: int, payload_json: str, payload_schema_digest: str, covenant_digest: str, verdict_digest: str, ttl_seconds: int) -> str:
+    def issue_mandate(self, mandate_key: str, case_key: str, requester: str, target: str, action_id: str, intensity: int, payload_json: str, payload_schema_digest: str, covenant_digest: str, verdict_digest: str, ttl_seconds: int) -> str:
         if not self.adjudicator_address or gl.message.sender_address.as_hex != self.adjudicator_address:
             raise gl.vm.UserError("only bound adjudicator may issue mandates")
         key = self._key(mandate_key)
@@ -77,23 +83,15 @@ class MandateRouter(gl.Contract):
             raise gl.vm.UserError("adapter binding mismatch")
         if int(intensity) < 1 or int(intensity) > 100 or int(ttl_seconds) < 60 or int(ttl_seconds) > 7200:
             raise gl.vm.UserError("mandate bounds invalid")
-        try:
-            payload = payload_json if isinstance(payload_json, dict) else json.loads(payload_json)
-        except Exception:
-            raise gl.vm.UserError("payload must be canonical JSON")
-        canonical_payload = json.dumps(payload, sort_keys=True, separators=(",", ":"))
-        envelope = {
-            "case_key": case_key, "covenant_digest": covenant_digest, "target": target_hex,
-            "action_id": action_id, "intensity": int(intensity), "payload_json": canonical_payload,
-            "payload_schema_digest": payload_schema_digest,
-        }
+        _, canonical_payload = self._payload(payload_json)
+        target_contract = gl.get_contract_at(Address(target_hex))
+        if not bool(target_contract.view().validate_payload(action_id, int(intensity), canonical_payload)):
+            raise gl.vm.UserError("payload failed target schema validation")
         now = _now()
+        expires_at = now + int(ttl_seconds)
+        envelope = {"case_key": case_key, "covenant_digest": covenant_digest, "target": target_hex, "action_id": action_id, "intensity": int(intensity), "payload_json": canonical_payload, "payload_schema_digest": payload_schema_digest, "expires_at": expires_at}
         record = dict(envelope)
-        record.update({
-            "mandate_key": key, "holder": Address(holder).as_hex, "verdict_digest": verdict_digest,
-            "action_digest": self._digest(envelope), "issued_at": now, "expires_at": now + int(ttl_seconds),
-            "status": "ISSUED", "dispatch_count": 0,
-        })
+        record.update({"mandate_key": key, "requester": Address(requester).as_hex, "verdict_digest": verdict_digest, "action_digest": self._digest(envelope), "issued_at": now, "status": "ISSUED", "dispatch_count": 0, "dispatch_tx_state": "NOT_SENT"})
         self.mandates[key] = json.dumps(record, sort_keys=True)
         self.mandate_keys.append(key)
         return key
@@ -104,32 +102,29 @@ class MandateRouter(gl.Contract):
         if not raw:
             raise gl.vm.UserError("mandate not found")
         record = json.loads(raw)
-        if gl.message.sender_address.as_hex != record["holder"]:
-            raise gl.vm.UserError("only mandate holder may execute")
-        if record["status"] == "APPLIED":
-            raise gl.vm.UserError("mandate already applied")
-        if record["status"] == "ISSUED" and _now() > int(record["expires_at"]):
+        if record["status"] != "ISSUED":
+            raise gl.vm.UserError("mandate is not executable from its current state")
+        if _now() > int(record["expires_at"]):
+            record["status"] = "EXPIRED"
+            self.mandates[mandate_key] = json.dumps(record, sort_keys=True)
             raise gl.vm.UserError("mandate expired")
-        decoded_payload = payload_json if isinstance(payload_json, dict) else json.loads(payload_json)
-        if not isinstance(decoded_payload, dict):
-            raise gl.vm.UserError("payload must be a JSON object")
-        canonical_payload = json.dumps(decoded_payload, sort_keys=True, separators=(",", ":"))
-        envelope = {
-            "case_key": record["case_key"], "covenant_digest": record["covenant_digest"],
-            "target": _address_hex(target), "action_id": action_id, "intensity": int(intensity),
-            "payload_json": canonical_payload, "payload_schema_digest": record["payload_schema_digest"],
-        }
+        _, canonical_payload = self._payload(payload_json)
+        envelope = {"case_key": record["case_key"], "covenant_digest": record["covenant_digest"], "target": _address_hex(target), "action_id": action_id, "intensity": int(intensity), "payload_json": canonical_payload, "payload_schema_digest": record["payload_schema_digest"], "expires_at": int(record["expires_at"])}
         if self._digest(envelope) != record["action_digest"]:
             raise gl.vm.UserError("mandate envelope digest mismatch")
         adapter = json.loads(self.adapters.get(action_id, "{}"))
-        if adapter.get("target") != envelope["target"]:
+        if adapter.get("target") != envelope["target"] or adapter.get("payload_schema_digest") != record["payload_schema_digest"]:
             raise gl.vm.UserError("live adapter route mismatch")
-        record["status"] = "DISPATCHED"
-        record["dispatch_count"] = int(record["dispatch_count"]) + 1
-        record["dispatched_at"] = record.get("dispatched_at", _now())
-        self.mandates[mandate_key] = json.dumps(record, sort_keys=True)
         target_contract = gl.get_contract_at(Address(envelope["target"]))
-        target_contract.emit(on="finalized").apply_mandate(action_id, int(intensity), canonical_payload, mandate_key, record["action_digest"], record["holder"])
+        if not bool(target_contract.view().validate_payload(action_id, int(intensity), canonical_payload)):
+            raise gl.vm.UserError("payload failed target schema validation")
+        record["status"] = "DISPATCHED"
+        record["dispatch_count"] = 1
+        record["dispatch_tx_state"] = "FINALITY_PENDING"
+        record["dispatcher"] = gl.message.sender_address.as_hex
+        record["dispatched_at"] = _now()
+        self.mandates[mandate_key] = json.dumps(record, sort_keys=True)
+        target_contract.emit(on="finalized").apply_mandate(action_id, int(intensity), canonical_payload, mandate_key, record["action_digest"], record["case_key"], record["covenant_digest"], int(record["expires_at"]))
         return action_id
 
     @gl.public.write
@@ -138,15 +133,27 @@ class MandateRouter(gl.Contract):
         if not raw:
             raise gl.vm.UserError("mandate not found")
         record = json.loads(raw)
-        if gl.message.sender_address.as_hex != record["holder"]:
-            raise gl.vm.UserError("only mandate holder may reconcile")
+        if record["status"] not in ("DISPATCHED", "APPLIED", "FAILED", "EXPIRED"):
+            raise gl.vm.UserError("mandate has not been dispatched")
         if record["status"] == "DISPATCHED":
             target = gl.get_contract_at(Address(record["target"]))
-            if str(target.view().get_applied_mandate_digest(mandate_key)) == record["action_digest"]:
+            receipt = str(target.view().get_applied_mandate_digest(mandate_key))
+            if receipt == record["action_digest"]:
                 record["status"] = "APPLIED"
+                record["dispatch_tx_state"] = "RECEIPT_CONFIRMED"
                 record["applied_at"] = _now()
-                self.mandates[mandate_key] = json.dumps(record, sort_keys=True)
+            elif receipt:
+                record["status"] = "FAILED"
+                record["dispatch_tx_state"] = "CONFLICTING_RECEIPT"
+            elif _now() > int(record["expires_at"]):
+                record["status"] = "EXPIRED"
+                record["dispatch_tx_state"] = "NO_RECEIPT_BEFORE_EXPIRY"
+            self.mandates[mandate_key] = json.dumps(record, sort_keys=True)
         return record["status"]
+
+    @gl.public.write
+    def recover_dispatch(self, mandate_key: str) -> str:
+        return self.reconcile_mandate(mandate_key)
 
     @gl.public.view
     def get_adapter_json(self, action_id: str) -> str:

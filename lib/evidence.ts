@@ -1,49 +1,32 @@
-export function parseObservationTime(value: string): number | null {
-  const observedAt = Number(value);
-  return Number.isSafeInteger(observedAt) && observedAt > 0 ? observedAt : null;
-}
-
-export function providerEvidence(observedAt: number) {
-  return {
-    service: "VERIDUCT Production Payments API",
-    publisher: "provider-operations",
-    observed_at: observedAt,
-    window_minutes: 30,
-    availability_percent: 91.4,
-    p95_latency_ms: 4820,
-    error_rate_percent: 8.6,
-    status: "major_outage",
-    regions_affected: ["lagos-edge", "accra-edge"],
-    maintenance_scheduled: false,
-  };
-}
-
-export function monitorEvidence(observedAt: number) {
-  return {
-    service: "VERIDUCT Production Payments API",
-    publisher: "independent-observer",
-    observed_at: observedAt,
-    window_minutes: 30,
-    successful_checks: 274,
-    total_checks: 300,
-    availability_percent: 91.33,
-    median_latency_ms: 3910,
-    status: "degraded",
-    finding: "Sustained availability below 95 percent across two independent regions.",
-  };
-}
-
 export const evidenceProvenance = {
-  classification: "DEMONSTRATION_FIXTURE",
-  measurement_independence: false,
-  publisher_identity_independence: true,
-  hosting_independence: false,
-  operator: "VERIDUCT demonstration application",
-  collection_method: "Deterministic synthetic JSON generated from the requested observation timestamp",
-  accuracy_claim: "No claim of independently acquired production telemetry or real payments-service measurements",
-  authentication_guarantee: "The onchain snapshot and validator fetch authenticate exact response bytes, URL origin, publisher wallet, and freshness; they do not prove measurement accuracy",
-  feeds: {
-    provider: "/api/evidence/provider/{unix_timestamp}",
-    corroborator: "/api/evidence/monitor/{unix_timestamp}",
+  classification: "INDEPENDENT_AUTHORITATIVE_RECORDS",
+  measurement_independence: true,
+  publisher_identity_independence: null,
+  hosting_independence: true,
+  event: {
+    name: "M8.8 2025 Kamchatka Peninsula earthquake",
+    usgs_event_id: "us6000qw60",
+    emsc_source_id: "1838723",
+    usgs_origin_time: "2025-07-29T23:24:52Z",
+    emsc_origin_time: "2025-07-29T23:24:51.44Z",
+  },
+  collection_method: "Validators independently fetch exact event records from the separately operated USGS and EMSC public authority endpoints",
+  authentication_guarantee: "Each snapshot binds the authority registry entry, HTTPS host and path scope, exact URL, source class, event time, and SHA-256 response digest",
+  accuracy_claim: "VERIDUCT does not originate either measurement. It proves exact retrieval and requires material cross-authority agreement; the scientific catalogs remain responsible for their measurements",
+  sources: {
+    usgs: {
+      operator: "United States Geological Survey",
+      class: "GOVERNMENT",
+      host: "earthquake.usgs.gov",
+      provenance: "https://www.usgs.gov/programs/earthquake-hazards",
+      event: "https://earthquake.usgs.gov/earthquakes/eventpage/us6000qw60/executive",
+    },
+    emsc: {
+      operator: "Euro-Mediterranean Seismological Centre",
+      class: "INTERGOVERNMENTAL",
+      host: "www.seismicportal.eu",
+      provenance: "https://www.emsc-csem.org/",
+      mapping: "https://www.seismicportal.eu/eventid/",
+    },
   },
 } as const;

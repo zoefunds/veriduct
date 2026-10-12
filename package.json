@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "test": "pytest tests/unit -q",
+    "test": "pytest tests -q",
     "test:contracts": "node scripts/check-contracts.mjs",
     "check": "npm run typecheck && npm test && npm run test:contracts",
     "verify:deployment": "node scripts/verify-deployment.mjs",

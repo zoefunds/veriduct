@@ -7,7 +7,7 @@ import { ADDRESSES } from "@/lib/config";
 import { readContract } from "@/lib/genlayer";
 
 const READ_ONLY_SCHEMA="22b8255d4abed99e0afc2c27881e3a8999f02e192440aefda5f70d736d26b950";
-const REVIEW_SCHEMA="63a29967edc6ce09e0e136a79b2af5842e8398699aefaac1fb132931bfa4a22d";
+const REVIEW_SCHEMA="d228bbd387df5ce0b935c89e00da2f1aa2fb2149dab0202fe65999ce56d4a098";
 
 export default function Service(){
   const [data,setData]=useState<Record<string,unknown>|null>(null); const [error,setError]=useState("");

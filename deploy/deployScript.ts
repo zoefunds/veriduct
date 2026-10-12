@@ -5,7 +5,7 @@ import type { DecodedDeployData, GenLayerClient, TransactionHash } from "genlaye
 const CHAIN_ID = 61999;
 const RPC = "https://studio.genlayer.com/api";
 const READ_ONLY_SCHEMA = "22b8255d4abed99e0afc2c27881e3a8999f02e192440aefda5f70d736d26b950";
-const REVIEW_SCHEMA = "63a29967edc6ce09e0e136a79b2af5842e8398699aefaac1fb132931bfa4a22d";
+const REVIEW_SCHEMA = "d228bbd387df5ce0b935c89e00da2f1aa2fb2149dab0202fe65999ce56d4a098";
 const code = (name: string) => new Uint8Array(readFileSync(path.resolve(process.cwd(), "contracts", name)));
 
 async function final(client: GenLayerClient<any>, hash: TransactionHash) {
@@ -29,7 +29,9 @@ export default async function main(client: GenLayerClient<any>) {
   if (Number(client.chain?.id) !== CHAIN_ID) throw new Error(`VERIDUCT deploys only to stable Studionet ${CHAIN_ID}`);
   await client.initializeConsensusSmartContract();
   const publisherLedger = await deploy(client, "publisher_ledger.py");
-  const covenantBook = await deploy(client, "covenant_book.py");
+  const usgsSourceTx = await write(client, publisherLedger.address, "register_authority_source", ["usgs-origin", "United States Geological Survey Earthquake Hazards Program", "earthquake.usgs.gov", "/product/origin/", "GOVERNMENT", "https://www.usgs.gov/programs/earthquake-hazards"]);
+  const emscSourceTx = await write(client, publisherLedger.address, "register_authority_source", ["emsc-catalog", "Euro-Mediterranean Seismological Centre", "www.seismicportal.eu", "/fdsnws/event/1/query", "INTERGOVERNMENTAL", "https://www.emsc-csem.org/"]);
+  const covenantBook = await deploy(client, "covenant_book.py", [publisherLedger.address]);
   const mandateRouter = await deploy(client, "mandate_router.py");
   const adjudicator = await deploy(client, "adjudicator.py", [publisherLedger.address, covenantBook.address, mandateRouter.address]);
   const bindAdjudicatorTx = await write(client, mandateRouter.address, "bind_adjudicator", [adjudicator.address]);
@@ -39,5 +41,5 @@ export default async function main(client: GenLayerClient<any>) {
   const contracts = { publisherLedger: publisherLedger.address, covenantBook: covenantBook.address, adjudicator: adjudicator.address, mandateRouter: mandateRouter.address, serviceControl: serviceControl.address };
   const env = [`NEXT_PUBLIC_GENLAYER_CHAIN_ID=${CHAIN_ID}`,`NEXT_PUBLIC_GENLAYER_RPC_URL=${RPC}`,"NEXT_PUBLIC_GENLAYER_EXPLORER=https://explorer-studio.genlayer.com",...Object.entries(contracts).map(([k,v])=>`NEXT_PUBLIC_${k.replace(/[A-Z]/g,m=>`_${m}`).toUpperCase()}_ADDRESS=${v}`),""];
   writeFileSync(path.resolve(".env.generated"), env.join("\n"));
-  writeFileSync(path.resolve("deployment-manifest.generated.json"), JSON.stringify({ project:"VERIDUCT",network:"studionet",chainId:CHAIN_ID,rpc:RPC,contracts,deploymentTransactions:{publisherLedger:publisherLedger.txId,covenantBook:covenantBook.txId,mandateRouter:mandateRouter.txId,adjudicator:adjudicator.txId,serviceControl:serviceControl.txId},bindAdjudicatorTx,adapterRegistrationTransactions:{ENTER_READ_ONLY:enterReadOnlyTx,RAISE_REVIEW_THRESHOLD:raiseReviewThresholdTx},generatedAt:new Date().toISOString() },null,2)+"\n");
+  writeFileSync(path.resolve("deployment-manifest.generated.json"), JSON.stringify({ project:"VERIDUCT",network:"studionet",chainId:CHAIN_ID,rpc:RPC,contracts,deploymentTransactions:{publisherLedger:publisherLedger.txId,covenantBook:covenantBook.txId,mandateRouter:mandateRouter.txId,adjudicator:adjudicator.txId,serviceControl:serviceControl.txId},authoritySourceTransactions:{USGS:usgsSourceTx,EMSC:emscSourceTx},bindAdjudicatorTx,adapterRegistrationTransactions:{ENTER_READ_ONLY:enterReadOnlyTx,RAISE_REVIEW_THRESHOLD:raiseReviewThresholdTx},generatedAt:new Date().toISOString() },null,2)+"\n");
 }

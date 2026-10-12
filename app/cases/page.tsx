@@ -2,7 +2,7 @@ import { Gavel, ScanSearch } from "lucide-react";
 import { TransactionForm } from "@/components/TransactionForm";
 import { WorkspaceHeader } from "@/components/WorkspaceHeader";
 import { ChainRecords } from "@/components/ChainRecords";
-import { ADDRESSES, SERVICE_GOVERNANCE } from "@/lib/config";
+import { ADDRESSES } from "@/lib/config";
 
 export default function Cases() {
   return <div className="page workspace">
@@ -10,7 +10,7 @@ export default function Cases() {
     <div className="split caseSplit">
       <section className="panel">
         <div className="panelHead"><div><small>FREEZE ENVELOPE</small><h2>Open covenant case</h2></div><ScanSearch/></div>
-        <TransactionForm address={ADDRESSES.adjudicator} method="open_case" submitLabel="Open case" requiredAccount={SERVICE_GOVERNANCE} presets={[{label:"Verified outage case",workflow:"case"}]} fields={[
+        <TransactionForm address={ADDRESSES.adjudicator} method="open_case" submitLabel="Open permissionless case" presets={[{label:"Verified seismic case",workflow:"case"}]} fields={[
           {name:"case_key",label:"Case key"},
           {name:"covenant_key",label:"Active covenant key"},
           {name:"action_id",label:"Requested remedy"},
@@ -28,7 +28,7 @@ export default function Cases() {
         </section>
         <section className="panel compactAction">
           <div className="panelHead"><div><small>NONDETERMINISTIC DECISION</small><h2>Adjudicate case</h2></div></div>
-          <TransactionForm address={ADDRESSES.adjudicator} method="adjudicate" submitLabel="Run validator adjudication" presets={[{label:"Latest production case",workflow:"adjudicate"}]} fields={[{name:"case_key",label:"Open case key"}]}/>
+          <TransactionForm address={ADDRESSES.adjudicator} method="adjudicate" submitLabel="Run validator adjudication" presets={[{label:"Latest seismic case",workflow:"adjudicate"}]} fields={[{name:"case_key",label:"Open case key"}]}/>
         </section>
       </div>
     </div>

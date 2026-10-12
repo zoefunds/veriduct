@@ -1,117 +1,19 @@
 {
-  "project": "VERIDUCT",
-  "network": "studionet",
-  "chainId": 61999,
-  "rpc": "https://studio.genlayer.com/api",
-  "explorer": "https://explorer-studio.genlayer.com",
-  "application": "https://veri-duct.vercel.app",
-  "evidenceProvenance": {
-    "classification": "DEMONSTRATION_FIXTURE",
-    "publisherIdentityIndependence": true,
-    "measurementIndependence": false,
-    "hostingIndependence": false,
-    "operator": "VERIDUCT demonstration application",
-    "disclosureEndpoint": "https://veri-duct.vercel.app/api/provenance",
-    "accuracyClaim": "No claim of independently acquired production telemetry or measurements from an externally operated payments service"
-  },
-  "productionDeployment": {
-    "provider": "vercel",
-    "deploymentId": "dpl_5bVfyELrxG1rbCE5rzVVQad53ft4",
-    "sourceCommit": "dd1001c2ac17b1eefd17cf84365ccd307065d307",
-    "createdAt": "2026-10-11T17:48:03.788Z",
-    "readyAt": "2026-10-11T17:48:24.882Z"
-  },
-  "contracts": {
-    "publisherLedger": "0x5834e07BEd3Efa9038C66cb6dEBd1BAA5A702d43",
-    "covenantBook": "0x380a776a5895647b4D82103a47ba1d4E3e9d0338",
-    "adjudicator": "0xA50886124A3Ed027dc56dd37c0f658677320430b",
-    "mandateRouter": "0x8f18685a77ED80BE9B8A18c484f8380a206A77F0",
-    "serviceControl": "0x333B99f2cd961C1B6C34EcEA88996D64f325Be3f"
-  },
-  "deploymentTransactions": {
-    "publisherLedger": "0x1596d11ce07439a85f52ba315c7c72ba23766b2d6e47fc217f7c356e7eb1d4d8",
-    "covenantBook": "0xf6acc8a65a78c04bd3adfdeb94a8ba12bb76e7c9835438a59b02ee8d04a08415",
-    "mandateRouter": "0x1d77ea4426bd3a105af0b7d7d00ad81513c137a91a31a5f6013fd3c6387bfb63",
-    "adjudicator": "0xc9aebc9ba317d8b6716f55df0e64fdc9b2c7b4777ada0536890a1a8aad752155",
-    "serviceControl": "0x28d7452bcccffc1944ccc8d62aacf43d4b72e0346d3a25265e3366ebee4c3ded"
-  },
-  "deployedSourceSha256": {
-    "publisherLedger": "8067a3361108c50916106be798a2e6c674b60533e77c93aa949b0f8a50536527",
-    "covenantBook": "3f4e06cba4ba2cfb3a2f6d6f683a14c386cfe3fb51cdd9dd246e30c702875ce8",
-    "adjudicator": "0313e1b5a8f0e7f1a373e082facbdf0bfd33b56c02ba5991f0299a36fd0b5636",
-    "mandateRouter": "d9e974be0e74a4eaaa99efc4431e01ebedef4a371225c5b5a0eef4494be6803a",
-    "serviceControl": "44cfca5e601b3b3256d63f3594b570ec3497da55c483370ab72471074c4372af"
-  },
-  "bindAdjudicatorTransaction": "0x470f192d2fe6a6582f676cde5c267d4a67fb44b9db6d37aadc995df7e5006570",
-  "adapterRegistrationTransactions": {
-    "ENTER_READ_ONLY": "0xd60a516e2afa373e227e04af86808f848db35af927126aebffd174ba082532a6",
-    "RAISE_REVIEW_THRESHOLD": "0xbc62e0e318fd42237e3d49159f5c2e0219d1f53605b4151877f898ae9be0e126"
-  },
-  "productionBootstrapTransactions": {
-    "providerRegistration": "0x9fb8c86b9add00fa78c75a2e612e52eb93e98ce0803d4b0cba1f48b50c616025",
-    "independentMonitorRegistration": "0x0cdb82844b59e15b2db7a24d332889b6cfcc02ba54f16b63a282fe01b95927f8",
-    "covenantPublish": "0x0f50b6fd8e2839152957bc05a17aa610c1ac03231600e4698b8e429882fb8ef5",
-    "covenantActivation": "0xeb4dec5f9421b623a558eac03b10915807ec9e6463cfb9045455abd295e700cc"
-  },
-  "verifiedProductionFlow": {
-    "providerSnapshot": "0x6823eaae175d14d14120569acf452ae67ffa385c556ad5d968a115186d8d7e99",
-    "monitorSnapshot": "0x0d8e6729d37e1f3fae97f229d3c401da89c25a6319ca7a336c442874125d87a8",
-    "caseOpen": "0xd9661897556d97f3e1ea6d75c5335a3056cac880244a71e67f0de0eeaec4174d",
-    "adjudication": "0x5e878cfadeb9a5d705f06619095aa203c0a03e78caa5855771bc1ec6b7655742",
-    "tamperedEnvelopeRejection": "0x47a453f75f42616a97149d63ecd09f885620ac0b61145280abf231fb3ef0a3ae",
-    "mandateExecution": "0xf56531015074d4d202178730d7d73c13facb600b10a7258cb4a964da649b8ed1",
-    "mandateReconciliation": "0xd4f5e5277b221dcf92be10f1dde3665f6b7a6df50d936d048573c862515db06c",
-    "directAdapterRejection": "0xa5a827bdadf7b3eed1ea93eeeb678043130c2e4cfa26c0fa4d6bb4dd169863cd",
-    "readOnlyOperationRejection": "0xf2b2807c13ed374365262f3ef08304bced74ecb4a94505d60b7bc06eb9c69593",
-    "unauthorizedCaseRejection": "0x1ec8111ec0a6c1a08260a94b89c328b177d5f90a57cf458150c0608e2e19da60"
-  },
-  "activeProductionPolicy": {
-    "serviceKey": "veriduct-production-payments-api",
-    "covenantKey": "payments-api-availability-v4",
-    "version": 4,
-    "covenantDigest": "13ac39b7fc9c8d426d388dd780203158f2c428fbb936c2730e77ebf8bb3c5a05",
-    "publisherKeys": [
-      "provider-operations",
-      "independent-observer"
-    ],
-    "minimumDistinctPublishers": 2,
-    "observationMaxAgeMinutes": 60,
-    "activationDelayMinutes": 1,
-    "mandateTtlMinutes": 30,
-    "actions": {
-      "ENTER_READ_ONLY": {
-        "maxIntensity": 80,
-        "payloadSchemaDigest": "22b8255d4abed99e0afc2c27881e3a8999f02e192440aefda5f70d736d26b950"
-      },
-      "RAISE_REVIEW_THRESHOLD": {
-        "maxIntensity": 70,
-        "payloadSchemaDigest": "63a29967edc6ce09e0e136a79b2af5842e8398699aefaac1fb132931bfa4a22d"
-      }
-    }
-  },
-  "verifiedCase": {
-    "caseKey": "production-outage-bounded-1791733886",
-    "caseDigest": "4e859ed60950b41b2bd845c96812cc828fbbf2648f5c84188e29603956f2cc47",
-    "decision": "BREACH_PROVEN",
-    "verdictDigest": "188f24a7436da44489d7efdc690f18826aa31a230b454ac543a0a35732432dec",
-    "mandateKey": "MANDATE-production-outage-bounded-1791733886",
-    "actionDigest": "7e68d4f425821c46cf2d64f8cf495b5229b706cca8d65907d59126d49feba01f",
-    "mandateStatus": "APPLIED",
-    "dispatchCount": 1
-  },
-  "verifiedServiceStateSnapshot": {
-    "readOnly": false,
-    "readOnlyUntil": 1791736086,
-    "reviewThreshold": 0,
-    "operationCount": 0,
-    "appliedMandateCount": 1,
-    "observedAt": "2026-10-11T16:25:00.000Z"
-  },
-  "enforcementScope": {
-    "target": "ServiceControl demonstration adapter",
-    "externalPaymentsServiceConnected": false,
-    "guarantee": "Read-only enforcement applies only to operations submitted to the deployed ServiceControl contract"
-  },
-  "deployer": "0x8d4e752ae688c21ec7c7d4d8a232b5e0700dbf0f",
-  "manifestLastAuditedAt": "2026-10-11T17:56:10.000Z"
+  "project": "VERIDUCT", "network": "studionet", "chainId": 61999,
+  "rpc": "https://studio.genlayer.com/api", "explorer": "https://explorer-studio.genlayer.com", "application": "https://veri-duct.vercel.app",
+  "evidenceProvenance": {"classification":"INDEPENDENT_AUTHORITATIVE_RECORDS","measurementIndependence":true,"hostingIndependence":true,"operators":["United States Geological Survey","Euro-Mediterranean Seismological Centre"],"authenticationGuarantee":"Exact HTTPS response bytes match frozen SHA-256 commitments and registered authority scopes","accuracyBoundary":"Authentication proves retrieved bytes; cross-authority agreement supports adjudication, while each scientific authority remains responsible for measurement accuracy"},
+  "contracts": {"publisherLedger":"0x808AB67377B2C6BD4952A3b0EB42fCB356bD71C1","covenantBook":"0x361a62D7edC2c8E92dBa3D81D074652d5E351eF1","adjudicator":"0xEFd6E0eAC443bfd33678E64124977Cc04609598F","mandateRouter":"0xFeFBcD034a624C9f5aDFF4f85651E5dec65a1B82","serviceControl":"0xb08e6dd9C756ecbbF07eE8254C60B5D7cFd43169"},
+  "deploymentTransactions": {"publisherLedger":"0x85253a0f2662c1502e540214e26c93cf47450b351cf3cd7609b8973664c6ddfb","covenantBook":"0xa2a876644b42aefa1a5b82bb69697fcd4a27cab47d01275faffd8d77df18d4d9","mandateRouter":"0xf384590fd34ad557060f9ecce4ca4caaa78b2200ee53470ba4e5e0f2b9d9e0c2","adjudicator":"0xe9974edbf3f56748720753d31a52cd17313d9882b6cfe75d713963d1c9135370","serviceControl":"0x597a3da0d844eef986a9e324e47feaf7ce85a877b5101ac12ed4ca58c45f31ac"},
+  "deployedSourceSha256": {"publisherLedger":"4f8c47f851a3607529d71e1a1a526c274081fc99342d49379f8631f895b18df3","covenantBook":"c932fbb02f13c0d33ae799578eff8b8cb27c204829c3650fa3062f2f5d5a0050","adjudicator":"eb94b9106a09bb2e22c9559bda06de58dcb414b14edc9f4270b27b7e49b36863","mandateRouter":"19d4cfc69e2cb977be1805526f61da5ee6f4d428f06d368897370931b66bd39a","serviceControl":"832e0fe73b435b705ebb8e86c8267b341023bd4cfa40a3d389edbc2181615955"},
+  "authorityRegistrationTransactions": {"USGS":"0x5676d3dca2b27d994e875520f956f8dbaf17f015ad2612ae5a70ebf97b455f3d","EMSC":"0xd43ae0e936866166725537bcba05c278edf24ae023b4ad288dd16e7e101dc21a"},
+  "bindAdjudicatorTransaction": "0x22355080c9e499f67fd6ecc2d0accf9b1136db29fd49ee15e5327680a23dc3cd",
+  "adapterRegistrationTransactions": {"ENTER_READ_ONLY":"0x0bc0b224a9fa8c4f88c90057dc6f9fdc9eebf88ee64e784386f3f23d2238d405","RAISE_REVIEW_THRESHOLD":"0xe2b0f7bf8e3398fcba34caa6fa900c479c72ec6f777cb705835e373ed1ea901c"},
+  "bootstrapTransactions": {"usgsSnapshot":"0x37f9c7e4bddd546ac285cbfc4d66165d6bf9c05e126b188dd8373c485dd8edd8","emscSnapshot":"0x69a3f49fc6c0ba1f9064b03a60707ca9268efc26252bb75bca0439d7a286f64f","covenantPublish":"0xbfb86aedaba8cc93f6074c32a85a4112180745fa367d41c67f79602f0db19b93","earlyActivationRejection":"0x2a6609bd2e1b7dcd4368a4150a902d17c2e30d8b2d2a48141bd882fb0705a153","covenantActivation":"0x3cb7d0716607c1d6747cf1b07dd7074724aaceab34ef52d2794a1ecf2a188c46"},
+  "verifiedFlow": {"caseOpen":"0x69718a54228943af28a459e6cfb35d24c4ffc083309ccad112d7a9367b76a922","adjudication":"0x5b626535efaff29218516c04114622f8f5794c4d82e920215ac948f854fd8105","mandateIssue":"0x3085fd6efa05281250be0b303664b5112fc33040ed8cdd895010508b9c5b2cd3","mandateExecution":"0x6f48e98145121d5a7a43713a217438bf57ae4eb825a6e0acf46b17cfaab61d2f","targetApplication":"0x87c4665f8b9a97928c537f5b11e073f2cdf06c40c54ee542fc0e576d1dbd78ef","mandateReconciliation":"0xa0597167c431e2535d2f6740ae396be3f0d16ddd55b47cc3132c12564d8f7b47"},
+  "negativeTests": {"duplicateDispatch":"0x95ce0605c5dc3693d412d49c589e8ba77e9f4abb97090233d08030fdc4c8ac80","directAdapterCall":"0x4a903579a558f2d19daf8b4192f63e26de45576ee2a6d5aae884f566fffade5a","malformedPayload":"0xf61957d92a0a6d6814c2d7866dae406b96a8d994a274b738e8cdc90bd9c6ad02","manipulatedAnchor":"0xe5c2a1356a1f710da9f3af1b26940fce717f7754364cf0f96db1b9c9805cb4e0","manipulatedCaseOpen":"0x78e5b6aba5262ccbf41d8ac623100d0a808bbb8a018d4de050c7329c23373665","manipulatedAdjudication":"0x4fc1dffda9c0a5aa5c41637665388d08378b3b9f0aafb8c1d4513550b6b3c8a7","shortTtlCovenantPublish":"0x6d778f2675756beaf7ee5e68e190630111f4b85e501d8e0d266801c0352c1851","shortTtlCovenantActivation":"0x7317ba9e0f9e2118e86ef7ce514f054f85b43fe56efb2a3f5b8bef5037b205d1","independentExpiryCaseOpen":"0x86f3d6b925e4876d134b052d294c95775ee74626cb7848bcdcdebf337303e22b","expiryCaseAdjudication":"0xe8c0693eca2d32bc5a82e14bb9525f1ade26987f7f4bd9c714be3760eab88b59","expiredMandateExecution":"0x78b54440080e30c0abf18d35889b9e8d5afb52a832d65de0569639cd7f1c8272"},
+  "activePolicy": {"serviceKey":"veriduct-seismic-safety","covenantKey":"seismic-safety-kamchatka-v2","version":2,"covenantDigest":"3727ddfea37a693378a8909609e625858add542fd5d0e570049fabab3d1e0fd7","claimMode":"PERMISSIONLESS","sourceKeys":["usgs-origin","emsc-catalog"],"requiredSourceClasses":["GOVERNMENT","INTERGOVERNMENTAL"],"minimumSources":2,"actions":{"ENTER_READ_ONLY":{"maxIntensity":80,"payloadSchemaDigest":"22b8255d4abed99e0afc2c27881e3a8999f02e192440aefda5f70d736d26b950"},"RAISE_REVIEW_THRESHOLD":{"maxIntensity":70,"payloadSchemaDigest":"d228bbd387df5ce0b935c89e00da2f1aa2fb2149dab0202fe65999ce56d4a098"}}},
+  "authoritySnapshots": {"usgs":{"snapshotKey":"usgs-kamchatka-2025-v1","sourceKey":"usgs-origin","url":"https://earthquake.usgs.gov/product/origin/us6000qw60/us/1760216255040/quakeml.xml","contentDigest":"8e91ad76139bae8bd9efc3935760ef5493d8d6a02d0d1d1a4cda10bab56331b7","observedAt":1753831492},"emsc":{"snapshotKey":"emsc-kamchatka-2025-v1","sourceKey":"emsc-catalog","url":"https://www.seismicportal.eu/fdsnws/event/1/query?catalog=EMSC-RTS&source_id=1838723&format=json","contentDigest":"9558eae3d2ea9b891602f148c57a116d6ca1b2c7c7c033631330d229e019556b","observedAt":1753831491}},
+  "verifiedCase": {"caseKey":"kamchatka-independent-claim-v1","caseDigest":"7c8b781d794c3696b92c92c10e3db33303570d4e9bea43b24e20f4c83b4caa9d","covenantKey":"seismic-safety-kamchatka-v1","covenantDigest":"7d6317c7325b38290a21fcb053d09c9ba31783168a672c7774a6d44622db3b8a","decision":"BREACH_PROVEN","verdictDigest":"93e508e8c3c1f56f35c031cd5f7c40c9e2df82541d921b8e031e1c71963343bd","mandateKey":"MANDATE-kamchatka-independent-claim-v1","actionDigest":"f5670335c784a761d77a09f65965a62e94a0914ea264c42f5fb0c8cd375c5b36","mandateStatus":"APPLIED","dispatchCount":1},
+  "enforcementScope": {"target":"deployed ServiceControl adapter","externalProductionServiceConnected":false,"guarantee":"The demonstrated consequence applies only to methods of the deployed ServiceControl contract"},
+  "deployer":"0x8d4e752ae688c21ec7c7d4d8a232b5e0700dbf0f", "independentClaimant":"0xF526ADbdEB5169e7CeA32c06EF69d7ce4a2D6276", "manifestLastAuditedAt":"2026-10-12T19:58:00.000Z"
 }

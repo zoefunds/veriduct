@@ -24,16 +24,17 @@ def test_action_router_is_not_hard_coded_to_target_methods():
     assert "if action_id ==" not in text
     assert "register_adapter" in text
 
-def test_distinct_publisher_quorum_is_enforced_before_consensus():
+def test_distinct_authority_quorum_is_enforced_before_consensus():
     text = source("adjudicator.py")
-    assert "each corroborating snapshot must have a distinct publisher" in text
-    assert 'len(publishers) < int(covenant["minimum_publishers"])' in text
-    assert "corroborating publishers must have distinct onchain owners" in text
+    assert "corroborating evidence must use distinct sources and authority hosts" in text
+    assert 'len(sources) < int(covenant["minimum_sources"])' in text
+    assert "required authority classes are not represented" in text
 
-def test_target_revalidates_governance_and_replay():
+def test_target_revalidates_expiry_schema_and_replay():
     text = source("service_control.py")
-    assert "service governance rejected mandate holder" in text
-    assert "mandate replay conflicts with applied digest" in text
+    assert "expired mandate cannot reach the adapter" in text
+    assert "malformed or unauthorized remedy payload" in text
+    assert "mandate already applied" in text
     assert "only MandateRouter may apply remedies" in text
 
 def test_router_accepts_cli_decoded_address_values():
@@ -52,28 +53,24 @@ def test_public_json_boundaries_accept_cli_decoded_objects():
     adjudicator = source("adjudicator.py")
     router = source("mandate_router.py")
     assert "payload_json if isinstance(payload_json, dict) else json.loads(payload_json)" in adjudicator
-    assert router.count("payload_json if isinstance(payload_json, dict) else json.loads(payload_json)") == 2
+    assert router.count("payload_json if isinstance(payload_json, dict) else json.loads(payload_json)") == 1
     assert 'raise gl.vm.UserError("payload must be a JSON object")' in router
 
-def test_semantic_prompt_receives_frozen_publisher_provenance():
+def test_semantic_prompt_receives_frozen_authority_provenance():
     text = source("adjudicator.py")
-    assert '"publisher_owner": snapshot["publisher_owner"]' in text
-    assert '"publisher_sequence": snapshot["publisher_sequence"]' in text
-    assert "all publisher keys and onchain publisher owners are distinct" in text
+    assert '"source_class": snapshot["source_class"]' in text
+    assert '"authority_uri": snapshot["authority_uri"]' in text
+    assert "distinct authority host" in text
     assert "Never omit or rename snapshot_states" in text
     assert 'isinstance(raw.get("states"), dict)' in text
 
-def test_demo_evidence_urls_are_canonical_contract_safe_paths():
-    form = (ROOT / "components" / "TransactionForm.tsx").read_text()
-    assert "api/evidence/${preset.evidence}/${observedAt}" in form
-    assert "api/evidence/${preset.evidence}?at=" not in form
-    sample = "https://veri-duct.vercel.app/api/evidence/provider/1791354622"
-    assert sample.startswith("https://")
-    assert not any(token in sample for token in ("@", "\\", "%", "?", "#"))
-    assert (ROOT / "app" / "api" / "evidence" / "provider" / "[at]" / "route.ts").is_file()
-    assert (ROOT / "app" / "api" / "evidence" / "monitor" / "[at]" / "route.ts").is_file()
+def test_authority_urls_are_scoped_by_host_and_path():
+    ledger = source("publisher_ledger.py")
+    assert 'host != source["origin_host"]' in ledger
+    assert 'not path.startswith(source["path_prefix"])' in ledger
+    assert "snapshot URL is outside verified authority scope" in ledger
 
-def test_governed_autofill_cannot_create_an_attacker_owned_covenant():
+def test_governed_policy_and_permissionless_claim_autofill_are_separated():
     config = (ROOT / "lib" / "config.ts").read_text()
     form = (ROOT / "components" / "TransactionForm.tsx").read_text()
     covenants = (ROOT / "app" / "covenants" / "page.tsx").read_text()
@@ -81,27 +78,27 @@ def test_governed_autofill_cannot_create_an_attacker_owned_covenant():
     assert "SERVICE_GOVERNANCE = manifest.deployer" in config
     assert "account.toLowerCase() !== requiredAccount.toLowerCase()" in form
     assert 'workflow:"covenant"' in covenants
-    assert 'service_key:"veriduct-production-payments-api"' in covenants
+    assert 'service_key:"veriduct-seismic-control"' in covenants
     assert 'requiredAccount={SERVICE_GOVERNANCE}' in covenants
-    assert 'requiredAccount={SERVICE_GOVERNANCE}' in cases
+    assert 'requiredAccount={SERVICE_GOVERNANCE}' not in cases
     assert 'get_active_covenant_key' in form
-    assert 'veriduct-production-availability-${Math.floor(Date.now()/1000)}' in form
+    assert 'veriduct-seismic-safety-${Math.floor(Date.now()/1000)}' in form
     assert 'localStorage.setItem("veriduct-demo-covenant"' in form
-    assert 'case_key:`demo-outage-${Math.floor(Date.now()/1000)}`' in form
+    assert 'case_key:`kamchatka-quake-${Math.floor(Date.now()/1000)}`' in form
     assert "Math.floor(Date.now()/1000)+1200" in form
-    assert "bounded 20-minute ServiceControl read-only remedy inside the 30-minute mandate TTL" in form
+    assert "bounded 20-minute read-only action" in form
 
 
-def test_demo_provenance_and_adapter_scope_are_explicit():
+def test_independent_provenance_and_adapter_scope_are_explicit():
     evidence = (ROOT / "lib" / "evidence.ts").read_text()
     home = (ROOT / "app" / "page.tsx").read_text()
     publishers = (ROOT / "app" / "publishers" / "page.tsx").read_text()
     service = (ROOT / "app" / "service" / "page.tsx").read_text()
     verifier = (ROOT / "scripts" / "verify-deployment.mjs").read_text()
-    assert 'classification: "DEMONSTRATION_FIXTURE"' in evidence
-    assert "measurement_independence: false" in evidence
-    assert "Identity independence is not measurement independence" in publishers
-    assert "Exact-byte authentication proves what validators fetched" in home
+    assert 'classification: "INDEPENDENT_AUTHORITATIVE_RECORDS"' in evidence
+    assert "measurement_independence: true" in evidence
+    assert "USGS and EMSC independently catalog the same event" in publishers
+    assert "USGS + EMSC independent authority records" in home
     assert "does not pause, modify, or make claims about any external production payments system" in service
-    assert 'tx.data?.contract_code' in verifier
+    assert 'receipt.data?.contract_code' in verifier
     assert 'TransactionHashVariant.LATEST_FINAL' in verifier
