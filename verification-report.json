@@ -1,8 +1,8 @@
 {
   "schema": "veriduct-deployment-verification-v2",
-  "generated_at": "2026-10-12T20:14:33.061Z",
-  "verifier_commit": "6fca5b8d762f955723c531edf11d74c1e051b004",
-  "deployed_frontend_commit": "6fca5b8d762f955723c531edf11d74c1e051b004",
+  "generated_at": "2026-10-12T20:26:00.936Z",
+  "verifier_commit": "82a470d226479e1d703203865652a100e5cebe88",
+  "deployed_frontend_commit": "82a470d226479e1d703203865652a100e5cebe88",
   "network": {
     "chain_id": 61999,
     "rpc": "https://studio.genlayer.com/api"
@@ -441,7 +441,12 @@
     {
       "name": "public build identity",
       "passed": true,
-      "evidence": "status=200 commit=6fca5b8d762f955723c531edf11d74c1e051b004"
+      "evidence": "status=200 commit=82a470d226479e1d703203865652a100e5cebe88"
+    },
+    {
+      "name": "frontend same-origin finalized read",
+      "passed": true,
+      "evidence": "status=200 result=seismic-safety-kamchatka-v2"
     }
   ],
   "authoritative_readback": {
