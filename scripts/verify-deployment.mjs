@@ -84,6 +84,9 @@ assert("public provenance", provenance?.classification === "INDEPENDENT_AUTHORIT
 const buildResponse = await fetch(`${manifest.application}/api/build`, { cache: "no-store" });
 const build = buildResponse.ok ? await buildResponse.json() : null;
 assert("public build identity", /^[0-9a-f]{40}$/.test(build?.git_commit || ""), `status=${buildResponse.status} commit=${build?.git_commit}`);
+const browserReadResponse = await fetch(`${manifest.application}/api/genlayer`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ operation: "read", address: manifest.contracts.covenantBook, functionName: "get_active_covenant_key", args: [manifest.activePolicy.serviceKey] }) });
+const browserRead = browserReadResponse.ok ? await browserReadResponse.json() : null;
+assert("frontend same-origin finalized read", browserRead?.result === manifest.activePolicy.covenantKey, `status=${browserReadResponse.status} result=${browserRead?.result}`);
 
 const report = { schema: "veriduct-deployment-verification-v2", generated_at: new Date().toISOString(), verifier_commit: execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim(), deployed_frontend_commit: build.git_commit, network: { chain_id: manifest.chainId, rpc: manifest.rpc }, checks, authoritative_readback: { authority, covenant, case: caseRecord, verdict, mandate, service, applied_mandate_digest: applied, manipulated_case: manipulated, manipulated_verdict: manipulatedVerdict } };
 if (writeReport) await writeFile(new URL("../verification-report.json", import.meta.url), `${JSON.stringify(report, null, 2)}\n`);

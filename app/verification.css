@@ -7,3 +7,8 @@
 .verificationCheck code { margin-top: 5px; color: var(--muted); font: 10px/1.5 DM Mono; overflow-wrap: anywhere; }
 .verificationCheck a { color: var(--ink); }
 .verificationFoot { margin: 20px 0 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
+.recordList { display: grid; gap: 8px; }
+.recordButton { display: grid; gap: 5px; padding: 12px; border: 1px solid var(--line); color: var(--ink); text-decoration: none; background: color-mix(in srgb, var(--paper) 92%, transparent); }
+.recordButton:hover { border-color: var(--ink); }
+.recordButton b { font-size: 11px; }
+.recordButton code { color: var(--muted); font: 9px/1.5 DM Mono; overflow-wrap: anywhere; }
