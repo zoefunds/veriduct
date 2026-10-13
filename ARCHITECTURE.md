@@ -1,6 +1,6 @@
 # VERIDUCT architecture
 
-This document describes the contracts deployed at the addresses in `deployment-manifest.public.json`. It was checked against the deployed source commitments and authoritative state on 12 October 2026.
+This document describes the contracts deployed at the addresses in `deployment-manifest.public.json`. It was checked against the deployed source commitments, authoritative state, and 44-test repository baseline on 13 October 2026.
 
 ## Trust-separated flow
 
@@ -82,6 +82,17 @@ Mandate: ISSUED ── execute once ─> DISPATCHED ── receipt match ─> AP
 ```
 
 `APPLIED`, `FAILED`, and `EXPIRED` are terminal. Retry means checking an existing receipt, never applying the consequence twice.
+
+### Recovery verification
+
+The integration suite imports and executes the repository's actual `MandateRouter` and `ServiceControl` classes. A controlled finalized-child delivery boundary reproduces states that a correct live target does not naturally produce:
+
+- matching receipt: `DISPATCHED → APPLIED` with `RECEIPT_CONFIRMED`;
+- no receipt before expiry: remains `DISPATCHED` with `FINALITY_PENDING`;
+- no receipt after expiry: `DISPATCHED → EXPIRED` with `NO_RECEIPT_BEFORE_EXPIRY`; and
+- nonempty mismatched receipt: `DISPATCHED → FAILED` with `CONFLICTING_RECEIPT`.
+
+Every branch asserts `dispatch_count = 1`. Recovery never emits `apply_mandate`, and execution from a terminal state rejects. The complete executable matrix is in [TESTING.md](./TESTING.md) and the reviewer-specific explanation is in [review2.md](./review2.md).
 
 ## Deployed proof
 

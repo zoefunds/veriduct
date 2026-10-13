@@ -18,6 +18,8 @@ VERIDUCT is a GenLayer protocol for adjudicating reliability or safety covenants
 
 Documentation and test coverage were re-audited on **13 October 2026**. The committed public Studionet report contains **88/88 passing deployment checks**. The repository test suite contains **44 passing Python tests**, including **17 tests that execute the actual five contract classes**.
 
+The public manifest separates immutable deployment evidence, the last written live-verification report, and the current local actual-contract test evidence. This prevents a newer test result from being presented as a newly deployed transaction.
+
 ## Deployed contracts
 
 | Contract | Studionet address | Purpose |

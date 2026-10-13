@@ -317,6 +317,8 @@ npm run build
 
 The recovery tests are `test_delayed_then_missing_receipt_uses_actual_recovery_without_redispatch` and `test_conflicting_receipt_marks_failed_without_redispatch`. They call the repository's actual Router methods rather than a parallel lifecycle model. The harness suppresses exactly one finalized child invocation to represent a child transaction that has not produced a target receipt. Assertions cover router status, `dispatch_tx_state`, `dispatch_count`, target history, repeated recovery, terminal execution rejection, and absence of any second target invocation. Complete methodology is in `TESTING.md`.
 
+The evidence boundary is explicit: the successful receipt path and rejection transactions are verifiable on Studionet, while delayed, missing, and conflicting receipt states are deterministic fault-injection tests over the actual contract classes. They are not presented as live target behavior because the correct deployed adapter cannot emit a conflicting digest through its public interface.
+
 ---
 
 ## 7. Complete GenLayer execution and frontend evidence

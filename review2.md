@@ -4,9 +4,13 @@
 
 This document addresses the follow-up request that failed and delayed mandate recovery be tested through the actual contract implementation. It records the added test coverage, the exact contract methods exercised, the expected lifecycle transitions, replay-safety assertions, reproduction commands, and verified results as of 13 October 2026.
 
-The implementation and tests are committed at:
+The recovery implementation and tests are committed at:
 
 `b2d7940fc0bc1ea06aab1da7b120656f1d65fcf7`
+
+The first complete reviewer document is committed at:
+
+`5cb990e899b12a339d69ff118faef1b5f410393d`
 
 ## Follow-up requirement
 

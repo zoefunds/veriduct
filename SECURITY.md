@@ -56,6 +56,8 @@ The recovery cases execute the real `MandateRouter.execute_mandate()`, `recover_
 
 Expected failures count only when the transaction reaches finality and GenVM returns the intended contract error. Transaction hashes are listed in [E2E_RESULTS.md](./E2E_RESULTS.md).
 
+Delayed, missing, and conflicting receipt recovery are intentionally reported as deterministic actual-contract integration evidence, not as deployed `ServiceControl` transactions. Producing a conflicting receipt on the correct deployed adapter would require corrupting its authoritative storage, so the harness controls the target readback while leaving all Router lifecycle decisions inside the actual contract implementation.
+
 ## Residual trust
 
 The authority curator can change which sources are available for future covenant versions, and service governance chooses a policy from the registered set. Existing snapshots, activated covenant versions, cases, verdicts, and mandates remain immutable. GenLayer validator consensus and availability of the authority endpoints remain dependencies. The protocol reduces evidence and enforcement discretion; it does not eliminate governance, scientific uncertainty, or network liveness risk.

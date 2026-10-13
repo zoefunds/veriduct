@@ -52,3 +52,5 @@ The reproducible command-line counterpart is `npm run verify:deployment`. It als
 ## Scope
 
 The frontend proves public authority retrieval, wallet-submitted GenLayer operations, finalized state transitions, and authoritative readback for the deployed `ServiceControl` adapter. It does not claim control over an external production system or independent certification of USGS/EMSC scientific accuracy.
+
+The frontend shows the deployed successful reconciliation path. Delayed, missing, and conflicting receipt recovery are deterministic fault cases covered through the actual contract classes rather than fabricated as successful live transactions. Their exact setup, assertions, and reproduction command are documented in [TESTING.md](./TESTING.md) and [review2.md](./review2.md).

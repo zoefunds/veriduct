@@ -39,3 +39,13 @@ The deployed `ServiceControl` correctly writes the exact action digest, so a con
 `npm run verify:deployment` is complementary. It reads public Studionet transactions and latest-final contract state, byte-compares all five deployed contract sources with this repository, re-fetches USGS and EMSC bytes, and verifies the successful case, mandate, target receipt, negative transactions, and frontend build identity. Its committed output is `verification-report.json` with 88 passing checks.
 
 The public report proves the deployed successful path and finalized rejection evidence. The deterministic integration suite proves failure states that a correct target does not naturally expose, particularly delayed, missing, and conflicting receipt recovery.
+
+## Current source references
+
+- Recovery implementation: `contracts/mandate_router.py`, methods `execute_mandate`, `reconcile_mandate`, and `recover_dispatch`.
+- Target receipt implementation: `contracts/service_control.py`, methods `apply_mandate` and `get_applied_mandate_digest`.
+- Integration coverage: `tests/integration/test_contract_workflow.py`.
+- Focused command: `npm run test:recovery`.
+- Reviewer response: `review2.md`.
+
+The implementation commit is `b2d7940fc0bc1ea06aab1da7b120656f1d65fcf7`. The documentation-only follow-up commit is `5cb990e899b12a339d69ff118faef1b5f410393d`.
