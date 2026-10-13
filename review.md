@@ -426,6 +426,7 @@ The same page displays the complete source-to-receipt transaction trace and all 
 | `deployment-manifest.public.json` | Machine-readable addresses, source hashes, policy state and transaction identifiers. |
 | `verification-report.json` | Full authoritative state readback and 88 passing verification checks. |
 | `TESTING.md` | Actual-contract harness design and the complete successful/delayed/missing/conflicting receipt matrix. |
+| `review2.md` | Reviewer-focused evidence for the failed and delayed recovery follow-up. |
 | `scripts/verify-deployment.mjs` | Reproducible live verification implementation. |
 
 ## Reproduction commands

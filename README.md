@@ -10,6 +10,7 @@ VERIDUCT is a GenLayer protocol for adjudicating reliability or safety covenants
 - Complete onchain proof: [E2E_RESULTS.md](./E2E_RESULTS.md)
 - Frontend execution proof: [FRONTEND_EVIDENCE.md](./FRONTEND_EVIDENCE.md)
 - Acceptance-response review: [review.md](./review.md)
+- Recovery follow-up review: [review2.md](./review2.md)
 - Architecture: [ARCHITECTURE.md](./ARCHITECTURE.md)
 - Security model: [SECURITY.md](./SECURITY.md)
 - Test methodology and recovery matrix: [TESTING.md](./TESTING.md)
