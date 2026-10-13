@@ -100,6 +100,10 @@ class EmitProxy:
         target = getattr(self.contract, name)
 
         def invoke(*args):
+            if GL.drop_next_finalized_emit:
+                GL.drop_next_finalized_emit = False
+                GL.dropped_finalized_calls.append({"contract": self.contract, "method": name, "args": args})
+                return None
             previous = Message.sender_address
             Message.sender_address = Address(GL.current_contract)
             try:
@@ -125,6 +129,8 @@ class GL:
     nondet = Nondet
     vm = types.SimpleNamespace(UserError=UserError, Return=Return)
     contracts = {}
+    drop_next_finalized_emit = False
+    dropped_finalized_calls = []
     current_contract = addr = "0x" + "01" * 20
 
     @classmethod
@@ -200,6 +206,8 @@ def protocol():
     service = storage(modules["service_control"].ServiceControl(addresses["router"]), ("operations", "applied_mandates"), ("mandate_history",))
     service._caller_address = addresses["service"]
     GL.contracts = {Address(addresses[name]).as_hex: value for name, value in (("ledger", ledger), ("book", book), ("router", router), ("adjudicator", adjudicator), ("service", service))}
+    GL.drop_next_finalized_emit = False
+    GL.dropped_finalized_calls = []
     router.bind_adjudicator(addresses["adjudicator"])
     router.register_adapter("ENTER_READ_ONLY", addresses["service"], modules["service_control"].READ_ONLY_SCHEMA)
     usgs_url = "https://earthquake.usgs.gov/product/origin/us6000qw60/us/1760216255040/quakeml.xml"
@@ -312,3 +320,54 @@ def test_recovery_only_reconciles_and_never_redispatches(protocol):
     recovered = json.loads(protocol.router.get_mandate_json("MANDATE-quake-case-1"))
     assert recovered["dispatch_count"] == 1
     assert len(protocol.service.mandate_history) == 1
+
+
+def test_delayed_then_missing_receipt_uses_actual_recovery_without_redispatch(protocol):
+    mandate = issue_mandate(protocol)
+    Message.sender_address = Address(protocol.stranger)
+    GL.drop_next_finalized_emit = True
+    protocol.router.execute_mandate("MANDATE-quake-case-1", protocol.addresses["service"], "ENTER_READ_ONLY", 60, mandate["payload_json"])
+
+    dispatched = json.loads(protocol.router.get_mandate_json("MANDATE-quake-case-1"))
+    assert dispatched["status"] == "DISPATCHED"
+    assert dispatched["dispatch_count"] == 1
+    assert dispatched["dispatch_tx_state"] == "FINALITY_PENDING"
+    assert len(GL.dropped_finalized_calls) == 1
+    assert len(protocol.service.mandate_history) == 0
+
+    assert protocol.router.recover_dispatch("MANDATE-quake-case-1") == "DISPATCHED"
+    delayed = json.loads(protocol.router.get_mandate_json("MANDATE-quake-case-1"))
+    assert delayed["dispatch_count"] == 1
+    assert delayed["dispatch_tx_state"] == "FINALITY_PENDING"
+    assert len(GL.dropped_finalized_calls) == 1
+    assert len(protocol.service.mandate_history) == 0
+
+    protocol.clock["now"] = mandate["expires_at"] + 1
+    assert protocol.router.recover_dispatch("MANDATE-quake-case-1") == "EXPIRED"
+    expired = json.loads(protocol.router.get_mandate_json("MANDATE-quake-case-1"))
+    assert expired["dispatch_count"] == 1
+    assert expired["dispatch_tx_state"] == "NO_RECEIPT_BEFORE_EXPIRY"
+    assert len(GL.dropped_finalized_calls) == 1
+    assert len(protocol.service.mandate_history) == 0
+
+
+def test_conflicting_receipt_marks_failed_without_redispatch(protocol):
+    mandate = issue_mandate(protocol)
+    Message.sender_address = Address(protocol.stranger)
+    GL.drop_next_finalized_emit = True
+    protocol.router.execute_mandate("MANDATE-quake-case-1", protocol.addresses["service"], "ENTER_READ_ONLY", 60, mandate["payload_json"])
+    protocol.service.applied_mandates["MANDATE-quake-case-1"] = "ff" * 32
+
+    assert protocol.router.recover_dispatch("MANDATE-quake-case-1") == "FAILED"
+    failed = json.loads(protocol.router.get_mandate_json("MANDATE-quake-case-1"))
+    assert failed["dispatch_count"] == 1
+    assert failed["dispatch_tx_state"] == "CONFLICTING_RECEIPT"
+    assert failed["action_digest"] != protocol.service.get_applied_mandate_digest("MANDATE-quake-case-1")
+    assert len(GL.dropped_finalized_calls) == 1
+    assert len(protocol.service.mandate_history) == 0
+
+    assert protocol.router.recover_dispatch("MANDATE-quake-case-1") == "FAILED"
+    with pytest.raises(UserError, match="not executable"):
+        protocol.router.execute_mandate("MANDATE-quake-case-1", protocol.addresses["service"], "ENTER_READ_ONLY", 60, mandate["payload_json"])
+    assert len(GL.dropped_finalized_calls) == 1
+    assert len(protocol.service.mandate_history) == 0

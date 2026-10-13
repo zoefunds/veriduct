@@ -12,9 +12,10 @@ VERIDUCT is a GenLayer protocol for adjudicating reliability or safety covenants
 - Acceptance-response review: [review.md](./review.md)
 - Architecture: [ARCHITECTURE.md](./ARCHITECTURE.md)
 - Security model: [SECURITY.md](./SECURITY.md)
+- Test methodology and recovery matrix: [TESTING.md](./TESTING.md)
 - Machine-readable deployment index: [deployment-manifest.public.json](./deployment-manifest.public.json)
 
-Documentation and deployment state were re-audited on **12 October 2026**. The committed verifier report was regenerated from public Studionet reads and contains **88/88 passing checks**. The repository test suite contains **42 passing Python tests**, including **15 tests that execute the actual five contract classes**.
+Documentation and test coverage were re-audited on **13 October 2026**. The committed public Studionet report contains **88/88 passing deployment checks**. The repository test suite contains **44 passing Python tests**, including **17 tests that execute the actual five contract classes**.
 
 ## Deployed contracts
 
@@ -73,7 +74,7 @@ npm run build
 npm run verify:deployment
 ```
 
-`npm run check` runs TypeScript checking, 42 Python tests, and GenLayer source parsing. Fifteen integration tests execute the actual five contract classes in one instrumented GenLayer runtime, including finality-gated child calls and authoritative receipt reads. Coverage includes permissionless claims, distinct authority classes and hosts, manipulated bytes, contradictions, malformed payloads, duplicate dispatch, expired/failed/dispatched/applied states, and receipt-only recovery.
+`npm run check` runs TypeScript checking, 44 Python tests, and GenLayer source parsing. Seventeen integration tests execute the actual five contract classes in one instrumented GenLayer runtime, including finality-gated child calls and authoritative receipt reads. Recovery coverage explicitly drops a finalized target child to model delayed/missing delivery, verifies that pre-expiry recovery remains `DISPATCHED`, advances contract time to verify transition to `EXPIRED`, injects a conflicting target receipt to verify transition to `FAILED`, and proves that every recovery path keeps `dispatch_count = 1` without another target call. See [TESTING.md](./TESTING.md).
 
 `npm run verify:deployment` performs live Studionet checks: exact deployed source comparison, finalized transaction outcomes, live USGS/EMSC re-hashing, active covenant readback, independent claimant verification, validator verdict, one-shot applied mandate, target receipt, and manipulated-evidence denial. Use `npm run verify:deployment:report` to refresh `verification-report.json`. The committed report records its generation time, verifier commit, deployed frontend commit, every individual assertion, and complete authoritative contract readbacks.
 

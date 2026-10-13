@@ -9,6 +9,7 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "test": "pytest tests -q",
+    "test:recovery": "pytest tests/integration/test_contract_workflow.py -q -k 'recovery or receipt'",
     "test:contracts": "node scripts/check-contracts.mjs",
     "check": "npm run typecheck && npm test && npm run test:contracts",
     "verify:deployment": "node scripts/verify-deployment.mjs",

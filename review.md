@@ -4,7 +4,7 @@
 
 This document records the current implementation, deployment, testing, and public verification evidence. It lets a reviewer reproduce every material claim without screenshots, private infrastructure, or an unverifiable narrative.
 
-The system is deployed on GenLayer Studionet (`chainId 61999`) and exposed through [https://veri-duct.vercel.app](https://veri-duct.vercel.app). The public browser verifier is [https://veri-duct.vercel.app/verification](https://veri-duct.vercel.app/verification). The evidence below was re-audited on 12 October 2026: 42 Python tests passed, all five contract sources parsed and validated, the application typecheck passed, and the public deployment verifier passed 88 of 88 checks.
+The system is deployed on GenLayer Studionet (`chainId 61999`) and exposed through [https://veri-duct.vercel.app](https://veri-duct.vercel.app). The public browser verifier is [https://veri-duct.vercel.app/verification](https://veri-duct.vercel.app/verification). The evidence below was re-audited on 13 October 2026: 44 Python tests passed, all five contract sources parsed and validated, the application typecheck passed, and the committed public deployment verifier report passed 88 of 88 checks.
 
 ## Final deployed contracts
 
@@ -286,10 +286,13 @@ The integration suite covers:
 - independent requester versus service owner;
 - real finality-gated issuance and application calls;
 - exact target receipt acknowledgment;
+- a dropped finalized child followed by pre-expiry recovery that remains `DISPATCHED`;
+- a permanently missing receipt followed by post-expiry recovery to `EXPIRED`;
+- a nonempty, digest-conflicting target receipt followed by recovery to `FAILED`;
 - duplicate execution from `DISPATCHED` and `APPLIED`;
 - explicit execution rejection for `FAILED` and `EXPIRED`;
 - expired `ISSUED` mandates;
-- recovery that reconciles without redispatch;
+- successful, delayed, missing, and conflicting receipt recovery without redispatch;
 - malformed and modified payload shapes;
 - manipulated authority bytes;
 - source-host and source-class independence;
@@ -298,8 +301,8 @@ The integration suite covers:
 
 The current test baseline is:
 
-- 42 Python tests passing;
-- 15 actual-contract integration tests within that suite;
+- 44 Python tests passing;
+- 17 actual-contract integration tests within that suite;
 - all five GenLayer contract sources parsed and validated;
 - TypeScript checking passing; and
 - Next.js production build passing.
@@ -308,8 +311,11 @@ The local commands are:
 
 ```bash
 npm run check
+npm run test:recovery
 npm run build
 ```
+
+The recovery tests are `test_delayed_then_missing_receipt_uses_actual_recovery_without_redispatch` and `test_conflicting_receipt_marks_failed_without_redispatch`. They call the repository's actual Router methods rather than a parallel lifecycle model. The harness suppresses exactly one finalized child invocation to represent a child transaction that has not produced a target receipt. Assertions cover router status, `dispatch_tx_state`, `dispatch_count`, target history, repeated recovery, terminal execution rejection, and absence of any second target invocation. Complete methodology is in `TESTING.md`.
 
 ---
 
@@ -419,6 +425,7 @@ The same page displays the complete source-to-receipt transaction trace and all 
 | `FRONTEND_EVIDENCE.md` | Browser execution model, reproducible UI sequence and frontend-to-chain mapping. |
 | `deployment-manifest.public.json` | Machine-readable addresses, source hashes, policy state and transaction identifiers. |
 | `verification-report.json` | Full authoritative state readback and 88 passing verification checks. |
+| `TESTING.md` | Actual-contract harness design and the complete successful/delayed/missing/conflicting receipt matrix. |
 | `scripts/verify-deployment.mjs` | Reproducible live verification implementation. |
 
 ## Reproduction commands

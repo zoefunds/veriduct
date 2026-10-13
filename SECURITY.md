@@ -1,6 +1,6 @@
 # VERIDUCT security model
 
-This security model applies to the five Studionet deployments listed in `deployment-manifest.public.json`. It was reconciled with the contract sources, 42-test suite, and 88-check public deployment report on 12 October 2026.
+This security model applies to the five Studionet deployments listed in `deployment-manifest.public.json`. It was reconciled with the contract sources, 44-test suite, and 88-check public deployment report on 13 October 2026.
 
 ## Guarantees
 
@@ -51,6 +51,8 @@ The actual-contract integration suite and live Studionet proof cover:
 - execution after expiry;
 - completed, failed, delayed, and receipt-recovery mandate states; and
 - permissionless case creation and execution by an independent participant.
+
+The recovery cases execute the real `MandateRouter.execute_mandate()`, `recover_dispatch()`, and `reconcile_mandate()` methods. The harness can suppress one finalized child delivery to model a delayed or permanently missing target receipt. Before expiry the mandate remains `DISPATCHED`; after expiry it becomes `EXPIRED`. A nonempty receipt unequal to the frozen action digest becomes `FAILED`. These tests assert that the dispatch count remains one and that recovery never invokes `ServiceControl.apply_mandate()`.
 
 Expected failures count only when the transaction reaches finality and GenVM returns the intended contract error. Transaction hashes are listed in [E2E_RESULTS.md](./E2E_RESULTS.md).
 
